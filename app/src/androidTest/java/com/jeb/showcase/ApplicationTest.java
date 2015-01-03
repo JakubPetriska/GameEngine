@@ -1,4 +1,4 @@
-package com.jeb;
+package com.jeb.showcase;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
