@@ -1,17 +1,21 @@
 package com.jeb.api;
 
+import com.jeb.engine.Core;
+
 /**
  * Created by Jakub Petriska on 29. 12. 2014.
  */
 public abstract class Component {
 
+    protected final Core mCore;
     public final GameObject owner;
 
     /**
      * Creates new component and adds it to it's owner.
      * @param owner
      */
-    protected Component(GameObject owner) {
+    protected Component(Core core, GameObject owner) {
+        this.mCore = core;
         if(owner == null) {
             throw new IllegalStateException("Component's owner cannot be null.");
         }
@@ -45,8 +49,9 @@ public abstract class Component {
     /**
      * Used for cleanup.
      */
-    public void finish() {
-
-    }
+    // so far not implemented
+//    public void finish() {
+//
+//    }
 
 }

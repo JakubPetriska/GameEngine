@@ -5,7 +5,7 @@ import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.view.Window;
 
-import com.jeb.android.AndroidPlatform;
+import com.jeb.android.rendering.RendererImpl;
 import com.jeb.engine.Engine;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -16,6 +16,7 @@ import javax.microedition.khronos.opengles.GL10;
  */
 public class JebEngineActivity extends Activity {
 
+    private MyGLSurfaceView mGlSurfaceView;
     private Engine mEngine;
 
     @Override
@@ -23,29 +24,45 @@ public class JebEngineActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        mEngine = new Engine(null, new AndroidPlatform(this));
+        RendererImpl renderer = new MyRendererImpl();
 
-        GLSurfaceView glSurfaceView = new GLSurfaceView(this);
-        glSurfaceView.setRenderer(new MyRenderer());
-        setContentView(glSurfaceView);
+        mEngine = new Engine(null, new AndroidPlatform(this), renderer);
+
+        mGlSurfaceView = new MyGLSurfaceView(this);
+        mGlSurfaceView.setRenderer(renderer);
+        setContentView(mGlSurfaceView);
     }
 
-    private class MyRenderer implements GLSurfaceView.Renderer {
+    private class MyRendererImpl extends RendererImpl {
 
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
+            super.onSurfaceCreated(gl, config);
             mEngine.onStart();
         }
 
         @Override
         public void onSurfaceChanged(GL10 gl, int width, int height) {
-
+            super.onSurfaceChanged(gl, width, height);
         }
 
         @Override
         public void onDrawFrame(GL10 gl) {
+            super.onDrawFrame(gl);
             mEngine.onUpdate();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mGlSurfaceView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mGlSurfaceView.onPause();
     }
 
     @Override

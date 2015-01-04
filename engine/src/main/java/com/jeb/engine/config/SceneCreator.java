@@ -6,6 +6,7 @@ import com.jeb.api.Scene;
 import com.jeb.api.Transform;
 import com.jeb.api.components.Mesh;
 import com.jeb.engine.ComponentsConstants;
+import com.jeb.engine.Core;
 import com.jeb.engine.config.model.initial_scene_state.ISComponent;
 import com.jeb.engine.config.model.initial_scene_state.ISGameObject;
 import com.jeb.engine.config.model.initial_scene_state.ISScene;
@@ -14,7 +15,19 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class SceneCreator {
 
-    public static Scene create(ISScene scene) {
+    private Core mCore;
+    private SceneCreatorCallback mSceneCreatorCallback;
+
+    public interface SceneCreatorCallback {
+        public void onNewComponent(Component component);
+    }
+
+    public SceneCreator(Core core, SceneCreatorCallback sceneCreatorCallback) {
+        this.mCore = core;
+        this.mSceneCreatorCallback = sceneCreatorCallback;
+    }
+
+    public Scene create(ISScene scene) {
         Scene runtimeSceneTree = new Scene();
         for (ISGameObject gameObject : scene.gameObjects) {
             runtimeSceneTree.gameObjects.add(convertGameObject(null, gameObject));
@@ -22,11 +35,14 @@ public class SceneCreator {
         return runtimeSceneTree;
     }
 
-    private static GameObject convertGameObject(GameObject parent, ISGameObject initialGameObject) {
+    private GameObject convertGameObject(GameObject parent, ISGameObject initialGameObject) {
         GameObject gameObject = new GameObject(parent);
         convertTransform(initialGameObject.transform, gameObject.transform);
         for (ISComponent component : initialGameObject.components) {
-            convertComponent(gameObject, component);
+            Component newComponent = convertComponent(gameObject, component);
+            if(mSceneCreatorCallback != null) {
+                mSceneCreatorCallback.onNewComponent(newComponent);
+            }
         }
         for (ISGameObject childGameObject : initialGameObject.children) {
             gameObject.children.add(convertGameObject(gameObject, childGameObject));
@@ -34,20 +50,20 @@ public class SceneCreator {
         return gameObject;
     }
 
-    private static void convertTransform(ISGameObject.Transform what, Transform into) {
+    private void convertTransform(ISGameObject.Transform what, Transform into) {
         convertPosition(what.position, into.position);
     }
 
-    private static void convertPosition(ISGameObject.Position what, Vector3f into) {
+    private void convertPosition(ISGameObject.Position what, Vector3f into) {
         into.x = what.x;
         into.y = what.y;
         into.z = what.z;
     }
 
-    private static void convertComponent(GameObject owner, ISComponent initialComponent) {
+    private Component convertComponent(GameObject owner, ISComponent initialComponent) {
         if (ComponentsConstants.COMPONENT_TYPE_MESH.equals(initialComponent.type)) {
-            Mesh mesh = new Mesh(owner);
-            mesh.setMesh(initialComponent.getParamValue(ComponentsConstants.MESH_PARAM_MESH));
+            String meshName = initialComponent.getParamValue(ComponentsConstants.MESH_PARAM_MESH);
+            return new Mesh(mCore, owner, meshName);
         } /*if(ComponentsConstants.COMPONENT_TYPE_BEHAVIOUR.equals(initialComponent.type)) {
             Behaviour behaviour = null;
 			try {
