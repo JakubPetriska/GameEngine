@@ -27,6 +27,6 @@ public class Mesh extends Component {
 
     @Override
     public void postUpdate() {
-        mCore.renderer.render(this);
+        core.renderer.render(this);
     }
 }

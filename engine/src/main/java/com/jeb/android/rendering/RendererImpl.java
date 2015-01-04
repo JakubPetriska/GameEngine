@@ -11,7 +11,6 @@ import com.jeb.platform.Renderer;
 
 import org.lwjgl.util.vector.Vector3f;
 
-import java.nio.FloatBuffer;
 import java.util.List;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -50,7 +49,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
                     "  gl_FragColor = ((factor * (1.0 - minFactor)) + minFactor) * uColor;" +
                     "}";
 
-    private static final float[] light = new float[]{-1, 1, -1, 0};
+    private static final float[] light = new float[]{-0.75f, 1, -0.5f, 0};
     private static final float color[] = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
 
     private MeshManager mMeshManager;
@@ -117,7 +116,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
     public void render(Mesh mesh) {
         MeshManager.MeshData meshData = mMeshManager.getMesh(mesh.getMeshName());
 
-        Vector3f position = mesh.owner.transform.position;
+        Vector3f position = mesh.gameObject.transform.position;
 
         // Create the model matrix
         Matrix.setIdentityM(mTranslationMatrix, 0);

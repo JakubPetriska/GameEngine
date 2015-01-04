@@ -13,7 +13,7 @@ public class ISComponent {
 	public String type;
 	
 	@ElementMap(entry="param", key="name", attribute=true)
-	private Map<String, String> params;
+	public Map<String, String> params;
 	
 	public String getParamValue(String name) {
 		return params.get(name);

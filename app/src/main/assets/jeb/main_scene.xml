@@ -3,14 +3,18 @@
     <gameObjects>
         <gameObject>
             <transform>
-                <position x="0" y="0" z="10"/>
+                <position x="0" y="0" z="10" />
             </transform>
-            <children>
-            </children>
+            <children></children>
             <components>
                 <component type="mesh">
                     <params>
                         <param name="mesh">cube</param>
+                    </params>
+                </component>
+                <component type="script">
+                    <params>
+                        <param name="script">com.jeb.showcase.TestScriptedBehaviour</param>
                     </params>
                 </component>
             </components>

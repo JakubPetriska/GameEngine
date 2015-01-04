@@ -13,6 +13,8 @@ import com.jeb.engine.config.model.initial_scene_state.ISScene;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class SceneCreator {
 
     private Core mCore;
@@ -62,28 +64,28 @@ public class SceneCreator {
 
     private Component convertComponent(GameObject owner, ISComponent initialComponent) {
         if (ComponentsConstants.COMPONENT_TYPE_MESH.equals(initialComponent.type)) {
-            String meshName = initialComponent.getParamValue(ComponentsConstants.MESH_PARAM_MESH);
+            String meshName = initialComponent.getParamValue(ComponentsConstants.MESH_PARAM_MESH_NAME);
             return new Mesh(mCore, owner, meshName);
-        } /*if(ComponentsConstants.COMPONENT_TYPE_BEHAVIOUR.equals(initialComponent.type)) {
-            Behaviour behaviour = null;
+        } if(ComponentsConstants.COMPONENT_TYPE_SCRIPT.equals(initialComponent.type)) {
+            Component script;
 			try {
-				Class<Behaviour> behaviourClass = (Class<Behaviour>) Class.forName(initialComponent.getParamValue(ComponentsConstants.BEHAVIOUR_PARAM_SCRIPT));
-				behaviour = behaviourClass.getConstructor().newInstance();
+				Class<Component> scriptClass = (Class<Component>) Class.forName(initialComponent.getParamValue(ComponentsConstants.SCRIPT_PARAM_SCRIPT_NAME));
+				script = scriptClass.getConstructor(Core.class, GameObject.class).newInstance(mCore, owner);
 			} catch (ClassCastException e) {
-				throw new IllegalStateException("Behaviour script must inherit from Behaviour class.");
+				throw new IllegalStateException("Script must inherit from Component class.");
 			} catch (ClassNotFoundException e) {
-				throw new IllegalStateException("Behaviour script class could not be found.");
+				throw new IllegalStateException("Script class could not be found.");
 			} catch (NoSuchMethodException e) {
-				throw new IllegalStateException("Behaviour script must have parameterless constructor.");
+				throw new IllegalStateException("Script must have constructor with two parameters (Core, GameObject) and it must be public.");
 			} catch (IllegalAccessException e) {
-				throw new IllegalStateException("Behaviour script's parameterless constructor must be public.");
+				throw new IllegalStateException("Script's constructor must be public.");
 			} catch (InstantiationException e) {
-				throw new IllegalStateException("Behaviour script could not be instantiated.");
+				throw new IllegalStateException("Script could not be instantiated.");
 			} catch (InvocationTargetException e) {
 				throw new IllegalStateException("Unknown error during script retrieval.");
 			}
-			component = componentCreator.createBehaviour(owner, behaviour);
-		} */ else {
+			return script;
+		} else {
             throw new IllegalStateException("Unknown component type.");
         }
     }
