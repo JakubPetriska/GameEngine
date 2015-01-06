@@ -50,7 +50,7 @@ public class Engine {
         }
 
         if(mCurrentSceneName == null) {
-            mCurrentSceneName = mScenesConfig.initialSceneName;
+            mCurrentSceneName = mScenesConfig.defaultSceneName;
         }
 
         mCurrentScene = getScene(mCurrentSceneName, serializer);

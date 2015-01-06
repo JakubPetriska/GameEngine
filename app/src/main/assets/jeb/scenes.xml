@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scenes
-    initialSceneName="main_scene">
+    defaultSceneName="main_scene">
     <scene
         name="main_scene"/>
 </scenes>

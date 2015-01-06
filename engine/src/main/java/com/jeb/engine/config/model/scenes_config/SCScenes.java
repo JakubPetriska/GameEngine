@@ -12,7 +12,7 @@ import java.util.List;
 @Root
 public class SCScenes {
     @Attribute
-    public String initialSceneName;
+    public String defaultSceneName;
 
     @ElementList(inline = true)
     public List<SCScene> scenes;
