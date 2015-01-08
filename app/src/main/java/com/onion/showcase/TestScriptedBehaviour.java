@@ -1,31 +1,43 @@
 package com.onion.showcase;
 
-import android.text.TextUtils;
-import android.util.Log;
-
 import com.onion.api.Component;
-import com.onion.api.GameObject;
 import com.onion.api.Core;
+import com.onion.api.GameObject;
 import com.onion.api.Touch;
 
+import java.util.List;
+
 public class TestScriptedBehaviour extends Component {
+
+    private static final float FACTOR = 0.005f;
 
     public TestScriptedBehaviour(Core core, GameObject owner) {
         super(core, owner);
     }
 
+    private float mLastTouchX = -1;
+    private float mLastTouchY = -1;
+
     @Override
     public void update() {
-        gameObject.transform.position.x += 0.01;
-        gameObject.transform.position.y -= 0.005;
+        List<Touch> touches = core.touchInput.getTouches();
+        if(touches.size() > 0) {
+            Touch touch = touches.get(0);
+            float currentTouchX = touch.getX();
+            float currentTouchY = touch.getY();
 
-        StringBuilder builder = new StringBuilder();
-        for(Touch touch : core.touchInput.getTouches()) {
-            builder.append(touch.getState() + " - [" + touch.getX() + ", " + touch.getY() + "], ");
-        }
-        String touchesDesc = builder.toString();
-        if(!TextUtils.isEmpty(touchesDesc)) {
-            Log.d("DEBUG", touchesDesc);
+            if(mLastTouchX != -1 && mLastTouchY != -1) {
+                gameObject.transform.position.x -= (currentTouchX - mLastTouchX) * FACTOR;
+                gameObject.transform.position.y -= (currentTouchY - mLastTouchY) * FACTOR;
+            }
+
+            if(touch.getState() == Touch.STATE_ENDED) {
+                mLastTouchX = -1;
+                mLastTouchY = -1;
+            } else {
+                mLastTouchX = currentTouchX;
+                mLastTouchY = currentTouchY;
+            }
         }
     }
 
