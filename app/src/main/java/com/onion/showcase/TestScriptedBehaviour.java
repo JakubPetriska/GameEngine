@@ -40,5 +40,4 @@ public class TestScriptedBehaviour extends Component {
             }
         }
     }
-
 }
