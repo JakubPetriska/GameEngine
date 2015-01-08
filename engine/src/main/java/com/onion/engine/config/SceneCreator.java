@@ -6,7 +6,7 @@ import com.onion.api.Scene;
 import com.onion.api.Transform;
 import com.onion.api.components.Mesh;
 import com.onion.engine.ComponentsConstants;
-import com.onion.engine.Core;
+import com.onion.api.Core;
 import com.onion.engine.config.model.initial_scene_state.ISComponent;
 import com.onion.engine.config.model.initial_scene_state.ISGameObject;
 import com.onion.engine.config.model.initial_scene_state.ISScene;

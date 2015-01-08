@@ -1,7 +1,5 @@
 package com.onion.api;
 
-import com.onion.engine.Core;
-
 /**
  * Created by Jakub Petriska on 29. 12. 2014.
  */

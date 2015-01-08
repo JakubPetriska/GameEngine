@@ -2,7 +2,7 @@ package com.onion.showcase;
 
 import com.onion.api.Component;
 import com.onion.api.GameObject;
-import com.onion.engine.Core;
+import com.onion.api.Core;
 
 public class TestScriptedBehaviour extends Component {
 

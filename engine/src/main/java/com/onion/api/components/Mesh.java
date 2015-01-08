@@ -2,7 +2,7 @@ package com.onion.api.components;
 
 import com.onion.api.Component;
 import com.onion.api.GameObject;
-import com.onion.engine.Core;
+import com.onion.api.Core;
 
 /**
  * Created by Jakub Petriska on 3. 1. 2015.
