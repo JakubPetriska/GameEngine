@@ -1,6 +1,5 @@
 package com.onion.api;
 
-import com.onion.platform.Platform;
 import com.onion.platform.Renderer;
 
 /**
@@ -8,11 +7,9 @@ import com.onion.platform.Renderer;
  */
 public class Core {
 
-    public final Platform platform;
     public final Renderer renderer;
 
-    public Core(Platform platform, Renderer renderer) {
-        this.platform = platform;
+    public Core(Renderer renderer) {
         this.renderer = renderer;
     }
 }

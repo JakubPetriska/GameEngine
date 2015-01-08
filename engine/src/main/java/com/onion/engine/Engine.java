@@ -19,6 +19,7 @@ import java.util.List;
 
 public class Engine {
 
+    private Platform mPlatform;
     private Core mCore;
 
     private SCScenes mScenesConfig;
@@ -34,7 +35,8 @@ public class Engine {
      */
     public Engine(String startSceneName, Platform platform, Renderer renderer) {
         mCurrentSceneName = startSceneName;
-        mCore = new Core(platform, renderer);
+        mPlatform = platform;
+        mCore = new Core(renderer);
     }
 
     // TODO validate all documents
@@ -42,7 +44,7 @@ public class Engine {
         Serializer serializer = new Persister();
         try {
             mScenesConfig = serializer.read(SCScenes.class,
-                    mCore.platform.getConfigFile(Config.SCENES_FILE));
+                    mPlatform.getConfigFile(Config.SCENES_FILE));
             if(mScenesConfig == null) {
                 throw new IllegalStateException("Error during retrieval scenes config file.");
             }
@@ -66,7 +68,7 @@ public class Engine {
         ISScene scene;
         try {
             scene = serializer.read(ISScene.class,
-                    mCore.platform.getConfigFile(configFilePath));
+                    mPlatform.getConfigFile(configFilePath));
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException("Error during retrieval of scene config file " + configFilePath);
