@@ -10,6 +10,7 @@ import com.onion.engine.config.model.initial_scene_state.ISScene;
 import com.onion.engine.config.model.scenes_config.SCScenes;
 import com.onion.platform.Platform;
 import com.onion.platform.Renderer;
+import com.onion.platform.TouchInputInternal;
 
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -20,6 +21,7 @@ import java.util.List;
 public class Engine {
 
     private Platform mPlatform;
+    private TouchInputInternal mTouchInput;
     private Core mCore;
 
     private SCScenes mScenesConfig;
@@ -28,15 +30,16 @@ public class Engine {
     private Scene mCurrentScene;
 
     /**
-     *
-     * @param startSceneName Name of the scene that this engine should start at first. If null engine will
+     *  @param startSceneName Name of the scene that this engine should start at first. If null engine will
      *                       use the default initial scene.
      * @param platform
+     * @param touchInput
      */
-    public Engine(String startSceneName, Platform platform, Renderer renderer) {
+    public Engine(String startSceneName, Platform platform, Renderer renderer, TouchInputInternal touchInput) {
         mCurrentSceneName = startSceneName;
-        mPlatform = platform;
-        mCore = new Core(renderer);
+        this.mPlatform = platform;
+        this.mTouchInput = touchInput;
+        mCore = new Core(renderer, touchInput);
     }
 
     // TODO validate all documents
@@ -85,6 +88,8 @@ public class Engine {
     }
 
     public void onUpdate() {
+        mTouchInput.update();
+
         update(mCurrentScene.gameObjects);
         postUpdate(mCurrentScene.gameObjects);
     }

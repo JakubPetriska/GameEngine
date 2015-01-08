@@ -16,40 +16,13 @@ import javax.microedition.khronos.opengles.GL10;
 public class JebEngineActivity extends Activity {
 
     private MyGLSurfaceView mGlSurfaceView;
-    private Engine mEngine;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-
-        RendererImpl renderer = new MyRendererImpl();
-
-        mEngine = new Engine(null, new AndroidPlatform(this), renderer);
-
         mGlSurfaceView = new MyGLSurfaceView(this);
-        mGlSurfaceView.setRenderer(renderer);
         setContentView(mGlSurfaceView);
-    }
-
-    private class MyRendererImpl extends RendererImpl {
-
-        @Override
-        public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-            super.onSurfaceCreated(gl, config);
-            mEngine.onStart();
-        }
-
-        @Override
-        public void onSurfaceChanged(GL10 gl, int width, int height) {
-            super.onSurfaceChanged(gl, width, height);
-        }
-
-        @Override
-        public void onDrawFrame(GL10 gl) {
-            super.onDrawFrame(gl);
-            mEngine.onUpdate();
-        }
     }
 
     @Override
@@ -67,6 +40,6 @@ public class JebEngineActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mEngine.onFinish();
+        mGlSurfaceView.getEngine().onFinish();
     }
 }
