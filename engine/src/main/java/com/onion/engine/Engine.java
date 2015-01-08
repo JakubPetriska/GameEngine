@@ -3,7 +3,6 @@ package com.onion.engine;
 import com.onion.api.Component;
 import com.onion.api.Core;
 import com.onion.api.GameObject;
-import com.onion.api.Scene;
 import com.onion.api.components.Mesh;
 import com.onion.engine.config.SceneCreator;
 import com.onion.engine.config.model.initial_scene_state.ISScene;

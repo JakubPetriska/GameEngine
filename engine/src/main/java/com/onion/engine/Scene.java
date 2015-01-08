@@ -1,4 +1,6 @@
-package com.onion.api;
+package com.onion.engine;
+
+import com.onion.api.GameObject;
 
 import java.util.ArrayList;
 import java.util.List;

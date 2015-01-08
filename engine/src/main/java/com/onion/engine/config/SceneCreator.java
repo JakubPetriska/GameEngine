@@ -2,7 +2,7 @@ package com.onion.engine.config;
 
 import com.onion.api.Component;
 import com.onion.api.GameObject;
-import com.onion.api.Scene;
+import com.onion.engine.Scene;
 import com.onion.api.Transform;
 import com.onion.api.components.Mesh;
 import com.onion.engine.ComponentsConstants;
