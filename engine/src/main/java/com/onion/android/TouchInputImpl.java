@@ -61,7 +61,7 @@ public class TouchInputImpl implements TouchInputInternal {
             case MotionEvent.ACTION_POINTER_DOWN:
                 return Touch.STATE_BEGAN;
             case MotionEvent.ACTION_MOVE:
-                return Touch.STATE_MOVING;
+                return Touch.STATE_RUNNING;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
                 return Touch.STATE_ENDED;
@@ -79,7 +79,7 @@ public class TouchInputImpl implements TouchInputInternal {
             } else if(ithTouch.getState() == Touch.STATE_BEGAN) {
                 // Change the state to Moving so for every gesture
                 // state is BEGAN only in one game loop iteration
-                ithTouch.setState(Touch.STATE_MOVING);
+                ithTouch.setState(Touch.STATE_RUNNING);
             }
         }
 
@@ -117,7 +117,7 @@ public class TouchInputImpl implements TouchInputInternal {
             } else if(ithTouch.getState() == Touch.STATE_BEGAN) {
                 // Change the state to Moving so for every gesture
                 // state is BEGAN only in one game loop iteration
-                ithTouch.setState(Touch.STATE_MOVING);
+                ithTouch.setState(Touch.STATE_RUNNING);
             }
         }
     }

@@ -6,7 +6,7 @@ package com.onion.api;
 public class Touch {
 
     public static final int STATE_BEGAN = 1;
-    public static final int STATE_MOVING = 2;
+    public static final int STATE_RUNNING = 2;
     public static final int STATE_ENDED = 3;
 
     private int mId;
