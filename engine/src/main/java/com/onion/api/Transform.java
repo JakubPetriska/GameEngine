@@ -3,19 +3,33 @@ package com.onion.api;
 import org.lwjgl.util.vector.Vector3f;
 
 public class Transform {
-	public final Vector3f position = new Vector3f();
-	
-	public void add(Transform transform) {
-		Vector3f.add(position, transform.position, position);
-	}
-	
-	public void subtract(Transform transform) {
-		Vector3f.sub(position, transform.position, position);
-	}
-	
-	public void copyFrom(Transform transform) {
-		position.x = transform.position.x;
-		position.y = transform.position.y;
-		position.z = transform.position.z;
-	}
+
+    private final GameObject mOwner;
+	private final Vector3f mPosition = new Vector3f();
+
+    Transform(GameObject mOwner) {
+        this.mOwner = mOwner;
+    }
+
+    public void moveBy(float x, float y, float z) {
+        mPosition.x += x;
+        mPosition.y += y;
+        mPosition.z += z;
+
+        for(int i = 0; i < mOwner.children.size(); ++i) {
+            mOwner.children.get(i).transform.moveBy(x, y, z);
+        }
+    }
+
+    public float getPositionX() {
+        return mPosition.x;
+    }
+
+    public float getPositionY() {
+        return mPosition.y;
+    }
+
+    public float getPositionZ() {
+        return mPosition.z;
+    }
 }

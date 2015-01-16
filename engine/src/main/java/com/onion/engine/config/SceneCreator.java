@@ -53,13 +53,7 @@ public class SceneCreator {
     }
 
     private void convertTransform(ISGameObject.Transform what, Transform into) {
-        convertPosition(what.position, into.position);
-    }
-
-    private void convertPosition(ISGameObject.Position what, Vector3f into) {
-        into.x = what.x;
-        into.y = what.y;
-        into.z = what.z;
+        into.moveBy(what.position.x, what.position.y, what.position.z);
     }
 
     private Component convertComponent(GameObject owner, ISComponent initialComponent) {

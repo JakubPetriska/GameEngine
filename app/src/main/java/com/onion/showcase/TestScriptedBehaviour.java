@@ -27,8 +27,10 @@ public class TestScriptedBehaviour extends Component {
             float currentTouchY = touch.getY();
 
             if(mLastTouchX != -1 && mLastTouchY != -1) {
-                gameObject.transform.position.x -= (currentTouchX - mLastTouchX) * FACTOR;
-                gameObject.transform.position.y -= (currentTouchY - mLastTouchY) * FACTOR;
+                gameObject.transform.moveBy(
+                        -(currentTouchX - mLastTouchX) * FACTOR,
+                        -(currentTouchY - mLastTouchY) * FACTOR,
+                        0);
             }
 
             if(touch.getState() == Touch.STATE_ENDED) {

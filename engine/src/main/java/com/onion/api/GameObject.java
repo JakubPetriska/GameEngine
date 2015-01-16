@@ -9,7 +9,7 @@ import java.util.List;
  * always use Application class and corresponding methods.
  */
 public class GameObject {
-    public final Transform transform = new Transform();
+    public final Transform transform = new Transform(this);
 
     public final List<Component> components = new ArrayList<Component>();
 

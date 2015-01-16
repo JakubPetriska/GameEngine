@@ -6,6 +6,7 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 import com.onion.android.MeshManager;
+import com.onion.api.Transform;
 import com.onion.api.components.Mesh;
 import com.onion.platform.Renderer;
 
@@ -116,11 +117,14 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
     public void render(Mesh mesh) {
         MeshManager.MeshData meshData = mMeshManager.getMesh(mesh.getMeshName());
 
-        Vector3f position = mesh.gameObject.transform.position;
+        Transform transform = mesh.gameObject.transform;
 
         // Create the model matrix
         Matrix.setIdentityM(mTranslationMatrix, 0);
-        Matrix.translateM(mTranslationMatrix, 0, position.x, position.y, position.z);
+        Matrix.translateM(mTranslationMatrix, 0,
+                transform.getPositionX(),
+                transform.getPositionY(),
+                transform.getPositionZ());
         Matrix.setIdentityM(mRotationMatrix, 0);
         Matrix.multiplyMM(mModelMatrix, 0, mTranslationMatrix, 0, mRotationMatrix, 0);
 

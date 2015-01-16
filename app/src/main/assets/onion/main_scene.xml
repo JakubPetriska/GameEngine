@@ -5,7 +5,21 @@
             <transform>
                 <position x="0" y="0" z="10" />
             </transform>
-            <children></children>
+            <children>
+                <gameObject>
+                    <transform>
+                        <position x="1" y="1" z="10" />
+                    </transform>
+                    <children></children>
+                    <components>
+                        <component type="mesh">
+                            <params>
+                                <param name="mesh">cube</param>
+                            </params>
+                        </component>
+                    </components>
+                </gameObject>
+            </children>
             <components>
                 <component type="mesh">
                     <params>
