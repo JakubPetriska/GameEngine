@@ -69,6 +69,11 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
 
         // Enable back face culling
         GLES20.glEnable(GLES20.GL_CULL_FACE);
+
+        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+        GLES20.glDepthMask(true);
+        GLES20.glDepthFunc(GLES20.GL_LEQUAL);
+        GLES20.glDepthRangef(0.0f, 1.0f);
     }
 
     @Override
