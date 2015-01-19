@@ -34,6 +34,13 @@ public abstract class Component {
     }
 
     /**
+     * Used to perform operations before state update.
+     */
+    public void preUpdate() {
+
+    }
+
+    /**
      * Used to update state.
      */
     public void update() {

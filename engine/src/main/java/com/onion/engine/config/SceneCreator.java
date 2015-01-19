@@ -38,7 +38,7 @@ public class SceneCreator {
     }
 
     private GameObject convertGameObject(GameObject parent, ISGameObject initialGameObject) {
-        GameObject gameObject = new GameObject(parent);
+        GameObject gameObject = new GameObject(mCore, parent);
         convertTransform(initialGameObject.transform, gameObject.transform);
         for (ISComponent component : initialGameObject.components) {
             Component newComponent = convertComponent(gameObject, component);

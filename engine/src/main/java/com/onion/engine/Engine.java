@@ -89,8 +89,18 @@ public class Engine {
     public void onUpdate() {
         mTouchInput.update();
 
+        preUpdate(mCurrentScene.gameObjects);
         update(mCurrentScene.gameObjects);
         postUpdate(mCurrentScene.gameObjects);
+    }
+
+    private void preUpdate(List<GameObject> gameObjects) {
+        for(GameObject gameObject : gameObjects) {
+            for(Component component : gameObject.components) {
+                component.preUpdate();
+            }
+            preUpdate(gameObject.children);
+        }
     }
 
     private void update(List<GameObject> gameObjects) {

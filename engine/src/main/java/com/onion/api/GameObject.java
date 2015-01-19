@@ -9,18 +9,18 @@ import java.util.List;
  * always use Application class and corresponding methods.
  */
 public class GameObject {
-    public final Transform transform = new Transform(this);
-
-    public final List<Component> components = new ArrayList<Component>();
 
     public GameObject parent;
     public final List<GameObject> children = new ArrayList<GameObject>();
 
-    protected GameObject() {
+    public final Transform transform;
 
-    }
+    public final List<Component> components = new ArrayList<Component>();
 
-    public GameObject(GameObject parent) {
+    public GameObject(Core core, GameObject parent) {
         this.parent = parent;
+
+        transform = new Transform(core, this);
+        components.add(transform);
     }
 }

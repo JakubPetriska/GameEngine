@@ -118,18 +118,20 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         GLES20.glLinkProgram(mProgram);
     }
 
+    // Used to retrieve object absolute position
+    private final Vector3f mPositionCache = new Vector3f();
+
     @Override
     public void render(Mesh mesh) {
         MeshManager.MeshData meshData = mMeshManager.getMesh(mesh.getMeshName());
 
-        Transform transform = mesh.gameObject.transform;
-
+        mesh.gameObject.transform.getWorldPosition(mPositionCache);
         // Create the model matrix
         Matrix.setIdentityM(mTranslationMatrix, 0);
         Matrix.translateM(mTranslationMatrix, 0,
-                transform.getPositionX(),
-                transform.getPositionY(),
-                transform.getPositionZ());
+                mPositionCache.x,
+                mPositionCache.y,
+                mPositionCache.z);
         Matrix.setIdentityM(mRotationMatrix, 0);
         Matrix.multiplyMM(mModelMatrix, 0, mTranslationMatrix, 0, mRotationMatrix, 0);
 

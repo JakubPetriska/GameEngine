@@ -2,34 +2,38 @@ package com.onion.api;
 
 import org.lwjgl.util.vector.Vector3f;
 
-public class Transform {
+/**
+ * Transform hold transformation data of a GameObject.
+ *
+ * Transformation is relative to parent GameObject. World (absolute) transformation
+ * data can be obtained using appropriate methods.
+ */
+public class Transform extends Component {
 
-    private final GameObject mOwner;
-	private final Vector3f mPosition = new Vector3f();
+	public final Vector3f position = new Vector3f();
 
-    Transform(GameObject mOwner) {
-        this.mOwner = mOwner;
+    private final Vector3f mCachedParentPosition = new Vector3f();
+
+    protected Transform(Core core, GameObject gameObject) {
+        super(core, gameObject);
     }
 
     public void moveBy(float x, float y, float z) {
-        mPosition.x += x;
-        mPosition.y += y;
-        mPosition.z += z;
+        position.x += x;
+        position.y += y;
+        position.z += z;
+    }
 
-        for(int i = 0; i < mOwner.children.size(); ++i) {
-            mOwner.children.get(i).transform.moveBy(x, y, z);
+    /**
+     * Returns world(absolute) transformation of this transform.
+     * @param output Vector3f in which result will be stored.
+     */
+    public void getWorldPosition(Vector3f output) {
+        if(gameObject.parent != null) {
+            gameObject.parent.transform.getWorldPosition(mCachedParentPosition);
+        } else {
+            mCachedParentPosition.set(0, 0, 0);
         }
-    }
-
-    public float getPositionX() {
-        return mPosition.x;
-    }
-
-    public float getPositionY() {
-        return mPosition.y;
-    }
-
-    public float getPositionZ() {
-        return mPosition.z;
+        Vector3f.add(mCachedParentPosition, position, output);
     }
 }
