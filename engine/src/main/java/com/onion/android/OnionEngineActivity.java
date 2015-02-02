@@ -13,7 +13,7 @@ import javax.microedition.khronos.opengles.GL10;
 /**
  * Created by Jakub Petriska on 29. 12. 2014.
  */
-public class JebEngineActivity extends Activity {
+public class OnionEngineActivity extends Activity {
 
     private MyGLSurfaceView mGlSurfaceView;
 
