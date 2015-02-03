@@ -48,10 +48,10 @@ public class Engine {
             mScenesConfig = serializer.read(SCScenes.class,
                     mPlatform.getConfigFile(Config.SCENES_FILE));
             if(mScenesConfig == null) {
-                throw new IllegalStateException("Error during retrieval scenes config file.");
+                throw new IllegalStateException("Error during retrieval of scenes config file.");
             }
         } catch (Exception e) {
-            throw new IllegalStateException("Error during retrieval scenes config file.", e);
+            throw new IllegalStateException("Error during retrieval of scenes config file.", e);
         }
 
         if(mCurrentSceneName == null) {
