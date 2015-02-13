@@ -2,4 +2,5 @@
     <string name="app_name">OnionEngine showcase</string>
 
     <string name="example_basic_activity">Using engine as Activity</string>
+    <string name="example_basic_fragment">Using engine as Fragment</string>
 </resources>
