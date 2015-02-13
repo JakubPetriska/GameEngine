@@ -28,7 +28,7 @@
                 </component>
                 <component type="script">
                     <params>
-                        <param name="script">com.onion.showcase.TestScriptedBehaviour</param>
+                        <param name="script">com.onion.showcase.engine.TestScriptedBehaviour</param>
                     </params>
                 </component>
             </components>

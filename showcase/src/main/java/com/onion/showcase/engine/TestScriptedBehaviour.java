@@ -1,4 +1,4 @@
-package com.onion.showcase;
+package com.onion.showcase.engine;
 
 import com.onion.api.Component;
 import com.onion.api.Core;

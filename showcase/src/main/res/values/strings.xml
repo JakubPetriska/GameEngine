@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">OnionEngine showcase</string>
+
+    <string name="example_basic_activity">Using engine as Activity</string>
 </resources>

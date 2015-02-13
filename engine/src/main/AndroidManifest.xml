@@ -4,6 +4,8 @@
 
     <application>
 
+        <activity android:name="com.onion.android.OnionEngineActivity"
+            android:theme="@android:style/Theme.NoTitleBar"/>
     </application>
 
 </manifest>
