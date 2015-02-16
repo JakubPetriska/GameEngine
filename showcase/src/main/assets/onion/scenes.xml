@@ -2,5 +2,6 @@
 <scenes
     defaultSceneName="main_scene">
     <scene
-        name="main_scene"/>
+        name="main_scene"
+        sceneFilePath="scenes/main_scene.xml"/>
 </scenes>

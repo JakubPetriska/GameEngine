@@ -7,5 +7,5 @@ import java.io.InputStream;
  */
 public interface Platform {
 
-    public InputStream getConfigFile(String path);
+    public InputStream getAssetFile(String path);
 }

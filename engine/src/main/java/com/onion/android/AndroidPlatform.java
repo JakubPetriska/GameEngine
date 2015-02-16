@@ -19,11 +19,11 @@ public class AndroidPlatform implements Platform {
     }
 
     @Override
-    public InputStream getConfigFile(String path) {
+    public InputStream getAssetFile(String path) {
         try {
-            return mContext.getAssets().open(path);
+            return mContext.getAssets().open(Constants.ENGINE_ASSETS_ROOT_PATH + path);
         } catch (IOException e) {
-            throw new IllegalStateException("Error opening configuration file " + path + ".", e);
+            throw new IllegalStateException("Error opening asset file " + path + ".", e);
         }
     }
 }

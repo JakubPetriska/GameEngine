@@ -6,6 +6,7 @@ import com.onion.api.GameObject;
 import com.onion.api.components.Mesh;
 import com.onion.engine.config.SceneCreator;
 import com.onion.engine.config.model.initial_scene_state.ISScene;
+import com.onion.engine.config.model.scenes_config.SCScene;
 import com.onion.engine.config.model.scenes_config.SCScenes;
 import com.onion.platform.Platform;
 import com.onion.platform.Renderer;
@@ -15,6 +16,7 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Engine {
@@ -24,6 +26,9 @@ public class Engine {
     private Core mCore;
 
     private SCScenes mScenesConfig;
+
+    // This is only used for searching in scenes List
+    private SCScene mDummyScene = new SCScene();
 
     private String mCurrentSceneName;
     private Scene mCurrentScene;
@@ -46,7 +51,9 @@ public class Engine {
         Serializer serializer = new Persister();
         try {
             mScenesConfig = serializer.read(SCScenes.class,
-                    mPlatform.getConfigFile(Config.SCENES_FILE));
+                    mPlatform.getAssetFile(Config.SCENES_FILE));
+            // Sort scenes for quicker lookup of scenes during scene loading
+            Collections.sort(mScenesConfig.scenes);
             if(mScenesConfig == null) {
                 throw new IllegalStateException("Error during retrieval of scenes config file.");
             }
@@ -57,20 +64,20 @@ public class Engine {
         if(mCurrentSceneName == null) {
             mCurrentSceneName = mScenesConfig.defaultSceneName;
         }
-
         mCurrentScene = getScene(mCurrentSceneName, serializer);
 	}
 
-    private Scene getScene(String name) {
-        return getScene(name, new Persister());
-    }
-
-    private Scene getScene(String name, Serializer serializer) {
-        String configFilePath = Config.BASE_ASSETS_PATH + name + ".xml";
+    private Scene getScene(String sceneName, Serializer serializer) {
+        mDummyScene.name = sceneName;
+        int sceneIndex = Collections.binarySearch(mScenesConfig.scenes, mDummyScene);
+        if(sceneIndex < 0) {
+            throw new IllegalStateException("Scene that was requested could not be found.");
+        }
+        String configFilePath = mScenesConfig.scenes.get(sceneIndex).sceneFilePath;
         ISScene scene;
         try {
             scene = serializer.read(ISScene.class,
-                    mPlatform.getConfigFile(configFilePath));
+                    mPlatform.getAssetFile(configFilePath));
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException("Error during retrieval of scene config file " + configFilePath);
