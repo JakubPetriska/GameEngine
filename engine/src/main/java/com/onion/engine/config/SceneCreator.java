@@ -18,15 +18,9 @@ import java.lang.reflect.InvocationTargetException;
 public class SceneCreator {
 
     private Core mCore;
-    private SceneCreatorCallback mSceneCreatorCallback;
 
-    public interface SceneCreatorCallback {
-        public void onNewComponent(Component component);
-    }
-
-    public SceneCreator(Core core, SceneCreatorCallback sceneCreatorCallback) {
+    public SceneCreator(Core core) {
         this.mCore = core;
-        this.mSceneCreatorCallback = sceneCreatorCallback;
     }
 
     public Scene create(ISScene scene) {
@@ -41,10 +35,7 @@ public class SceneCreator {
         GameObject gameObject = new GameObject(mCore, parent);
         convertTransform(initialGameObject.transform, gameObject.transform);
         for (ISComponent component : initialGameObject.components) {
-            Component newComponent = convertComponent(gameObject, component);
-            if(mSceneCreatorCallback != null) {
-                mSceneCreatorCallback.onNewComponent(newComponent);
-            }
+            convertComponent(gameObject, component);
         }
         for (ISGameObject childGameObject : initialGameObject.children) {
             gameObject.children.add(convertGameObject(gameObject, childGameObject));

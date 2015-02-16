@@ -6,12 +6,15 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 import com.onion.android.MeshManager;
-import com.onion.api.Transform;
+import com.onion.api.MeshData;
 import com.onion.api.components.Mesh;
 import com.onion.platform.Renderer;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.FloatBuffer;
 import java.util.List;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -53,14 +56,14 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
     private static final float[] light = new float[]{-0.75f, 1, -0.5f, 0};
     private static final float color[] = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
 
-    private MeshManager mMeshManager;
-
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
     private final float[] mModelMatrix = new float[16];
     private final float[] mTranslationMatrix = new float[16];
     private final float[] mRotationMatrix = new float[16];
     private final float[] mMVPMatrix = new float[16];
+
+    private int mProgram;
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -74,6 +77,19 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         GLES20.glDepthMask(true);
         GLES20.glDepthFunc(GLES20.GL_LEQUAL);
         GLES20.glDepthRangef(0.0f, 1.0f);
+
+        // prepare shaders and OpenGL program
+        int vertexShader = loadShader(
+                GLES20.GL_VERTEX_SHADER,
+                vertexShaderCode);
+        int fragmentShader = loadShader(
+                GLES20.GL_FRAGMENT_SHADER,
+                fragmentShaderCode);
+
+        mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+        GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
+        GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
+        GLES20.glLinkProgram(mProgram);
     }
 
     @Override
@@ -98,24 +114,34 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 0, 0f, 0f, 1.0f, 0f, 1.0f, 0.0f);
     }
 
-    private int mProgram;
 
-    @Override
-    public void init(List<String> meshNames) {
-        mMeshManager = new MeshManager(meshNames);
+    private FloatBuffer getBuffer(MeshData meshData) {
+        vertexCount = verticesOrder.length;
 
-        // prepare shaders and OpenGL program
-        int vertexShader = loadShader(
-                GLES20.GL_VERTEX_SHADER,
-                vertexShaderCode);
-        int fragmentShader = loadShader(
-                GLES20.GL_FRAGMENT_SHADER,
-                fragmentShaderCode);
+        // Create a packed data buffer containing position and normal data dor each vertex
+        float[] vertexData = new float[
+                (verticesOrder.length * RendererImpl.COORDS_PER_VERTEX_POSITION)
+                        + (normalsOrder.length * RendererImpl.COORDS_PER_VERTEX_NORMAL)];
+        for (int i = 0; i < verticesOrder.length; i++) {
+            int vertexDataPositionOffset = i * 6;
+            int vertexDataNormalOffset = vertexDataPositionOffset + RendererImpl.COORDS_PER_VERTEX_POSITION;
+            int sourcePositionOffset = verticesOrder[i] * RendererImpl.COORDS_PER_VERTEX_POSITION;
+            int sourceNormalOffset = normalsOrder[i] * RendererImpl.COORDS_PER_VERTEX_NORMAL;
+            for (int j = 0; j < RendererImpl.COORDS_PER_VERTEX_POSITION; ++j) {
+                vertexData[vertexDataPositionOffset + j] = vertices[sourcePositionOffset + j];
+            }
+            for (int j = 0; j < RendererImpl.COORDS_PER_VERTEX_NORMAL; ++j) {
+                vertexData[vertexDataNormalOffset + j] = normals[sourceNormalOffset + j];
+            }
+        }
 
-        mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-        GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
-        GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
-        GLES20.glLinkProgram(mProgram);
+        ByteBuffer vb = ByteBuffer.allocateDirect(
+                // (# of coordinate values * 4 bytes per float)
+                vertexData.length * 4);
+        vb.order(ByteOrder.nativeOrder());
+        buffer = vb.asFloatBuffer();
+        buffer.put(vertexData);
+        buffer.position(0);
     }
 
     // Used to retrieve object absolute position
@@ -123,8 +149,6 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
 
     @Override
     public void render(Mesh mesh) {
-        MeshManager.MeshData meshData = mMeshManager.getMesh(mesh.getMeshName());
-
         mesh.gameObject.transform.getWorldPosition(mPositionCache);
         // Create the model matrix
         Matrix.setIdentityM(mTranslationMatrix, 0);

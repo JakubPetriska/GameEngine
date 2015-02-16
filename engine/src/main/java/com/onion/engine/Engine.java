@@ -34,7 +34,7 @@ public class Engine {
     private Scene mCurrentScene;
 
     /**
-     *  @param startSceneName Name of the scene that this engine should start at first. If null engine will
+     * @param startSceneName Name of the scene that this engine should start at first. If null engine will
      *                       use the default initial scene.
      * @param platform
      * @param touchInput
@@ -44,6 +44,7 @@ public class Engine {
         this.mPlatform = platform;
         this.mTouchInput = touchInput;
         mCore = new Core(renderer, touchInput);
+        mCore.setMeshManager(new MeshManager(mCore));
     }
 
     // TODO validate all documents
@@ -82,10 +83,7 @@ public class Engine {
             e.printStackTrace();
             throw new IllegalStateException("Error during retrieval of scene config file " + configFilePath);
         }
-        SceneCreatorCallbackImpl callback = new SceneCreatorCallbackImpl();
-        SceneCreator sceneCreator = new SceneCreator(mCore, callback);
-        Scene result = sceneCreator.create(scene);
-        mCore.renderer.init(callback.meshNames);
+        Scene result = new SceneCreator(mCore).create(scene);
         // TODO remove this - in future this will not be possible due to initial state document validation
         if(result == null) {
             throw new IllegalStateException("Scene was not created.");
@@ -131,19 +129,4 @@ public class Engine {
     public void onFinish() {
 
     }
-
-    private static class SceneCreatorCallbackImpl implements SceneCreator.SceneCreatorCallback {
-
-        public final List<String> meshNames = new ArrayList<>();
-
-        @Override
-        public void onNewComponent(Component component) {
-            if(component instanceof Mesh) {
-                Mesh mesh = (Mesh) component;
-                if(!meshNames.contains(mesh.getMeshName())) {
-                    meshNames.add(mesh.getMeshName());
-                }
-            }
-        }
-    };
 }
