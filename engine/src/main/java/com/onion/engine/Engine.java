@@ -49,6 +49,8 @@ public class Engine {
 
     // TODO validate all documents
     public void onStart() {
+        mCore.meshManager.loadMeshes();
+
         Serializer serializer = new Persister();
         try {
             mScenesConfig = serializer.read(SCScenes.class,
@@ -69,12 +71,14 @@ public class Engine {
 	}
 
     private Scene getScene(String sceneName, Serializer serializer) {
+        // Find the scene object in the scenes definition structure
         mDummyScene.name = sceneName;
         int sceneIndex = Collections.binarySearch(mScenesConfig.scenes, mDummyScene);
         if(sceneIndex < 0) {
             throw new IllegalStateException("Scene that was requested could not be found.");
         }
         String configFilePath = mScenesConfig.scenes.get(sceneIndex).sceneFilePath;
+
         ISScene scene;
         try {
             scene = serializer.read(ISScene.class,

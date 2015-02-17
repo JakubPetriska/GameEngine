@@ -19,7 +19,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         super(context);
         mTouchInput = new TouchInputImpl();
 
-        RendererImpl renderer = new MyRendererImpl();
+        RendererImpl renderer = new EngineControllingRendererImpl();
         mEngine = new Engine(null, new AndroidPlatform(getContext()), renderer, mTouchInput);
 
         setEGLContextClientVersion(2);
@@ -30,7 +30,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
         return mEngine;
     }
 
-    private class MyRendererImpl extends RendererImpl {
+    private class EngineControllingRendererImpl extends RendererImpl {
 
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {

@@ -5,7 +5,6 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 
-import com.onion.android.MeshManager;
 import com.onion.api.MeshData;
 import com.onion.api.components.Mesh;
 import com.onion.platform.Renderer;
@@ -15,7 +14,6 @@ import org.lwjgl.util.vector.Vector3f;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.util.List;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -114,24 +112,30 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 0, 0f, 0f, 1.0f, 0f, 1.0f, 0.0f);
     }
 
+    // TODO comment this code
 
-    private FloatBuffer getBuffer(MeshData meshData) {
-        vertexCount = verticesOrder.length;
+    /**
+     * Creates packed buffer for MeshData object.
+     */
+    private static FloatBuffer getBuffer(MeshData meshData) {
+        int vertexCount = meshData.trianglesVertices.length;
 
         // Create a packed data buffer containing position and normal data dor each vertex
         float[] vertexData = new float[
-                (verticesOrder.length * RendererImpl.COORDS_PER_VERTEX_POSITION)
-                        + (normalsOrder.length * RendererImpl.COORDS_PER_VERTEX_NORMAL)];
-        for (int i = 0; i < verticesOrder.length; i++) {
+                (vertexCount * RendererImpl.COORDS_PER_VERTEX_POSITION)
+                        + (vertexCount * RendererImpl.COORDS_PER_VERTEX_NORMAL)];
+        for (int i = 0; i < vertexCount; i++) {
             int vertexDataPositionOffset = i * 6;
             int vertexDataNormalOffset = vertexDataPositionOffset + RendererImpl.COORDS_PER_VERTEX_POSITION;
-            int sourcePositionOffset = verticesOrder[i] * RendererImpl.COORDS_PER_VERTEX_POSITION;
-            int sourceNormalOffset = normalsOrder[i] * RendererImpl.COORDS_PER_VERTEX_NORMAL;
+            int sourcePositionOffset = meshData.trianglesVertices[i] * RendererImpl.COORDS_PER_VERTEX_POSITION;
+            int sourceNormalOffset = meshData.trianglesNormals[i] * RendererImpl.COORDS_PER_VERTEX_NORMAL;
+
             for (int j = 0; j < RendererImpl.COORDS_PER_VERTEX_POSITION; ++j) {
-                vertexData[vertexDataPositionOffset + j] = vertices[sourcePositionOffset + j];
+                vertexData[vertexDataPositionOffset + j] = meshData.vertices[sourcePositionOffset + j];
             }
+
             for (int j = 0; j < RendererImpl.COORDS_PER_VERTEX_NORMAL; ++j) {
-                vertexData[vertexDataNormalOffset + j] = normals[sourceNormalOffset + j];
+                vertexData[vertexDataNormalOffset + j] = meshData.normals[sourceNormalOffset + j];
             }
         }
 
@@ -139,9 +143,36 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
                 // (# of coordinate values * 4 bytes per float)
                 vertexData.length * 4);
         vb.order(ByteOrder.nativeOrder());
-        buffer = vb.asFloatBuffer();
-        buffer.put(vertexData);
-        buffer.position(0);
+        FloatBuffer resultBuffer = vb.asFloatBuffer();
+        resultBuffer.put(vertexData);
+        resultBuffer.position(0);
+        return resultBuffer;
+    }
+
+    private static class AndroidMeshData extends MeshData {
+
+        FloatBuffer dataBuffer;
+
+        /**
+         * Never use this directly. Always let platform specific code create these.
+         *
+         * @param vertices
+         * @param normals
+         * @param trianglesVertices
+         * @param trianglesNormals
+         */
+        public AndroidMeshData(
+                float[] vertices, float[] normals,
+                int[] trianglesVertices, int[] trianglesNormals) {
+            super(vertices, normals, trianglesVertices, trianglesNormals);
+        }
+    }
+
+    @Override
+    public MeshData createMeshData(float[] vertices, float[] normals, int[] trianglesVertices, int[] trianglesNormals) {
+        AndroidMeshData meshData = new AndroidMeshData(vertices, normals, trianglesVertices, trianglesNormals);
+        meshData.dataBuffer = getBuffer(meshData);
+        return meshData;
     }
 
     // Used to retrieve object absolute position
@@ -149,6 +180,8 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
 
     @Override
     public void render(Mesh mesh) {
+        AndroidMeshData meshData = (AndroidMeshData) mesh.meshData;
+
         mesh.gameObject.transform.getWorldPosition(mPositionCache);
         // Create the model matrix
         Matrix.setIdentityM(mTranslationMatrix, 0);
@@ -165,21 +198,21 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
 
         GLES20.glUseProgram(mProgram);
 
-        meshData.buffer.position(0);
+        meshData.dataBuffer.position(0);
         int positionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
         GLES20.glEnableVertexAttribArray(positionHandle);
         GLES20.glVertexAttribPointer(
                 positionHandle, COORDS_PER_VERTEX_POSITION,
                 GLES20.GL_FLOAT, false,
-                VERTEX_STRIDE, meshData.buffer);
+                VERTEX_STRIDE, meshData.dataBuffer);
 
-        meshData.buffer.position(COORDS_PER_VERTEX_POSITION);
+        meshData.dataBuffer.position(COORDS_PER_VERTEX_POSITION);
         int normalHandle = GLES20.glGetAttribLocation(mProgram, "vNormal");
         GLES20.glEnableVertexAttribArray(normalHandle);
         GLES20.glVertexAttribPointer(
                 normalHandle, COORDS_PER_VERTEX_NORMAL,
                 GLES20.GL_FLOAT, false,
-                VERTEX_STRIDE, meshData.buffer);
+                VERTEX_STRIDE, meshData.dataBuffer);
 
 
         // get handle to fragment shader's vColor member
@@ -204,7 +237,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         // Apply the projection and view transformation
         GLES20.glUniformMatrix4fv(rotationMatrixHandle, 1, false, mRotationMatrix, 0);
 
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, meshData.vertexCount);
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, meshData.trianglesVertices.length);
 
         // Disable vertex array
         GLES20.glDisableVertexAttribArray(positionHandle);

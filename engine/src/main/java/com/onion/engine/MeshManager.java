@@ -25,16 +25,17 @@ public class MeshManager {
             throw new IllegalArgumentException("Model path cannot be null");
         } else if(mNameToMeshMap.containsKey(modelPath)) {
             return mNameToMeshMap.get(modelPath);
-        }
-
-        MeshData meshData;
-        if (Primitives.CUBE.equals(modelPath)) {
-            meshData = createCube();
         } else {
-            throw new IllegalStateException("Unknown mesh name.");
+            throw new IllegalStateException("Unavailable mesh requested.");
         }
-        mNameToMeshMap.put(modelPath, meshData);
-        return meshData;
+    }
+
+    /**
+     * Loads all available meshes into memory.
+     */
+    public void loadMeshes() {
+        MeshData cube = createCube();
+        mNameToMeshMap.put(Primitives.CUBE, cube);
     }
 
     private MeshData createCube() {
