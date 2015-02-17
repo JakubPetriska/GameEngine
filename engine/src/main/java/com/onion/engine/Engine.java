@@ -49,8 +49,10 @@ public class Engine {
 
     // TODO validate all documents
     public void onStart() {
-        mCore.meshManager.loadMeshes();
+        mCore.meshManager.loadMeshes(); // Load all meshes into memory
 
+        // Load scenes config file, load definition of scene that will be displayed
+        // and construct this scene's object tree
         Serializer serializer = new Persister();
         try {
             mScenesConfig = serializer.read(SCScenes.class,

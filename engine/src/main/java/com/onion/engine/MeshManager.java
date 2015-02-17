@@ -30,6 +30,7 @@ public class MeshManager {
         }
     }
 
+    // TODO only meshes for current scene should be loaded - improve this in future
     /**
      * Loads all available meshes into memory.
      */
