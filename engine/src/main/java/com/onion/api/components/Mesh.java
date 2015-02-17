@@ -21,11 +21,11 @@ public class Mesh extends Component {
     public Mesh(Core core, GameObject owner, String meshPath) {
         super(core, owner);
         this.meshPath = meshPath;
-        this.meshData = core.meshManager.getMesh(meshPath);
+        this.meshData = core.getMeshManager().getMesh(meshPath);
     }
 
     @Override
     public void postUpdate() {
-        core.renderer.render(this);
+        core.getRenderer().render(this);
     }
 }

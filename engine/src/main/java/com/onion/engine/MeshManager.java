@@ -77,6 +77,6 @@ public class MeshManager {
                 5, 5, 5, 5, 5, 5  // left
         };
 
-        return mCore.renderer.createMeshData(vertices, normals, trianglesVertices, trianglesNormals);
+        return mCore.getRenderer().createMeshData(vertices, normals, trianglesVertices, trianglesNormals);
     }
 }

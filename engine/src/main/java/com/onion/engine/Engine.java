@@ -3,6 +3,7 @@ package com.onion.engine;
 import com.onion.api.Component;
 import com.onion.api.Core;
 import com.onion.api.GameObject;
+import com.onion.api.TouchInput;
 import com.onion.api.components.Mesh;
 import com.onion.engine.config.SceneCreator;
 import com.onion.engine.config.model.initial_scene_state.ISScene;
@@ -22,8 +23,12 @@ import java.util.List;
 public class Engine {
 
     private Platform mPlatform;
-    private TouchInputInternal mTouchInput;
     private Core mCore;
+
+    // Core objects
+    private Renderer mRenderer;
+    private TouchInputInternal mTouchInput;
+    private MeshManager mMeshManager;
 
     private SCScenes mScenesConfig;
 
@@ -42,14 +47,17 @@ public class Engine {
     public Engine(String startSceneName, Platform platform, Renderer renderer, TouchInputInternal touchInput) {
         mCurrentSceneName = startSceneName;
         this.mPlatform = platform;
+        this.mRenderer = renderer;
         this.mTouchInput = touchInput;
-        mCore = new Core(renderer, touchInput);
-        mCore.setMeshManager(new MeshManager(mCore));
+
+        mCore = new CoreImpl();
+
+        mMeshManager = new MeshManager(mCore);
     }
 
     // TODO validate all documents
     public void onStart() {
-        mCore.meshManager.loadMeshes(); // Load all meshes into memory
+        mMeshManager.loadMeshes(); // Load all meshes into memory
 
         // Load scenes config file, load definition of scene that will be displayed
         // and construct this scene's object tree
@@ -134,5 +142,23 @@ public class Engine {
 
     public void onFinish() {
 
+    }
+
+    private class CoreImpl implements Core {
+
+        @Override
+        public Renderer getRenderer() {
+            return mRenderer;
+        }
+
+        @Override
+        public TouchInput getTouchInput() {
+            return mTouchInput;
+        }
+
+        @Override
+        public MeshManager getMeshManager() {
+            return mMeshManager;
+        }
     }
 }

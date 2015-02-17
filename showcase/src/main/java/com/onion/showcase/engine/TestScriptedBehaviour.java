@@ -20,7 +20,7 @@ public class TestScriptedBehaviour extends Component {
 
     @Override
     public void update() {
-        List<Touch> touches = core.touchInput.getTouches();
+        List<Touch> touches = core.getTouchInput().getTouches();
         if(touches.size() > 0) {
             Touch touch = touches.get(0);
             float currentTouchX = touch.getX();
