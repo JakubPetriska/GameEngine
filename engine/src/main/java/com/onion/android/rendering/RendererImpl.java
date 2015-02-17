@@ -113,14 +113,13 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
     }
 
     // TODO comment this code
-
     /**
      * Creates packed buffer for MeshData object.
      */
     private static FloatBuffer getBuffer(MeshData meshData) {
         int vertexCount = meshData.trianglesVertices.length;
 
-        // Create a packed data buffer containing position and normal data dor each vertex
+        // Create a packed data buffer containing position and normal data for each vertex
         float[] vertexData = new float[
                 (vertexCount * RendererImpl.COORDS_PER_VERTEX_POSITION)
                         + (vertexCount * RendererImpl.COORDS_PER_VERTEX_NORMAL)];
