@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="toolbar" type="id"/>
+    <item name="first_engine_fragment" type="id"/>
+    <item name="second_engine_fragment" type="id"/>
 </resources>

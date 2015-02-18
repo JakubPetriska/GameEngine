@@ -10,4 +10,6 @@ public class Constants {
      * game art assets.
      */
     public static final String ENGINE_ASSETS_ROOT_PATH = "onion/";
+
+    public static final String KEY_ENGINE_OBJECT_STORE_KEY = "ENGINE_OBJECT_STORE_KEY";
 }

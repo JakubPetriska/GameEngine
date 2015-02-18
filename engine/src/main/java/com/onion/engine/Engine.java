@@ -55,8 +55,25 @@ public class Engine {
         mMeshManager = new MeshManager(mCore);
     }
 
+    /**
+     * Swaps objects that are provided to Engine during it's creation.
+     * These are platform specific objects created by platform specific code.
+     */
+    public void swapProvidedObjects(Platform platform, Renderer renderer, TouchInputInternal touchInput) {
+        this.mPlatform = platform;
+        this.mRenderer = renderer;
+        this.mTouchInput = touchInput;
+    }
+
+    // This flag ensures that engine is initialized only once (onStart method)
+    private boolean mInitialized = false;
+
     // TODO validate all documents
     public void onStart() {
+        if(mInitialized) {
+            return;
+        }
+
         mMeshManager.loadMeshes(); // Load all meshes into memory
 
         // Load scenes config file, load definition of scene that will be displayed
@@ -78,6 +95,8 @@ public class Engine {
             mCurrentSceneName = mScenesConfig.defaultSceneName;
         }
         mCurrentScene = getScene(mCurrentSceneName, serializer);
+
+        mInitialized = true;
 	}
 
     private Scene getScene(String sceneName, Serializer serializer) {

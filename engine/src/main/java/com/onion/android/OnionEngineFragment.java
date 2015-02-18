@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.onion.engine.Engine;
+
 /**
  * Created by Jakub Petriska on 14. 2. 2015.
  */
@@ -15,15 +17,22 @@ public class OnionEngineFragment extends Fragment {
     private MyGLSurfaceView mGlSurfaceView;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        if (savedInstanceState != null
+                && savedInstanceState.containsKey(Constants.KEY_ENGINE_OBJECT_STORE_KEY)) {
+            Engine engine = EngineObjectStore.retrieve(savedInstanceState.getString(Constants.KEY_ENGINE_OBJECT_STORE_KEY));
+            mGlSurfaceView = new MyGLSurfaceView(getActivity(), engine);
+        } else {
+            mGlSurfaceView = new MyGLSurfaceView(getActivity());
+        }
+        return mGlSurfaceView;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mGlSurfaceView = new MyGLSurfaceView(getActivity());
-        return mGlSurfaceView;
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        String engineObjectKey = EngineObjectStore.store(mGlSurfaceView.getEngine());
+        outState.putString(Constants.KEY_ENGINE_OBJECT_STORE_KEY, engineObjectKey);
     }
 
     @Override

@@ -4,11 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Window;
 
-import com.onion.android.rendering.RendererImpl;
 import com.onion.engine.Engine;
-
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
 
 /**
  * Created by Jakub Petriska on 29. 12. 2014.
@@ -21,8 +17,21 @@ public class OnionEngineActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        mGlSurfaceView = new MyGLSurfaceView(this);
+        if (savedInstanceState != null
+                && savedInstanceState.containsKey(Constants.KEY_ENGINE_OBJECT_STORE_KEY)) {
+            Engine engine = EngineObjectStore.retrieve(savedInstanceState.getString(Constants.KEY_ENGINE_OBJECT_STORE_KEY));
+            mGlSurfaceView = new MyGLSurfaceView(this, engine);
+        } else {
+            mGlSurfaceView = new MyGLSurfaceView(this);
+        }
         setContentView(mGlSurfaceView);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        String engineObjectKey = EngineObjectStore.store(mGlSurfaceView.getEngine());
+        outState.putString(Constants.KEY_ENGINE_OBJECT_STORE_KEY, engineObjectKey);
     }
 
     @Override
