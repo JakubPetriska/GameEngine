@@ -23,7 +23,7 @@ public class AndroidPlatform implements Platform {
         try {
             return mContext.getAssets().open(Constants.ENGINE_ASSETS_ROOT_PATH + path);
         } catch (IOException e) {
-            throw new IllegalStateException("Error opening asset file " + path + ".", e);
+            return null;
         }
     }
 }
