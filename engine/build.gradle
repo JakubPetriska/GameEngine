@@ -16,6 +16,15 @@ jar {
     exclude 'META-INF/*.RSA', 'META-INF/*.SF','META-INF/*.DSA'
 }
 
+test {
+    testLogging {
+        showStandardStreams = true
+        showStackTraces = true
+        exceptionFormat = "full"
+    }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
 }

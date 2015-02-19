@@ -1,6 +1,7 @@
 package com.onion.android;
 
 import com.onion.engine.Engine;
+import com.onion.utilities.TimeBasedUniqueKeyGenerator;
 
 import java.util.HashMap;
 
@@ -9,32 +10,12 @@ import java.util.HashMap;
  */
 public class EngineObjectStore {
 
-    private static long sLastNanoTime = -1;
-    private static String sLastKey;
+
     private static HashMap<String, Engine> sEnginesMap = new HashMap<>();
 
     public static String store(Engine engine) {
-        String key = generateKey();
+        String key = TimeBasedUniqueKeyGenerator.generateKey();
         sEnginesMap.put(key, engine);
-        return key;
-    }
-
-    /**
-     * Generates key from current time in nanoseconds.
-     * In case of conflict with the previous key method appends letters
-     * to the end of the key.
-     * @return Unique key
-     */
-    private static String generateKey() {
-        long nanoTime = System.nanoTime();
-        String key = Long.toString(nanoTime);
-        if(nanoTime == sLastNanoTime) {
-            do {
-                key += "A";
-            } while(key.length() <= sLastKey.length());
-        }
-        sLastNanoTime = nanoTime;
-        sLastKey = key;
         return key;
     }
 
