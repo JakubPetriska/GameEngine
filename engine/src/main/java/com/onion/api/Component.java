@@ -27,11 +27,11 @@ public abstract class Component {
         this.mGameObject = gameObject;
     }
 
-    protected Core getCore() {
+    protected final Core getCore() {
         return mCore;
     }
 
-    public GameObject getGameObject() {
+    public final GameObject getGameObject() {
         return mGameObject;
     }
 
