@@ -10,7 +10,6 @@ import java.util.HashMap;
  */
 public class EngineObjectStore {
 
-
     private static HashMap<String, Engine> sEnginesMap = new HashMap<>();
 
     public static String store(Engine engine) {
