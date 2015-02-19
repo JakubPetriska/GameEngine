@@ -10,12 +10,14 @@ import org.junit.Before;
  */
 public class GameObjectComponentLifecycleTest {
 
+    private static final String FILES_FOLDER = "";
+
     private Engine mEngine;
 
     @Before
     public void prepareEngine() {
         mEngine = new Engine(null,
-                new MockEnginePlatformObjects.MockPlatform(""),
+                new MockEnginePlatformObjects.MockPlatform(FILES_FOLDER),
                 new MockEnginePlatformObjects.MockRenderer(),
                 new MockEnginePlatformObjects.MockTouchInput());
     }
