@@ -10,22 +10,16 @@ import com.onion.api.MeshData;
  */
 public class Mesh extends Component {
 
-    public final String meshPath;
-    public final MeshData meshData;
+    public String meshPath;
+    public MeshData meshData;
 
-    /**
-     * Creates new component and adds it to it's owner.
-     *
-     * @param owner
-     */
-    public Mesh(Core core, GameObject owner, String meshPath) {
-        super(core, owner);
-        this.meshPath = meshPath;
-        this.meshData = core.getMeshManager().getMesh(meshPath);
+    @Override
+    public void start() {
+        this.meshData = getCore().getMeshManager().getMesh(meshPath);
     }
 
     @Override
     public void postUpdate() {
-        core.getRenderer().render(this);
+        getCore().getRenderer().render(this);
     }
 }

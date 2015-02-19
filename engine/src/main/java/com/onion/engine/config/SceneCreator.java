@@ -13,6 +13,7 @@ import com.onion.engine.config.model.initial_scene_state.ISScene;
 
 import org.lwjgl.util.vector.Vector3f;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
 public class SceneCreator {
@@ -38,7 +39,7 @@ public class SceneCreator {
             convertComponent(gameObject, component);
         }
         for (ISGameObject childGameObject : initialGameObject.children) {
-            gameObject.children.add(convertGameObject(gameObject, childGameObject));
+            convertGameObject(gameObject, childGameObject);
         }
         return gameObject;
     }
@@ -48,18 +49,17 @@ public class SceneCreator {
     }
 
     private Component convertComponent(GameObject owner, ISComponent initialComponent) {
+        Component component;
         if (ComponentsConstants.COMPONENT_TYPE_MESH.equals(initialComponent.type)) {
-            String meshName = initialComponent.getParamValue(ComponentsConstants.MESH_PARAM_MESH_NAME);
-            return new Mesh(mCore, owner, meshName);
-        } if(ComponentsConstants.COMPONENT_TYPE_SCRIPT.equals(initialComponent.type)) {
-            Component script;
+            component = new Mesh();
+        } else {
 			try {
-				Class<Component> scriptClass = (Class<Component>) Class.forName(initialComponent.getParamValue(ComponentsConstants.SCRIPT_PARAM_SCRIPT_NAME));
-				script = scriptClass.getConstructor(Core.class, GameObject.class).newInstance(mCore, owner);
+				Class<Component> scriptClass = (Class<Component>) Class.forName(initialComponent.type);
+				component = scriptClass.getConstructor().newInstance();
 			} catch (ClassCastException e) {
 				throw new IllegalStateException("Script must inherit from Component class.");
 			} catch (ClassNotFoundException e) {
-				throw new IllegalStateException("Script class could not be found.");
+				throw new IllegalStateException("Unknown component type.");
 			} catch (NoSuchMethodException e) {
 				throw new IllegalStateException("Script must have constructor with two parameters (Core, GameObject) and it must be public.");
 			} catch (IllegalAccessException e) {
@@ -69,9 +69,25 @@ public class SceneCreator {
 			} catch (InvocationTargetException e) {
 				throw new IllegalStateException("Unknown error during script retrieval.");
 			}
-			return script;
-		} else {
-            throw new IllegalStateException("Unknown component type.");
+		}
+        Class componentClass = component.getClass();
+        // Set all parameters on new component
+        // TODO this thing currently supports only strings - add other types
+        for(String paramName : initialComponent.params.keySet()) {
+            Field field;
+            try {
+                field = componentClass.getField(paramName);
+            } catch (NoSuchFieldException e) {
+                throw new IllegalStateException("Unknown component parameter.");
+            }
+            try {
+                field.set(component, initialComponent.params.get(paramName));
+            } catch (IllegalAccessException e) {
+                throw new IllegalStateException("Parameter " + paramName + " is not visible.");
+            }
         }
+
+        owner.addComponent(component);
+        return component;
     }
 }

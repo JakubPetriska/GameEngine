@@ -118,6 +118,7 @@ public class Engine {
         }
         Scene result = new SceneCreator(mCore).create(scene);
         // TODO remove this - in future this will not be possible due to initial state document validation
+        // TODO this actually doesn't make sense, result can never be null
         if(result == null) {
             throw new IllegalStateException("Scene was not created.");
         }
@@ -127,33 +128,25 @@ public class Engine {
     public void onUpdate() {
         mTouchInput.update();
 
-        preUpdate(mCurrentScene.gameObjects);
         update(mCurrentScene.gameObjects);
         postUpdate(mCurrentScene.gameObjects);
     }
 
-    private void preUpdate(List<GameObject> gameObjects) {
-        for(GameObject gameObject : gameObjects) {
-            for(Component component : gameObject.components) {
-                component.preUpdate();
-            }
-            preUpdate(gameObject.children);
-        }
-    }
-
     private void update(List<GameObject> gameObjects) {
-        for(GameObject gameObject : gameObjects) {
-            for(Component component : gameObject.components) {
-                component.update();
+        for(int i = 0; i < gameObjects.size(); ++i) {
+            GameObject gameObject = gameObjects.get(i);
+            for(int j = 0; j < gameObject.components.size(); ++j) {
+                gameObject.components.get(j).update();
             }
             update(gameObject.children);
         }
     }
 
     private void postUpdate(List<GameObject> gameObjects) {
-        for(GameObject gameObject : gameObjects) {
-            for(Component component : gameObject.components) {
-                component.postUpdate();
+        for(int i = 0; i < gameObjects.size(); ++i) {
+            GameObject gameObject = gameObjects.get(i);
+            for(int j = 0; j < gameObject.components.size(); ++j) {
+                gameObject.components.get(j).postUpdate();
             }
             postUpdate(gameObject.children);
         }

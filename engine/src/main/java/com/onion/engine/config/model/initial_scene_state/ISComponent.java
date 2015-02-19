@@ -14,8 +14,4 @@ public class ISComponent {
 	
 	@ElementMap(entry="param", key="name", attribute=true)
 	public Map<String, String> params;
-	
-	public String getParamValue(String name) {
-		return params.get(name);
-	}
 }

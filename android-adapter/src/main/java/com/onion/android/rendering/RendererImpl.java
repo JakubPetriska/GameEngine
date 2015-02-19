@@ -181,7 +181,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
     public void render(Mesh mesh) {
         AndroidMeshData meshData = (AndroidMeshData) mesh.meshData;
 
-        mesh.gameObject.transform.getWorldPosition(mPositionCache);
+        mesh.getGameObject().transform.getWorldPosition(mPositionCache);
         // Create the model matrix
         Matrix.setIdentityM(mTranslationMatrix, 0);
         Matrix.translateM(mTranslationMatrix, 0,

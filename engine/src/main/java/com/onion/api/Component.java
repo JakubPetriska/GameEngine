@@ -5,38 +5,40 @@ package com.onion.api;
  */
 public abstract class Component {
 
-    protected final Core core;
-    public final GameObject gameObject;
+    private Core mCore;
+    private GameObject mGameObject;
+
+    protected Component() {
+    }
 
     /**
-     * Creates new component and assigns it to it's owner.
-     *
-     * This constructor must always be present in every user created subclass. If overridden
-     * super constructor must always be called.
-     * @param gameObject
+     * Sets up this component. Can be called only once.
+     * @param gameObject GameObject to which this component will be assigned.
      */
-    protected Component(Core core, GameObject gameObject) {
-        this.core = core;
+    void setup(Core core, GameObject gameObject) {
+        if(mCore != null || mGameObject != null) {
+            throw new IllegalStateException("Component can be setup only once");
+        }
+
+        this.mCore = core;
         if(gameObject == null) {
             throw new IllegalStateException("Component's owner cannot be null.");
         }
-        this.gameObject = gameObject;
-        gameObject.components.add(this);
+        this.mGameObject = gameObject;
+    }
 
-        init();
+    protected Core getCore() {
+        return mCore;
+    }
+
+    public GameObject getGameObject() {
+        return mGameObject;
     }
 
     /**
      * Used to setup the component.
      */
-    public void init() {
-
-    }
-
-    /**
-     * Used to perform operations before state update.
-     */
-    public void preUpdate() {
+    public void start() {
 
     }
 
@@ -57,9 +59,8 @@ public abstract class Component {
     /**
      * Used for cleanup.
      */
-    // so far not implemented
-//    public void finish() {
-//
-//    }
+    public void finish() {
+
+    }
 
 }

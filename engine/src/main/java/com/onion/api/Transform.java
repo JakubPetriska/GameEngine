@@ -14,10 +14,6 @@ public class Transform extends Component {
 
     private final Vector3f mCachedParentPosition = new Vector3f();
 
-    protected Transform(Core core, GameObject gameObject) {
-        super(core, gameObject);
-    }
-
     public void moveBy(float x, float y, float z) {
         position.x += x;
         position.y += y;
@@ -29,8 +25,8 @@ public class Transform extends Component {
      * @param output Vector3f in which result will be stored.
      */
     public void getWorldPosition(Vector3f output) {
-        if(gameObject.parent != null) {
-            gameObject.parent.transform.getWorldPosition(mCachedParentPosition);
+        if(getGameObject().getParent() != null) {
+            getGameObject().getParent().transform.getWorldPosition(mCachedParentPosition);
         } else {
             mCachedParentPosition.set(0, 0, 0);
         }
