@@ -43,7 +43,5 @@ public class TestScriptedBehaviour extends Component {
                 mLastTouchY = currentTouchY;
             }
         }
-
-        Vector3f position = gameObject.transform.position;
     }
 }
