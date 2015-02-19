@@ -153,7 +153,17 @@ public class Engine {
     }
 
     public void onFinish() {
+        finish(mCurrentScene.gameObjects);
+    }
 
+    private void finish(List<GameObject> gameObjects) {
+        for(int i = 0; i < gameObjects.size(); ++i) {
+            GameObject gameObject = gameObjects.get(i);
+            for(int j = 0; j < gameObject.components.size(); ++j) {
+                gameObject.components.get(j).finish();
+            }
+            finish(gameObject.children);
+        }
     }
 
     private class CoreImpl implements Core {
