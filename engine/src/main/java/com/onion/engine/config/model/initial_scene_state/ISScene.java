@@ -8,6 +8,6 @@ import org.simpleframework.xml.Root;
 @Root
 public class ISScene {
 	
-	@ElementList
+	@ElementList(required=false)
 	public List<ISGameObject> gameObjects;
 }

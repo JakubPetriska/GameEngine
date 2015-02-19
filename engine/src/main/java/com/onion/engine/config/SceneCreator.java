@@ -35,11 +35,15 @@ public class SceneCreator {
     private GameObject convertGameObject(GameObject parent, ISGameObject initialGameObject) {
         GameObject gameObject = new GameObject(mCore, parent);
         convertTransform(initialGameObject.transform, gameObject.transform);
-        for (ISComponent component : initialGameObject.components) {
-            convertComponent(gameObject, component);
+        if(initialGameObject.components != null) {
+            for (ISComponent component : initialGameObject.components) {
+                convertComponent(gameObject, component);
+            }
         }
-        for (ISGameObject childGameObject : initialGameObject.children) {
-            convertGameObject(gameObject, childGameObject);
+        if(initialGameObject.children != null) {
+            for (ISGameObject childGameObject : initialGameObject.children) {
+                convertGameObject(gameObject, childGameObject);
+            }
         }
         return gameObject;
     }
@@ -73,17 +77,19 @@ public class SceneCreator {
         Class componentClass = component.getClass();
         // Set all parameters on new component
         // TODO this thing currently supports only strings - add other types
-        for(String paramName : initialComponent.params.keySet()) {
-            Field field;
-            try {
-                field = componentClass.getField(paramName);
-            } catch (NoSuchFieldException e) {
-                throw new IllegalStateException("Unknown component parameter.");
-            }
-            try {
-                field.set(component, initialComponent.params.get(paramName));
-            } catch (IllegalAccessException e) {
-                throw new IllegalStateException("Parameter " + paramName + " is not visible.");
+        if(initialComponent.params != null) {
+            for(String paramName : initialComponent.params.keySet()) {
+                Field field;
+                try {
+                    field = componentClass.getField(paramName);
+                } catch (NoSuchFieldException e) {
+                    throw new IllegalStateException("Unknown component parameter.");
+                }
+                try {
+                    field.set(component, initialComponent.params.get(paramName));
+                } catch (IllegalAccessException e) {
+                    throw new IllegalStateException("Parameter " + paramName + " is not visible.");
+                }
             }
         }
 

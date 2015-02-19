@@ -13,10 +13,10 @@ public class ISGameObject {
 	@Element
 	public Transform transform;
 	
-	@ElementList
+	@ElementList(required=false)
 	public List<ISGameObject> children;
 	
-	@ElementList
+	@ElementList(required=false)
 	public List<ISComponent> components;
 	
 	public static class Transform {

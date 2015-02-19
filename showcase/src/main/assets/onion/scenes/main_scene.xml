@@ -11,16 +11,13 @@
                         <param name="meshPath">cube</param>
                     </params>
                 </component>
-                <component type="com.onion.showcase.engine.TestScriptedBehaviour">
-                    <params></params>
-                </component>
+                <component type="com.onion.showcase.engine.TestScriptedBehaviour"/>
             </components>
             <children>
                 <gameObject>
                     <transform>
                         <position x="1" y="1" z="1" />
                     </transform>
-                    <children></children>
                     <components>
                         <component type="mesh">
                             <params>

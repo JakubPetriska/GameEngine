@@ -12,6 +12,6 @@ public class ISComponent {
 	@Attribute
 	public String type;
 	
-	@ElementMap(entry="param", key="name", attribute=true)
+	@ElementMap(required=false, entry="param", key="name", attribute=true)
 	public Map<String, String> params;
 }
