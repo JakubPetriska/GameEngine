@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 
-import com.onion.R;
+import com.onion.showcase.R;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;

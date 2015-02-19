@@ -5,6 +5,8 @@ import com.onion.api.Core;
 import com.onion.api.GameObject;
 import com.onion.api.Touch;
 
+import org.lwjgl.util.vector.Vector3f;
+
 import java.util.List;
 
 public class TestScriptedBehaviour extends Component {
@@ -41,5 +43,7 @@ public class TestScriptedBehaviour extends Component {
                 mLastTouchY = currentTouchY;
             }
         }
+
+        Vector3f position = gameObject.transform.position;
     }
 }

@@ -1,6 +1,6 @@
 package com.onion.showcase.android.examples;
 
-import com.onion.R;
+import com.onion.showcase.R;
 import com.onion.showcase.android.BaseActionBarActivity;
 
 /**

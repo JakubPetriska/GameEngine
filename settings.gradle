@@ -1,1 +1,1 @@
-include ':showcase', ':engine'
+include ':showcase', ':engine', ':android-adapter'
