@@ -18,7 +18,7 @@ public class LifecycleAssertingComponent extends Component {
     private boolean mUpdateCalled = false;
     private boolean mFinishCalled = false;
 
-    protected LifecycleAssertingComponent() {
+    public LifecycleAssertingComponent() {
         super();
         sObjectCache.add(this);
     }

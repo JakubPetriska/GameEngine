@@ -8,7 +8,7 @@ public abstract class Component {
     private Core mCore;
     private GameObject mGameObject;
 
-    protected Component() {
+    public Component() {
     }
 
     /**

@@ -65,7 +65,7 @@ public class SceneCreator {
 			} catch (ClassNotFoundException e) {
 				throw new IllegalStateException("Unknown component type.");
 			} catch (NoSuchMethodException e) {
-				throw new IllegalStateException("Script must have constructor with two parameters (Core, GameObject) and it must be public.");
+				throw new IllegalStateException("Script must have constructor with no parameters and it must be public.");
 			} catch (IllegalAccessException e) {
 				throw new IllegalStateException("Script's constructor must be public.");
 			} catch (InstantiationException e) {
