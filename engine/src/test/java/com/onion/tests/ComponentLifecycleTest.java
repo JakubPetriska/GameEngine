@@ -17,6 +17,13 @@ public class ComponentLifecycleTest extends BaseEngineTest {
         return FILES_FOLDER;
     }
 
+    /**
+     * Basic test of component lifecycle.
+     *
+     * Uses LifecycleAssertingComponent in the scene with 3 objects.
+     * The two objects are children of the first object. All objects only
+     * have a single component a LifecycleAssertingComponent component.
+     */
     @Test
     public void basicComponentLifecycleTest() {
         getEngine().onStart();
