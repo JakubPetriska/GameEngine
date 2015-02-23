@@ -2,8 +2,6 @@ package com.onion.tests.support;
 
 import com.onion.engine.Engine;
 
-import org.junit.Before;
-
 /**
  * Created by Jakub Petriska on 20. 2. 2015.
  */
@@ -11,17 +9,18 @@ public abstract class BaseEngineTest {
 
     private Engine mEngine;
 
-    @Before
-    public void prepareEngine() {
-        mEngine = new Engine(null,
-                new MockEnginePlatformObjects.MockPlatform(getFilesFolder()),
+    protected void setupEngine(String filesFolder) {
+        setupEngine(null, filesFolder);
+    }
+
+    protected void setupEngine(String initialSceneName, String filesFolder) {
+        mEngine = new Engine(initialSceneName,
+                new MockEnginePlatformObjects.MockPlatform(filesFolder),
                 new MockEnginePlatformObjects.MockRenderer(),
                 new MockEnginePlatformObjects.MockTouchInput());
     }
 
-    protected abstract String getFilesFolder();
-
-    public Engine getEngine() {
+    protected Engine getEngine() {
         return mEngine;
     }
 }

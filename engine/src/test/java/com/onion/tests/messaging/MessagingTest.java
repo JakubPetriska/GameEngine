@@ -3,6 +3,7 @@ package com.onion.tests.messaging;
 import com.onion.engine.messaging.InputMessenger;
 import com.onion.tests.support.BaseEngineTest;
 
+import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -13,9 +14,9 @@ public class MessagingTest extends BaseEngineTest implements InputMessenger.Mess
 
     private static final String FILES_FOLDER = "messaging_test";
 
-    @Override
-    protected String getFilesFolder() {
-        return FILES_FOLDER;
+    @Before
+    public void prepareEngine() {
+        setupEngine(FILES_FOLDER);
     }
 
     public static class InputMessage {

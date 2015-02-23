@@ -3,6 +3,7 @@ package com.onion.tests.component_lifecycle;
 import com.onion.tests.support.BaseEngineTest;
 
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 /**
@@ -12,9 +13,9 @@ public class ComponentLifecycleTest extends BaseEngineTest {
 
     private static final String FILES_FOLDER = "component_lifecycle_test";
 
-    @Override
-    protected String getFilesFolder() {
-        return FILES_FOLDER;
+    @Before
+    public void prepareEngine() {
+        setupEngine(FILES_FOLDER);
     }
 
     /**
