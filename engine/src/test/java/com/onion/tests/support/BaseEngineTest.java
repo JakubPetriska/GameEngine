@@ -2,7 +2,6 @@ package com.onion.tests.support;
 
 import com.onion.engine.Engine;
 
-import org.junit.After;
 import org.junit.Before;
 
 /**
@@ -18,11 +17,6 @@ public abstract class BaseEngineTest {
                 new MockEnginePlatformObjects.MockPlatform(getFilesFolder()),
                 new MockEnginePlatformObjects.MockRenderer(),
                 new MockEnginePlatformObjects.MockTouchInput());
-    }
-
-    @After
-    public void testCleanup() {
-        LifecycleAssertingComponent.clearObjectCache();
     }
 
     protected abstract String getFilesFolder();

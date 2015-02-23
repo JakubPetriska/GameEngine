@@ -1,8 +1,8 @@
-package com.onion.tests;
+package com.onion.tests.component_lifecycle;
 
 import com.onion.tests.support.BaseEngineTest;
-import com.onion.tests.support.LifecycleAssertingComponent;
 
+import org.junit.After;
 import org.junit.Test;
 
 /**
@@ -35,4 +35,8 @@ public class ComponentLifecycleTest extends BaseEngineTest {
         LifecycleAssertingComponent.checkObjectsInCacheAreOk();
     }
 
+    @After
+    public void testCleanup() {
+        LifecycleAssertingComponent.clearObjectCache();
+    }
 }

@@ -1,6 +1,7 @@
 package com.onion.api;
 
 import com.onion.engine.MeshManager;
+import com.onion.engine.messaging.Messenger;
 import com.onion.platform.Renderer;
 
 /**
@@ -10,4 +11,5 @@ public interface Core {
     public Renderer getRenderer();
     public TouchInput getTouchInput();
     public MeshManager getMeshManager();
+    public Messenger getMessenger();
 }

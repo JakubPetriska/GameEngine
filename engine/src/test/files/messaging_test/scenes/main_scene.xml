@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+    <gameObjects>
+        <gameObject>
+            <transform>
+                <position x="0" y="0" z="0" />
+            </transform>
+            <components>
+                <component type="com.onion.tests.messaging.MessageAnsweringComponent"/>
+            </components>
+        </gameObject>
+    </gameObjects>
+</scene>

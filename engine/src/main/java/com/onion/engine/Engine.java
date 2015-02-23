@@ -1,14 +1,15 @@
 package com.onion.engine;
 
-import com.onion.api.Component;
 import com.onion.api.Core;
 import com.onion.api.GameObject;
 import com.onion.api.TouchInput;
-import com.onion.api.components.Mesh;
 import com.onion.engine.config.SceneCreator;
 import com.onion.engine.config.model.initial_scene_state.ISScene;
 import com.onion.engine.config.model.scenes_config.SCScene;
 import com.onion.engine.config.model.scenes_config.SCScenes;
+import com.onion.engine.messaging.InputMessenger;
+import com.onion.engine.messaging.InputMessengerInternal;
+import com.onion.engine.messaging.Messenger;
 import com.onion.platform.Platform;
 import com.onion.platform.Renderer;
 import com.onion.platform.TouchInputInternal;
@@ -16,7 +17,6 @@ import com.onion.platform.TouchInputInternal;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,10 +25,13 @@ public class Engine {
     private Platform mPlatform;
     private Core mCore;
 
+    private InputMessengerInternal mInputMessengerInternal;
+
     // Core objects
     private Renderer mRenderer;
     private TouchInputInternal mTouchInput;
     private MeshManager mMeshManager;
+    private Messenger mMessenger;
 
     private SCScenes mScenesConfig;
 
@@ -50,6 +53,9 @@ public class Engine {
         this.mRenderer = renderer;
         this.mTouchInput = touchInput;
 
+        mInputMessengerInternal = new InputMessengerInternal();
+        mMessenger = new Messenger(mInputMessengerInternal);
+
         mCore = new CoreImpl();
 
         mMeshManager = new MeshManager(mCore);
@@ -70,7 +76,7 @@ public class Engine {
 
     // TODO validate all documents
     public void onStart() {
-        if(mInitialized) {
+        if (mInitialized) {
             return;
         }
 
@@ -84,26 +90,26 @@ public class Engine {
                     mPlatform.getAssetFile(Config.SCENES_FILE));
             // Sort scenes for quicker lookup of scenes during scene loading
             Collections.sort(mScenesConfig.scenes);
-            if(mScenesConfig == null) {
+            if (mScenesConfig == null) {
                 throw new IllegalStateException("Error during retrieval of scenes config file.");
             }
         } catch (Exception e) {
             throw new IllegalStateException("Error during retrieval of scenes config file.", e);
         }
 
-        if(mCurrentSceneName == null) {
+        if (mCurrentSceneName == null) {
             mCurrentSceneName = mScenesConfig.defaultSceneName;
         }
         mCurrentScene = getScene(mCurrentSceneName, serializer);
 
         mInitialized = true;
-	}
+    }
 
     private Scene getScene(String sceneName, Serializer serializer) {
         // Find the scene object in the scenes definition structure
         mDummyScene.name = sceneName;
         int sceneIndex = Collections.binarySearch(mScenesConfig.scenes, mDummyScene);
-        if(sceneIndex < 0) {
+        if (sceneIndex < 0) {
             throw new IllegalStateException("Scene that was requested could not be found.");
         }
         String configFilePath = mScenesConfig.scenes.get(sceneIndex).sceneFilePath;
@@ -119,13 +125,15 @@ public class Engine {
         Scene result = new SceneCreator(mCore).create(scene);
         // TODO remove this - in future this will not be possible due to initial state document validation
         // TODO this actually doesn't make sense, result can never be null
-        if(result == null) {
+        if (result == null) {
             throw new IllegalStateException("Scene was not created.");
         }
         return result;
     }
 
     public void onUpdate() {
+        // TODO create something like System? Common API for these two.
+        mMessenger.update();
         mTouchInput.update();
 
         update(mCurrentScene.gameObjects);
@@ -133,9 +141,9 @@ public class Engine {
     }
 
     private void update(List<GameObject> gameObjects) {
-        for(int i = 0; i < gameObjects.size(); ++i) {
+        for (int i = 0; i < gameObjects.size(); ++i) {
             GameObject gameObject = gameObjects.get(i);
-            for(int j = 0; j < gameObject.components.size(); ++j) {
+            for (int j = 0; j < gameObject.components.size(); ++j) {
                 gameObject.components.get(j).update();
             }
             update(gameObject.children);
@@ -143,9 +151,9 @@ public class Engine {
     }
 
     private void postUpdate(List<GameObject> gameObjects) {
-        for(int i = 0; i < gameObjects.size(); ++i) {
+        for (int i = 0; i < gameObjects.size(); ++i) {
             GameObject gameObject = gameObjects.get(i);
-            for(int j = 0; j < gameObject.components.size(); ++j) {
+            for (int j = 0; j < gameObject.components.size(); ++j) {
                 gameObject.components.get(j).postUpdate();
             }
             postUpdate(gameObject.children);
@@ -157,13 +165,17 @@ public class Engine {
     }
 
     private void finish(List<GameObject> gameObjects) {
-        for(int i = 0; i < gameObjects.size(); ++i) {
+        for (int i = 0; i < gameObjects.size(); ++i) {
             GameObject gameObject = gameObjects.get(i);
-            for(int j = 0; j < gameObject.components.size(); ++j) {
+            for (int j = 0; j < gameObject.components.size(); ++j) {
                 gameObject.components.get(j).finish();
             }
             finish(gameObject.children);
         }
+    }
+
+    public InputMessenger getInputMessenger() {
+        return mInputMessengerInternal.getInputMessenger();
     }
 
     private class CoreImpl implements Core {
@@ -181,6 +193,11 @@ public class Engine {
         @Override
         public MeshManager getMeshManager() {
             return mMeshManager;
+        }
+
+        @Override
+        public Messenger getMessenger() {
+            return mMessenger;
         }
     }
 }

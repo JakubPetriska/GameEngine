@@ -1,4 +1,4 @@
-package com.onion.tests.support;
+package com.onion.tests.component_lifecycle;
 
 import com.onion.api.Component;
 

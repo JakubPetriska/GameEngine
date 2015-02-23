@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scenes
+    defaultSceneName="main_scene">
+    <scene
+        name="main_scene"
+        sceneFilePath="scenes/main_scene.xml"/>
+</scenes>
