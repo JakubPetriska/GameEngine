@@ -14,6 +14,7 @@ public class MeshManager {
     private final Application mApplication;
 
     // TODO maybe delete these objects when they are no longer used, requires calling something on renderer since it provides instances
+    // TODO maybe on scene change
     private HashMap<String, MeshData> mNameToMeshMap = new HashMap<>();
 
     public MeshManager(Application application) {
@@ -21,22 +22,21 @@ public class MeshManager {
     }
 
     public MeshData getMesh(String modelPath) {
+        MeshData result;
         if(modelPath == null) {
             throw new IllegalArgumentException("Model path cannot be null");
         } else if(mNameToMeshMap.containsKey(modelPath)) {
-            return mNameToMeshMap.get(modelPath);
+            result = mNameToMeshMap.get(modelPath);
         } else {
-            throw new IllegalStateException("Unavailable mesh requested.");
+            // Model is not loaded so load it
+            if(modelPath.equals(Primitives.CUBE)) {
+                result = createCube();
+            } else {
+                throw new IllegalStateException("Unavailable mesh requested");
+            }
+            mNameToMeshMap.put(modelPath, result);
         }
-    }
-
-    // TODO only meshes for current scene should be loaded - improve this in future
-    /**
-     * Loads all available meshes into memory.
-     */
-    public void loadMeshes() {
-        MeshData cube = createCube();
-        mNameToMeshMap.put(Primitives.CUBE, cube);
+        return result;
     }
 
     private MeshData createCube() {
