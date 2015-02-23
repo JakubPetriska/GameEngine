@@ -6,22 +6,20 @@ import com.onion.engine.Scene;
 import com.onion.api.Transform;
 import com.onion.api.components.Mesh;
 import com.onion.engine.ComponentsConstants;
-import com.onion.api.Core;
+import com.onion.api.Application;
 import com.onion.engine.config.model.initial_scene_state.ISComponent;
 import com.onion.engine.config.model.initial_scene_state.ISGameObject;
 import com.onion.engine.config.model.initial_scene_state.ISScene;
-
-import org.lwjgl.util.vector.Vector3f;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
 public class SceneCreator {
 
-    private Core mCore;
+    private Application mApplication;
 
-    public SceneCreator(Core core) {
-        this.mCore = core;
+    public SceneCreator(Application application) {
+        this.mApplication = application;
     }
 
     public Scene create(ISScene scene) {
@@ -33,7 +31,7 @@ public class SceneCreator {
     }
 
     private GameObject convertGameObject(GameObject parent, ISGameObject initialGameObject) {
-        GameObject gameObject = new GameObject(mCore, parent);
+        GameObject gameObject = new GameObject(mApplication, parent);
         convertTransform(initialGameObject.transform, gameObject.transform);
         if(initialGameObject.components != null) {
             for (ISComponent component : initialGameObject.components) {

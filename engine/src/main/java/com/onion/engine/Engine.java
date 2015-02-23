@@ -1,6 +1,6 @@
 package com.onion.engine;
 
-import com.onion.api.Core;
+import com.onion.api.Application;
 import com.onion.api.GameObject;
 import com.onion.api.TouchInput;
 import com.onion.engine.config.SceneCreator;
@@ -23,7 +23,7 @@ import java.util.List;
 public class Engine {
 
     private Platform mPlatform;
-    private Core mCore;
+    private Application mApplication;
 
     private InputMessengerInternal mInputMessengerInternal;
 
@@ -56,9 +56,9 @@ public class Engine {
         mInputMessengerInternal = new InputMessengerInternal();
         mMessenger = new Messenger(mInputMessengerInternal);
 
-        mCore = new CoreImpl();
+        mApplication = new ApplicationImpl();
 
-        mMeshManager = new MeshManager(mCore);
+        mMeshManager = new MeshManager(mApplication);
     }
 
     /**
@@ -122,7 +122,7 @@ public class Engine {
             e.printStackTrace();
             throw new IllegalStateException("Error during retrieval of scene config file " + configFilePath);
         }
-        Scene result = new SceneCreator(mCore).create(scene);
+        Scene result = new SceneCreator(mApplication).create(scene);
         // TODO remove this - in future this will not be possible due to initial state document validation
         // TODO this actually doesn't make sense, result can never be null
         if (result == null) {
@@ -178,7 +178,7 @@ public class Engine {
         return mInputMessengerInternal.getInputMessenger();
     }
 
-    private class CoreImpl implements Core {
+    private class ApplicationImpl implements Application {
 
         @Override
         public Renderer getRenderer() {

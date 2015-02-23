@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class GameObject {
 
-    private Core mCore;
+    private Application mApplication;
     private GameObject mParent;
 
     /**
@@ -36,8 +36,8 @@ public class GameObject {
 
     public final Transform transform;
 
-    public GameObject(Core core, GameObject parent) {
-        this.mCore = core;
+    public GameObject(Application application, GameObject parent) {
+        this.mApplication = application;
         this.mParent = parent;
         children = Collections.unmodifiableList(mChildren);
         components = Collections.unmodifiableList(mComponents);
@@ -89,7 +89,7 @@ public class GameObject {
 
     public void addComponent(Component component) {
         if(!mComponents.contains(component)) {
-            component.setup(mCore, this);
+            component.setup(mApplication, this);
             mComponents.add(component);
 
             component.start();

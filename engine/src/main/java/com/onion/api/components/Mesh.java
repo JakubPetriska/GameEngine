@@ -1,8 +1,6 @@
 package com.onion.api.components;
 
 import com.onion.api.Component;
-import com.onion.api.GameObject;
-import com.onion.api.Core;
 import com.onion.api.MeshData;
 
 /**
@@ -15,11 +13,11 @@ public class Mesh extends Component {
 
     @Override
     public void start() {
-        this.meshData = getCore().getMeshManager().getMesh(meshPath);
+        this.meshData = getApplication().getMeshManager().getMesh(meshPath);
     }
 
     @Override
     public void postUpdate() {
-        getCore().getRenderer().render(this);
+        getApplication().getRenderer().render(this);
     }
 }

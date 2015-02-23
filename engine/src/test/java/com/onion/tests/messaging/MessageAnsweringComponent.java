@@ -13,10 +13,10 @@ public class MessageAnsweringComponent extends Component {
     @Override
     public void update() {
         List<MessagingTest.InputMessage> inputMessages = new ArrayList<>();
-        getCore().getMessenger().getMessages(inputMessages, MessagingTest.InputMessage.class);
+        getApplication().getMessenger().getMessages(inputMessages, MessagingTest.InputMessage.class);
 
         if(inputMessages.size() > 0) {
-            getCore().getMessenger().sendMessage(new MessagingTest.OutputMessage());
+            getApplication().getMessenger().sendMessage(new MessagingTest.OutputMessage());
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.onion.engine;
 
-import com.onion.api.Core;
+import com.onion.api.Application;
 import com.onion.api.MeshData;
 import com.onion.api.Primitives;
 
@@ -11,13 +11,13 @@ import java.util.HashMap;
  */
 public class MeshManager {
 
-    private final Core mCore;
+    private final Application mApplication;
 
     // TODO maybe delete these objects when they are no longer used, requires calling something on renderer since it provides instances
     private HashMap<String, MeshData> mNameToMeshMap = new HashMap<>();
 
-    public MeshManager(Core core) {
-        this.mCore = core;
+    public MeshManager(Application application) {
+        this.mApplication = application;
     }
 
     public MeshData getMesh(String modelPath) {
@@ -77,6 +77,6 @@ public class MeshManager {
                 5, 5, 5, 5, 5, 5  // left
         };
 
-        return mCore.getRenderer().createMeshData(vertices, normals, trianglesVertices, trianglesNormals);
+        return mApplication.getRenderer().createMeshData(vertices, normals, trianglesVertices, trianglesNormals);
     }
 }

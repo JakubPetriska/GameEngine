@@ -5,7 +5,7 @@ package com.onion.api;
  */
 public abstract class Component {
 
-    private Core mCore;
+    private Application mApplication;
     private GameObject mGameObject;
 
     public Component() {
@@ -15,20 +15,20 @@ public abstract class Component {
      * Sets up this component. Can be called only once.
      * @param gameObject GameObject to which this component will be assigned.
      */
-    void setup(Core core, GameObject gameObject) {
-        if(mCore != null || mGameObject != null) {
+    void setup(Application application, GameObject gameObject) {
+        if(mApplication != null || mGameObject != null) {
             throw new IllegalStateException("Component can be setup only once");
         }
 
-        this.mCore = core;
+        this.mApplication = application;
         if(gameObject == null) {
             throw new IllegalStateException("Component's owner cannot be null.");
         }
         this.mGameObject = gameObject;
     }
 
-    protected final Core getCore() {
-        return mCore;
+    protected final Application getApplication() {
+        return mApplication;
     }
 
     public final GameObject getGameObject() {

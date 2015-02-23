@@ -1,11 +1,7 @@
 package com.onion.showcase.engine;
 
 import com.onion.api.Component;
-import com.onion.api.Core;
-import com.onion.api.GameObject;
 import com.onion.api.Touch;
-
-import org.lwjgl.util.vector.Vector3f;
 
 import java.util.List;
 
@@ -18,7 +14,7 @@ public class TestScriptedBehaviour extends Component {
 
     @Override
     public void update() {
-        List<Touch> touches = getCore().getTouchInput().getTouches();
+        List<Touch> touches = getApplication().getTouchInput().getTouches();
         if(touches.size() > 0) {
             Touch touch = touches.get(0);
             float currentTouchX = touch.getX();
