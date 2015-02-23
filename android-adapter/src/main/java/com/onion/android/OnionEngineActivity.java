@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.Window;
 
 import com.onion.engine.Engine;
+import com.onion.engine.messaging.InputMessenger;
 
 /**
  * Created by Jakub Petriska on 29. 12. 2014.
@@ -50,5 +51,9 @@ public class OnionEngineActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         mGlSurfaceView.getEngine().onFinish();
+    }
+
+    public InputMessenger getInputMessenger() {
+        return mGlSurfaceView == null ? null : mGlSurfaceView.getEngine().getInputMessenger();
     }
 }

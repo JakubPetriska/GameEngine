@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.onion.engine.Engine;
+import com.onion.engine.messaging.InputMessenger;
 
 /**
  * Created by Jakub Petriska on 14. 2. 2015.
@@ -51,5 +52,9 @@ public class OnionEngineFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mGlSurfaceView.getEngine().onFinish();
+    }
+
+    public InputMessenger getInputMessenger() {
+        return mGlSurfaceView == null ? null : mGlSurfaceView.getEngine().getInputMessenger();
     }
 }
