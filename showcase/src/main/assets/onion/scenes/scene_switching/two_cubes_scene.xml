@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+    <gameObjects>
+        <gameObject>
+            <transform>
+                <position x="0" y="0" z="0" />
+            </transform>
+            <components>
+                <component type="com.onion.showcase.engine.SceneSwitchingController" />
+            </components>
+        </gameObject>
+        <gameObject>
+            <transform>
+                <position x="0" y="0" z="10" />
+            </transform>
+            <components>
+                <component type="com.onion.showcase.engine.TestScriptedBehaviour" />
+            </components>
+            <children>
+                <gameObject>
+                    <transform>
+                        <position x="2" y="0" z="0" />
+                    </transform>
+                    <components>
+                        <component type="mesh">
+                            <params>
+                                <param name="meshPath">cube</param>
+                            </params>
+                        </component>
+                    </components>
+                </gameObject>
+                <gameObject>
+                    <transform>
+                        <position x="-2" y="0" z="0" />
+                    </transform>
+                    <components>
+                        <component type="mesh">
+                            <params>
+                                <param name="meshPath">cube</param>
+                            </params>
+                        </component>
+                    </components>
+                </gameObject>
+            </children>
+        </gameObject>
+    </gameObjects>
+</scene>

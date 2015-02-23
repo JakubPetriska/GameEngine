@@ -4,4 +4,10 @@
     <scene
         name="main_scene"
         sceneFilePath="scenes/main_scene.xml"/>
+    <scene
+        name="two_cubes_scene"
+        sceneFilePath="scenes/scene_switching/two_cubes_scene.xml"/>
+    <scene
+        name="one_cube_scene"
+        sceneFilePath="scenes/scene_switching/one_cube_scene.xml"/>
 </scenes>

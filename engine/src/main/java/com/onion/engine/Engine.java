@@ -57,8 +57,6 @@ public class Engine {
         mMessenger = new Messenger(mInputMessengerInternal);
 
         mApplication = new ApplicationImpl();
-
-        mMeshManager = new MeshManager(mApplication);
     }
 
     /**
@@ -80,8 +78,18 @@ public class Engine {
             return;
         }
 
-        // Load scenes config file, load definition of scene that will be displayed
-        // and construct this scene's object tree
+        loadScenesConfig();
+
+        if (mCurrentSceneName == null) {
+            mCurrentSceneName = mScenesConfig.defaultSceneName;
+        }
+
+        mApplication.changeScene(mCurrentSceneName);
+
+        mInitialized = true;
+    }
+
+    private void loadScenesConfig() {
         Serializer serializer = new Persister();
         try {
             mScenesConfig = serializer.read(SCScenes.class,
@@ -94,16 +102,9 @@ public class Engine {
         } catch (Exception e) {
             throw new IllegalStateException("Error during retrieval of scenes config file.", e);
         }
-
-        if (mCurrentSceneName == null) {
-            mCurrentSceneName = mScenesConfig.defaultSceneName;
-        }
-        mCurrentScene = getScene(mCurrentSceneName, serializer);
-
-        mInitialized = true;
     }
 
-    private Scene getScene(String sceneName, Serializer serializer) {
+    private Scene getScene(String sceneName) {
         // Find the scene object in the scenes definition structure
         mDummyScene.name = sceneName;
         int sceneIndex = Collections.binarySearch(mScenesConfig.scenes, mDummyScene);
@@ -114,7 +115,7 @@ public class Engine {
 
         ISScene scene;
         try {
-            scene = serializer.read(ISScene.class,
+            scene = new Persister().read(ISScene.class,
                     mPlatform.getAssetFile(configFilePath));
         } catch (Exception e) {
             e.printStackTrace();
@@ -196,6 +197,18 @@ public class Engine {
         @Override
         public Messenger getMessenger() {
             return mMessenger;
+        }
+
+        @Override
+        public void changeScene(String newSceneName) {
+            mMeshManager = new MeshManager(mApplication);
+            mCurrentScene = getScene(newSceneName);
+            mCurrentSceneName = newSceneName;
+        }
+
+        @Override
+        public String getCurrentSceneName() {
+            return mCurrentSceneName;
         }
     }
 }

@@ -5,6 +5,10 @@ import com.onion.api.Touch;
 
 import java.util.List;
 
+/**
+ * This is simple behaviour script. It moves it's object according
+ * to touch input.
+ */
 public class TestScriptedBehaviour extends Component {
 
     private static final float FACTOR = 0.005f;

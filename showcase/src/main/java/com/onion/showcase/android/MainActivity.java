@@ -9,7 +9,8 @@ import android.widget.ListView;
 
 import com.onion.android.OnionEngineActivity;
 import com.onion.showcase.R;
-import com.onion.showcase.android.examples.EngineAsFragment;
+import com.onion.showcase.android.examples.EngineAsFragmentActivity;
+import com.onion.showcase.android.examples.SceneSwitchingActivity;
 
 import butterknife.InjectView;
 
@@ -23,7 +24,8 @@ public class MainActivity extends BaseActionBarActivity {
 
     private int[] mExamples = new int[]{
             R.string.example_basic_activity,
-            R.string.example_basic_fragment
+            R.string.example_basic_fragment,
+            R.string.example_scene_switching
     };
 
     @Override
@@ -50,7 +52,10 @@ public class MainActivity extends BaseActionBarActivity {
                         startActivity(new Intent(MainActivity.this, OnionEngineActivity.class));
                         return;
                     case R.string.example_basic_fragment:
-                        startActivity(new Intent(MainActivity.this, EngineAsFragment.class));
+                        startActivity(new Intent(MainActivity.this, EngineAsFragmentActivity.class));
+                        return;
+                    case R.string.example_scene_switching:
+                        startActivity(new Intent(MainActivity.this, SceneSwitchingActivity.class));
                         return;
                 }
             }

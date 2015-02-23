@@ -15,12 +15,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
     private Engine mEngine;
     private TouchInputImpl mTouchInput;
 
-    public MyGLSurfaceView(Context context) {
+    public MyGLSurfaceView(Context context, String defaultSceneName) {
         super(context);
         mTouchInput = new TouchInputImpl();
 
         RendererImpl renderer = new EngineControllingRendererImpl();
-        mEngine = new Engine(null, new AndroidPlatform(getContext()), renderer, mTouchInput);
+        mEngine = new Engine(defaultSceneName, new AndroidPlatform(getContext()), renderer, mTouchInput);
 
         setEGLContextClientVersion(2);
         setRenderer(renderer);

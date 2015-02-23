@@ -6,7 +6,7 @@ import com.onion.showcase.android.BaseActionBarActivity;
 /**
  * Created by Jakub Petriska on 14. 2. 2015.
  */
-public class EngineAsFragment extends BaseActionBarActivity {
+public class EngineAsFragmentActivity extends BaseActionBarActivity {
 
     @Override
     protected int getLayout() {

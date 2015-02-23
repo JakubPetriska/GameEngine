@@ -12,4 +12,7 @@ public interface Application {
     public TouchInput getTouchInput();
     public MeshManager getMeshManager();
     public Messenger getMessenger();
+
+    public void changeScene(String newSceneName);
+    public String getCurrentSceneName();
 }

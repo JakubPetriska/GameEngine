@@ -12,6 +12,11 @@ import com.onion.engine.messaging.InputMessenger;
  */
 public class OnionEngineActivity extends Activity {
 
+    /**
+     * Extra key to use to specify default scene name.
+     */
+    public static final String EXTRA_DEFAULT_SCENE_NAME = "DEFAULT_SCENE_NAME";
+
     private MyGLSurfaceView mGlSurfaceView;
 
     @Override
@@ -23,7 +28,7 @@ public class OnionEngineActivity extends Activity {
             Engine engine = EngineObjectStore.retrieve(savedInstanceState.getString(Constants.KEY_ENGINE_OBJECT_STORE_KEY));
             mGlSurfaceView = new MyGLSurfaceView(this, engine);
         } else {
-            mGlSurfaceView = new MyGLSurfaceView(this);
+            mGlSurfaceView = new MyGLSurfaceView(this, getIntent().getStringExtra(EXTRA_DEFAULT_SCENE_NAME));
         }
         setContentView(mGlSurfaceView);
     }

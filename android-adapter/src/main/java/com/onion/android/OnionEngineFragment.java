@@ -15,7 +15,18 @@ import com.onion.engine.messaging.InputMessenger;
  */
 public class OnionEngineFragment extends Fragment {
 
+    private String mDefaultSceneName = null;
     private MyGLSurfaceView mGlSurfaceView;
+
+    public static OnionEngineFragment newInstance() {
+        return new OnionEngineFragment();
+    }
+
+    public static OnionEngineFragment newInstance(String defaultSceneName) {
+        OnionEngineFragment fragment = newInstance();
+        fragment.mDefaultSceneName = defaultSceneName;
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -24,7 +35,7 @@ public class OnionEngineFragment extends Fragment {
             Engine engine = EngineObjectStore.retrieve(savedInstanceState.getString(Constants.KEY_ENGINE_OBJECT_STORE_KEY));
             mGlSurfaceView = new MyGLSurfaceView(getActivity(), engine);
         } else {
-            mGlSurfaceView = new MyGLSurfaceView(getActivity());
+            mGlSurfaceView = new MyGLSurfaceView(getActivity(), mDefaultSceneName);
         }
         return mGlSurfaceView;
     }
