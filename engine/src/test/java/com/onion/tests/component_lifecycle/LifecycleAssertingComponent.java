@@ -18,6 +18,13 @@ public class LifecycleAssertingComponent extends Component {
     private boolean mUpdateCalled = false;
     private boolean mFinishCalled = false;
 
+    private String mTag;
+
+    public LifecycleAssertingComponent(String tag) {
+        this();
+        mTag = tag;
+    }
+
     public LifecycleAssertingComponent() {
         super();
         sObjectCache.add(this);
@@ -25,31 +32,31 @@ public class LifecycleAssertingComponent extends Component {
 
     @Override
     public void start() {
-        assertFalse("Start is being called for second time", mStartCalled);
+        assertFalse(getMessage("Start is being called for second time"), mStartCalled);
         mStartCalled = true;
     }
 
     @Override
     public void update() {
-        assertTrue("Start was not called before update", mStartCalled);
+        assertTrue(getMessage("Start was not called before update"), mStartCalled);
 
-        assertFalse("Update is being called for second time", mUpdateCalled);
+        assertFalse(getMessage("Update is being called for second time"), mUpdateCalled);
         mUpdateCalled = true;
     }
 
     @Override
     public void postUpdate() {
-        assertTrue("Start was not called before postUpdate", mStartCalled);
+        assertTrue(getMessage("Start was not called before postUpdate"), mStartCalled);
 
-        assertTrue("Update was not called before PostUpdate", mUpdateCalled);
+        assertTrue(getMessage("Update was not called before PostUpdate"), mUpdateCalled);
         mUpdateCalled = false;
     }
 
     @Override
     public void finish() {
-        assertTrue("Start was not called before finish", mStartCalled);
+        assertTrue(getMessage("Start was not called before finish"), mStartCalled);
 
-        assertFalse("Finish is being called for second time", mFinishCalled);
+        assertFalse(getMessage("Finish is being called for second time"), mFinishCalled);
         mFinishCalled = true;
     }
 
@@ -58,8 +65,16 @@ public class LifecycleAssertingComponent extends Component {
      * from it's GameObject or if Engine's life ended.
      */
     public void checkEverythingOkInTheEnd() {
-        assertTrue("Start was not called during this component's lifecycle", mStartCalled);
-        assertTrue("Finish was not called during this component's lifecycle", mFinishCalled);
+        assertTrue(getMessage("Start was not called during this component's lifecycle"), mStartCalled);
+        assertTrue(getMessage("Finish was not called during this component's lifecycle"), mFinishCalled);
+    }
+
+    private String getMessage(String message) {
+        if(mTag == null || mTag.length() == 0) {
+            return message;
+        } else {
+            return message + " for component " + mTag;
+        }
     }
 
     /**

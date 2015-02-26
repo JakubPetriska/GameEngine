@@ -13,11 +13,6 @@ public class ComponentLifecycleTest extends BaseEngineTest {
 
     private static final String FILES_FOLDER = "component_lifecycle_test";
 
-    @Before
-    public void prepareEngine() {
-        setupEngine(FILES_FOLDER);
-    }
-
     /**
      * Basic test of component lifecycle.
      *
@@ -27,17 +22,20 @@ public class ComponentLifecycleTest extends BaseEngineTest {
      */
     @Test
     public void basicComponentLifecycleTest() {
-        getEngine().onStart();
-        for(int i = 0; i < 10; ++i) {
-            getEngine().onUpdate();
-        }
-        getEngine().onFinish();
+        runEngine(FILES_FOLDER, "main_scene", 10);
+    }
 
-        LifecycleAssertingComponent.checkObjectsInCacheAreOk();
+    /**
+     * This tests adding and removing GameObjects and Components.
+     */
+    @Test
+    public void manipulationTest() {
+        runEngine(FILES_FOLDER, "manipulation_test_scene", 10);
     }
 
     @After
-    public void testCleanup() {
+    public void finalLifecycleCheckAndCleanup() {
+        LifecycleAssertingComponent.checkObjectsInCacheAreOk();
         LifecycleAssertingComponent.clearObjectCache();
     }
 }
