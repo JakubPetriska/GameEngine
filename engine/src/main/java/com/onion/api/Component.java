@@ -17,7 +17,7 @@ public abstract class Component {
      */
     void setup(Application application, GameObject gameObject) {
         if(mApplication != null || mGameObject != null) {
-            throw new IllegalStateException("Component can be setup only once");
+            throw new IllegalStateException("Component can be added to GameObject only once.");
         }
 
         this.mApplication = application;

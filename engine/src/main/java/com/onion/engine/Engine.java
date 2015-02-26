@@ -135,6 +135,7 @@ public class Engine {
         mMessenger.update();
         mTouchInput.update();
 
+        // TODO it would be possible to catch StackOverflowException here and interpret it as cycle in object tree
         update(mCurrentScene.gameObjects);
         postUpdate(mCurrentScene.gameObjects);
     }

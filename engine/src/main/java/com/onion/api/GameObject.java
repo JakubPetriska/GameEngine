@@ -34,6 +34,8 @@ public class GameObject {
     public final List<Component> components;
     private final List<Component> mComponents = new ArrayList<>();
 
+    // Mandatory GameObject's components
+    // None of them can be removed so make sure it is checked in removeComponent(Component) method
     public final Transform transform;
 
     public GameObject(Application application, GameObject parent) {
@@ -55,11 +57,11 @@ public class GameObject {
     }
 
     public void setParent(GameObject parent) {
-        if(getParent() == null) {
-            throw new IllegalStateException("Cannot change parent of top level object.");
-        }
         if(parent == null) {
             throw new IllegalStateException("GameObject's parent cannot be set to null.");
+        }
+        if(getParent() == null) {
+            throw new IllegalStateException("Cannot change parent of top level object.");
         }
 
         getParent().mChildren.remove(this);
@@ -79,7 +81,11 @@ public class GameObject {
      */
     public void removeChild(GameObject childObject) {
         if(mChildren.contains(childObject)) {
-            // TODO remove all components here
+            // Remove all components from this object
+            for(int i = 0; i < childObject.mComponents.size(); ++i) {
+                childObject.removeComponent(childObject.mComponents.get(i));
+            }
+            // Remove all child objects from removed object
             for(int i = 0; i < childObject.mChildren.size(); ++i) {
                 childObject.removeChild(childObject.mChildren.get(i));
             }
@@ -91,12 +97,15 @@ public class GameObject {
         if(!mComponents.contains(component)) {
             component.setup(mApplication, this);
             mComponents.add(component);
-
             component.start();
         }
     }
 
     public void removeComponent(Component component) {
+        // Make sure none of the mandatory components is removed
+        if(component == transform) {
+            throw new IllegalStateException("Cannot remove GameObject's mandatory component.");
+        }
         if(mComponents.contains(component)) {
             component.finish();
             mComponents.remove(component);
