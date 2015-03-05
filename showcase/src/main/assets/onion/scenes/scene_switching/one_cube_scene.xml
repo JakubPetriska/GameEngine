@@ -6,7 +6,7 @@
                 <position x="0" y="0" z="0" />
             </transform>
             <components>
-                <component type="com.onion.showcase.engine.SceneSwitchingController" />
+                <component type="com.monolith.showcase.engine.SceneSwitchingController" />
             </components>
         </gameObject>
         <gameObject>
@@ -14,7 +14,7 @@
                 <position x="0" y="0" z="10" />
             </transform>
             <components>
-                <component type="com.onion.showcase.engine.TestScriptedBehaviour"/>
+                <component type="com.monolith.showcase.engine.TestScriptedBehaviour"/>
                 <component type="mesh">
                     <params>
                         <param name="meshPath">cube</param>

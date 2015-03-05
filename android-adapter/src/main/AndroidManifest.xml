@@ -3,7 +3,7 @@
     <uses-feature android:glEsVersion="0x00020000" android:required="true" />
 
     <application android:label="@string/app_name">
-        <activity android:name="com.onion.android.OnionEngineActivity"
+        <activity android:name="com.monolith.android.MonolithActivity"
             android:theme="@android:style/Theme.NoTitleBar"/>
     </application>
 

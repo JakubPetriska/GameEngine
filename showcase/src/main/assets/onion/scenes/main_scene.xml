@@ -11,7 +11,7 @@
                         <param name="meshPath">cube</param>
                     </params>
                 </component>
-                <component type="com.onion.showcase.engine.TestScriptedBehaviour"/>
+                <component type="com.monolith.showcase.engine.TestScriptedBehaviour"/>
             </components>
             <children>
                 <gameObject>
