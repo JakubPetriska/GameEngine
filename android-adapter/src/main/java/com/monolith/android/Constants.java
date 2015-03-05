@@ -9,7 +9,7 @@ public class Constants {
      * everything used by the engine such as config files or
      * game art assets.
      */
-    public static final String ENGINE_ASSETS_ROOT_PATH = "onion/";
+    public static final String ENGINE_ASSETS_ROOT_PATH = "monolith/";
 
     public static final String KEY_ENGINE_OBJECT_STORE_KEY = "ENGINE_OBJECT_STORE_KEY";
 }
