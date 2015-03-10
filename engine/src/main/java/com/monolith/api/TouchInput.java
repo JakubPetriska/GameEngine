@@ -7,5 +7,5 @@ import java.util.List;
  */
 public interface TouchInput {
 
-    public List<Touch> getTouches();
+    List<Touch> getTouches();
 }

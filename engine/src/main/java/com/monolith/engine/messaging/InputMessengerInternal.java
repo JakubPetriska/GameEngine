@@ -35,7 +35,7 @@ public class InputMessengerInternal {
          * Called when new message arrived.
          * @param message Message object.
          */
-        public void onNewMessage(Object message);
+        void onNewMessage(Object message);
     }
 
     /**

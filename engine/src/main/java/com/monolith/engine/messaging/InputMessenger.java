@@ -5,13 +5,13 @@ package com.monolith.engine.messaging;
  */
 public interface InputMessenger {
 
-    public void sendMessage(Object message);
+    void sendMessage(Object message);
 
-    public <T> void registerMessageReceiver(MessageReceiver<T> messageReceiver, Class<T> messageClass);
+    <T> void registerMessageReceiver(MessageReceiver<T> messageReceiver, Class<T> messageClass);
 
-    public <T> void unregisterMessageReceiver(InputMessenger.MessageReceiver<T> messageReceiver, Class<T> messageClass);
+    <T> void unregisterMessageReceiver(InputMessenger.MessageReceiver<T> messageReceiver, Class<T> messageClass);
 
-    public interface MessageReceiver<T> {
-        public void onNewMessage(T message);
+    interface MessageReceiver<T> {
+        void onNewMessage(T message);
     }
 }

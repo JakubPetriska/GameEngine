@@ -1,7 +1,9 @@
 package com.monolith.engine;
 
 import com.monolith.api.Application;
+import com.monolith.api.DebugLog;
 import com.monolith.api.GameObject;
+import com.monolith.api.Time;
 import com.monolith.api.TouchInput;
 import com.monolith.engine.config.SceneCreator;
 import com.monolith.engine.config.model.initial_scene_state.ISScene;
@@ -27,11 +29,12 @@ public class Engine {
 
     private InputMessengerInternal mInputMessengerInternal;
 
-    // Core objects
+    // Application objects
     private Renderer mRenderer;
     private TouchInputInternal mTouchInput;
     private MeshManager mMeshManager;
     private Messenger mMessenger;
+    private TimeInternal mTime;
 
     private SCScenes mScenesConfig;
 
@@ -55,6 +58,8 @@ public class Engine {
 
         mInputMessengerInternal = new InputMessengerInternal();
         mMessenger = new Messenger(mInputMessengerInternal);
+
+        mTime = new TimeInternal();
 
         mApplication = new ApplicationImpl();
     }
@@ -131,9 +136,10 @@ public class Engine {
     }
 
     public void onUpdate() {
-        // TODO create something like System? Common API for these two.
+        // TODO create something like System? Common API for these.
         mMessenger.update();
         mTouchInput.update();
+        mTime.update();
 
         update(mCurrentScene.gameObjects);
         postUpdate(mCurrentScene.gameObjects);
@@ -197,6 +203,26 @@ public class Engine {
         @Override
         public Messenger getMessenger() {
             return mMessenger;
+        }
+
+        @Override
+        public Time getTime() {
+            return mTime;
+        }
+
+        private DebugLog mDebugLog;
+
+        @Override
+        public DebugLog getDebugLog() {
+            if(mDebugLog == null) {
+                mDebugLog = new DebugLog() {
+                    @Override
+                    public void log(String message) {
+                        mPlatform.log(message);
+                    }
+                };
+            }
+            return mDebugLog;
         }
 
         @Override

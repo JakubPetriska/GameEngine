@@ -14,5 +14,7 @@ public interface Platform {
      * caller can deal with problems.
      * @param path Path to the file relative to platform's specific project files folder.
      */
-    public InputStream getAssetFile(String path);
+    InputStream getAssetFile(String path);
+
+    void log(String message);
 }

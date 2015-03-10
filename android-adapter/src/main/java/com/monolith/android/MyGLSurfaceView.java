@@ -2,6 +2,7 @@ package com.monolith.android;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.support.annotation.NonNull;
 import android.view.MotionEvent;
 
 import com.monolith.android.rendering.RendererImpl;
@@ -64,7 +65,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
+    public boolean onTouchEvent(@NonNull MotionEvent event) {
         mTouchInput.onTouchEvent(event);
         return true;
     }

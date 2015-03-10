@@ -129,13 +129,8 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
             int sourcePositionOffset = meshData.trianglesVertices[i] * RendererImpl.COORDS_PER_VERTEX_POSITION;
             int sourceNormalOffset = meshData.trianglesNormals[i] * RendererImpl.COORDS_PER_VERTEX_NORMAL;
 
-            for (int j = 0; j < RendererImpl.COORDS_PER_VERTEX_POSITION; ++j) {
-                vertexData[vertexDataPositionOffset + j] = meshData.vertices[sourcePositionOffset + j];
-            }
-
-            for (int j = 0; j < RendererImpl.COORDS_PER_VERTEX_NORMAL; ++j) {
-                vertexData[vertexDataNormalOffset + j] = meshData.normals[sourceNormalOffset + j];
-            }
+            System.arraycopy(meshData.vertices, sourcePositionOffset, vertexData, vertexDataPositionOffset, RendererImpl.COORDS_PER_VERTEX_POSITION);
+            System.arraycopy(meshData.normals, sourceNormalOffset, vertexData, vertexDataNormalOffset, RendererImpl.COORDS_PER_VERTEX_NORMAL);
         }
 
         ByteBuffer vb = ByteBuffer.allocateDirect(

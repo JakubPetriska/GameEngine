@@ -2,6 +2,7 @@ package com.monolith.android;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.Window;
 
 import com.monolith.engine.Engine;
@@ -34,7 +35,7 @@ public class MonolithActivity extends Activity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
+    public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         String engineObjectKey = EngineObjectStore.store(mGlSurfaceView.getEngine());
         outState.putString(Constants.KEY_ENGINE_OBJECT_STORE_KEY, engineObjectKey);

@@ -8,11 +8,13 @@ import com.monolith.platform.Renderer;
  * Object providing access to other objects that provide important features.
  */
 public interface Application {
-    public Renderer getRenderer();
-    public TouchInput getTouchInput();
-    public MeshManager getMeshManager();
-    public Messenger getMessenger();
+    Renderer getRenderer();
+    TouchInput getTouchInput();
+    MeshManager getMeshManager();
+    Messenger getMessenger();
+    Time getTime();
+    DebugLog getDebugLog();
 
-    public void changeScene(String newSceneName);
-    public String getCurrentSceneName();
+    void changeScene(String newSceneName);
+    String getCurrentSceneName();
 }

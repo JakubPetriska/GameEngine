@@ -13,7 +13,7 @@ public interface Renderer {
      *
      * @param mesh
      */
-    public void render(Mesh mesh);
+    void render(Mesh mesh);
 
     /**
      * Creates instance of MeshData with supplied data.
@@ -25,7 +25,7 @@ public interface Renderer {
      * @param trianglesVertices
      * @param trianglesNormals
      */
-    public MeshData createMeshData(
+    MeshData createMeshData(
             float[] vertices, float[] normals,
             int[] trianglesVertices, int[] trianglesNormals);
 }
