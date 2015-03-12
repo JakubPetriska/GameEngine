@@ -18,8 +18,6 @@ public class ComponentGameObjectManipulationTestComponent extends Component {
     private GameObject mChildOfFirstChild;
     private GameObject mReattachedChild;
 
-    // TODO add changing object's parent
-
     @Override
     public void update() {
         mUpdateCount++;
