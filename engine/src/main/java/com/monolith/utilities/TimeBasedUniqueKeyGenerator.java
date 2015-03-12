@@ -1,7 +1,7 @@
 package com.monolith.utilities;
 
 /**
- * Created by Jakub Petriska on 19. 2. 2015.
+ * Generates {@link java.lang.String} keys based on current time.
  */
 public class TimeBasedUniqueKeyGenerator {
 
