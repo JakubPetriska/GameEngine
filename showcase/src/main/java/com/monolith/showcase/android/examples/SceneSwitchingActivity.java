@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 
-import com.monolith.android.MonolithFragment;
+import com.monolith.api.android.MonolithFragment;
 import com.monolith.showcase.R;
 import com.monolith.showcase.engine.SceneSwitchingController;
 

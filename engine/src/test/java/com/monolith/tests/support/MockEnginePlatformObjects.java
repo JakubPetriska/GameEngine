@@ -4,7 +4,7 @@ import com.monolith.api.MeshData;
 import com.monolith.api.Touch;
 import com.monolith.api.components.Mesh;
 import com.monolith.platform.Platform;
-import com.monolith.platform.Renderer;
+import com.monolith.api.Renderer;
 import com.monolith.platform.TouchInputInternal;
 
 import java.io.File;

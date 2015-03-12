@@ -3,17 +3,18 @@ package com.monolith.engine;
 import com.monolith.api.Application;
 import com.monolith.api.DebugLog;
 import com.monolith.api.GameObject;
+import com.monolith.api.Messenger;
+import com.monolith.api.Renderer;
 import com.monolith.api.Time;
 import com.monolith.api.TouchInput;
+import com.monolith.api.external.InputMessenger;
 import com.monolith.engine.config.SceneCreator;
 import com.monolith.engine.config.model.initial_scene_state.ISScene;
 import com.monolith.engine.config.model.scenes_config.SCScene;
 import com.monolith.engine.config.model.scenes_config.SCScenes;
-import com.monolith.engine.messaging.InputMessenger;
 import com.monolith.engine.messaging.InputMessengerInternal;
-import com.monolith.engine.messaging.Messenger;
+import com.monolith.engine.messaging.MessengerInternal;
 import com.monolith.platform.Platform;
-import com.monolith.platform.Renderer;
 import com.monolith.platform.TouchInputInternal;
 
 import org.simpleframework.xml.Serializer;
@@ -33,7 +34,7 @@ public class Engine {
     private Renderer mRenderer;
     private TouchInputInternal mTouchInput;
     private MeshManager mMeshManager;
-    private Messenger mMessenger;
+    private MessengerInternal mMessenger;
     private TimeInternal mTime;
 
     private SCScenes mScenesConfig;
@@ -57,7 +58,7 @@ public class Engine {
         this.mTouchInput = touchInput;
 
         mInputMessengerInternal = new InputMessengerInternal();
-        mMessenger = new Messenger(mInputMessengerInternal);
+        mMessenger = new MessengerInternal(mInputMessengerInternal);
 
         mTime = new TimeInternal();
 
@@ -214,7 +215,7 @@ public class Engine {
 
         @Override
         public DebugLog getDebugLog() {
-            if(mDebugLog == null) {
+            if (mDebugLog == null) {
                 mDebugLog = new DebugLog() {
                     @Override
                     public void log(String message) {

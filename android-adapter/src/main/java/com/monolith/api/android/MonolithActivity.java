@@ -1,20 +1,23 @@
-package com.monolith.android;
+package com.monolith.api.android;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Window;
 
+import com.monolith.android.Constants;
+import com.monolith.android.EngineObjectStore;
+import com.monolith.android.MyGLSurfaceView;
+import com.monolith.api.external.InputMessenger;
 import com.monolith.engine.Engine;
-import com.monolith.engine.messaging.InputMessenger;
 
 /**
- * Created by Jakub Petriska on 29. 12. 2014.
+ * {@link android.app.Activity} subclass showing engine content over the whole screen.
  */
 public class MonolithActivity extends Activity {
 
     /**
-     * Extra key to use to specify default scene name.
+     * Extra key to specify default scene name.
      */
     public static final String EXTRA_DEFAULT_SCENE_NAME = "DEFAULT_SCENE_NAME";
 
@@ -59,6 +62,11 @@ public class MonolithActivity extends Activity {
         mGlSurfaceView.getEngine().onFinish();
     }
 
+    /**
+     * Returns the {@link com.monolith.api.external.InputMessenger} instance.
+     *
+     * @return The {@link com.monolith.api.external.InputMessenger} instance.
+     */
     public InputMessenger getInputMessenger() {
         return mGlSurfaceView == null ? null : mGlSurfaceView.getEngine().getInputMessenger();
     }

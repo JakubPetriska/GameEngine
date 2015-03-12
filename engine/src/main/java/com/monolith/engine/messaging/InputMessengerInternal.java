@@ -1,5 +1,7 @@
 package com.monolith.engine.messaging;
 
+import com.monolith.api.external.InputMessenger;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +24,7 @@ public class InputMessengerInternal {
     private MessageReceiver mMessageReceiver;
 
     /**
-     * This us used by Messenger to listen for messages from the outside.
+     * This us used by MessengerInternal to listen for messages from the outside.
      * @param messageReceiver
      */
     public void setMessageReceiver(MessageReceiver messageReceiver) {
@@ -39,7 +41,7 @@ public class InputMessengerInternal {
     }
 
     /**
-     * This is called from the outside (by Messenger) when
+     * This is called from the outside (by MessengerInternal) when
      * new message from the inside of the engine comes.
      * @param message Message object.
      */

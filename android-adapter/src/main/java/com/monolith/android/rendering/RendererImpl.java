@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.monolith.api.MeshData;
 import com.monolith.api.components.Mesh;
-import com.monolith.platform.Renderer;
+import com.monolith.api.Renderer;
 
 import org.lwjgl.util.vector.Vector3f;
 

@@ -3,7 +3,7 @@ package com.monolith.engine.config;
 import com.monolith.api.Component;
 import com.monolith.api.GameObject;
 import com.monolith.engine.Scene;
-import com.monolith.api.Transform;
+import com.monolith.api.components.Transform;
 import com.monolith.api.components.Mesh;
 import com.monolith.engine.ComponentsConstants;
 import com.monolith.api.Application;

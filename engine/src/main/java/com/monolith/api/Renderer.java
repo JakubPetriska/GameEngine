@@ -1,17 +1,15 @@
-package com.monolith.platform;
+package com.monolith.api;
 
-import com.monolith.api.MeshData;
 import com.monolith.api.components.Mesh;
 
 /**
- * Created by Jakub Petriska on 3. 1. 2015.
+ * Provides rendering functionality.
  */
 public interface Renderer {
 
     /**
-     * Renders mesh. Will be called by components in onPostUpdate.
-     *
-     * @param mesh
+     * Renders mesh on the position of it's owning {@link com.monolith.api.GameObject}.
+     * @param mesh Mesh to render.
      */
     void render(Mesh mesh);
 
@@ -20,10 +18,7 @@ public interface Renderer {
      * Implementation can return a subclass of MeshData to which it can store it's specific
      * data to use during rendering.
      *
-     * @param vertices
-     * @param normals
-     * @param trianglesVertices
-     * @param trianglesNormals
+     * Input parameters are similar to {@link com.monolith.api.MeshData}'s fields.
      */
     MeshData createMeshData(
             float[] vertices, float[] normals,

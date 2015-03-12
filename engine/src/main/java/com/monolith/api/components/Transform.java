@@ -1,4 +1,6 @@
-package com.monolith.api;
+package com.monolith.api.components;
+
+import com.monolith.api.Component;
 
 import org.lwjgl.util.vector.Vector3f;
 

@@ -1,4 +1,4 @@
-package com.monolith.android;
+package com.monolith.api.android;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,21 +7,38 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.monolith.android.Constants;
+import com.monolith.android.EngineObjectStore;
+import com.monolith.android.MyGLSurfaceView;
+import com.monolith.api.external.InputMessenger;
 import com.monolith.engine.Engine;
-import com.monolith.engine.messaging.InputMessenger;
 
 /**
- * Created by Jakub Petriska on 14. 2. 2015.
+ * {@link android.support.v4.app.Fragment} subclass showing the engine content.
+ * This can be used anywhere in your application.
  */
 public class MonolithFragment extends Fragment {
 
     private String mDefaultSceneName = null;
     private MyGLSurfaceView mGlSurfaceView;
 
+    /**
+     * Creates new instance of this fragment. Default scene will be displayed.
+     *
+     * @return New instance of this fragment.
+     */
     public static MonolithFragment newInstance() {
         return new MonolithFragment();
     }
 
+    /**
+     * Creates new instance of this fragment. Scene specified as a parameter will be
+     * shown or default scene if the name of the scene is null.
+     *
+     * @param defaultSceneName Name of the scene to show in the engine. If null default scene
+     *                         will be displayed.
+     * @return New instance of this fragment.
+     */
     public static MonolithFragment newInstance(String defaultSceneName) {
         MonolithFragment fragment = newInstance();
         fragment.mDefaultSceneName = defaultSceneName;
@@ -65,6 +82,11 @@ public class MonolithFragment extends Fragment {
         mGlSurfaceView.getEngine().onFinish();
     }
 
+    /**
+     * Returns the {@link com.monolith.api.external.InputMessenger} instance.
+     *
+     * @return The {@link com.monolith.api.external.InputMessenger} instance.
+     */
     public InputMessenger getInputMessenger() {
         return mGlSurfaceView == null ? null : mGlSurfaceView.getEngine().getInputMessenger();
     }

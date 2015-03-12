@@ -7,7 +7,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.monolith.android.MonolithActivity;
+import com.monolith.api.android.MonolithActivity;
 import com.monolith.showcase.R;
 import com.monolith.showcase.android.examples.EngineAsFragmentActivity;
 import com.monolith.showcase.android.examples.SceneSwitchingActivity;

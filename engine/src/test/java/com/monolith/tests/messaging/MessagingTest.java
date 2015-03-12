@@ -1,6 +1,6 @@
 package com.monolith.tests.messaging;
 
-import com.monolith.engine.messaging.InputMessenger;
+import com.monolith.api.external.InputMessenger;
 import com.monolith.tests.support.BaseEngineTest;
 
 import org.junit.Before;
