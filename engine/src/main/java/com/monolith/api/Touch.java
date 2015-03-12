@@ -1,7 +1,8 @@
 package com.monolith.api;
 
 /**
- * Created by Jakub Petriska on 8. 1. 2015.
+ * Container storing information about one currently running touch event
+ * in one particular frame.
  */
 public class Touch {
 

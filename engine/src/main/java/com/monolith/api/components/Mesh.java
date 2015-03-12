@@ -4,10 +4,13 @@ import com.monolith.api.Component;
 import com.monolith.api.MeshData;
 
 /**
- * Created by Jakub Petriska on 3. 1. 2015.
+ * Component responsible for rendering a mesh.
  */
 public class Mesh extends Component {
 
+    /**
+     * Name of primitive mesh. Imported meshes are currently not supported.
+     */
     public String meshPath;
     public MeshData meshData;
 

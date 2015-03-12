@@ -1,7 +1,7 @@
 package com.monolith.api;
 
 /**
- * This class provides valuable information about time.
+ * Provides valuable information about time.
  */
 public interface Time {
 

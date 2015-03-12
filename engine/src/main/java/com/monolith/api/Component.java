@@ -1,7 +1,9 @@
 package com.monolith.api;
 
 /**
- * Created by Jakub Petriska on 29. 12. 2014.
+ * Represents {@link com.monolith.api.GameObject GameObject's} component.
+ *
+ * Components are used to add functionality to {@link com.monolith.api.GameObject GameObjects}.
  */
 public abstract class Component {
 
@@ -31,33 +33,40 @@ public abstract class Component {
         return mApplication;
     }
 
+    /**
+     * Returns the {@link com.monolith.api.GameObject} to which this Component is assigned.
+     * @return {@link com.monolith.api.GameObject} to which this Component is assigned.
+     */
     public final GameObject getGameObject() {
         return mGameObject;
     }
 
     /**
-     * Used to setup the component.
+     * Called when Component is added to it's owning {@link com.monolith.api.GameObject}.
      */
     public void start() {
 
     }
 
     /**
-     * Used to update state.
+     * Called every frame. Override this method to update state of this Component.
      */
     public void update() {
 
     }
 
     /**
-     * Used for performing actions after state update, such as rendering.
+     * Called every frame after {@link Component#update()} has been called on all
+     * Components of all {@link com.monolith.api.GameObject GameObjects}.
+     * Override this method to perform actions after state update, such as rendering.
      */
     public void postUpdate() {
 
     }
 
     /**
-     * Used for cleanup.
+     * Called when Component is removed from it's owning {@link com.monolith.api.GameObject} and
+     * in the end of engine instance's life.
      */
     public void finish() {
 

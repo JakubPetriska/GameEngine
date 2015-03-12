@@ -1,7 +1,8 @@
 package com.monolith.api;
 
 /**
- * Created by Jakub on 11. 3. 2015.
+ * Provides logging functionality.
+ * Use this only for debugging purposes.
  */
 public interface DebugLog {
 

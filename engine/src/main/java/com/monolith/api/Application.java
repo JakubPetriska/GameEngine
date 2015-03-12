@@ -5,7 +5,7 @@ import com.monolith.engine.messaging.Messenger;
 import com.monolith.platform.Renderer;
 
 /**
- * Object providing access to other objects that provide important features.
+ * Container for important parts of the engine instance.
  */
 public interface Application {
     Renderer getRenderer();

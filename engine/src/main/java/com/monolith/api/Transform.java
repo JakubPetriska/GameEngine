@@ -3,7 +3,7 @@ package com.monolith.api;
 import org.lwjgl.util.vector.Vector3f;
 
 /**
- * Transform hold transformation data of a GameObject.
+ * Holds transformation data of a {@link com.monolith.api.GameObject}.
  *
  * Transformation is relative to parent GameObject. World (absolute) transformation
  * data can be obtained using appropriate methods.

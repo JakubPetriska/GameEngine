@@ -5,30 +5,40 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Class representing an object in game.
+ * Represents an object. GameObject serves only as container for functionality.
+ * GameObject itself will not be displayed in final rendered content in any way.
  *
- * GameObject only acts as container for components which
- * give object properties. For example mesh rendering is also
- * done using a component.
+ * Functionality is added to GameObject using components. Components need to be
+ * subclasses of {@link com.monolith.api.Component} class and they can be added
+ * through GameObject's methods from scripts or in xml files defining initial scene layouts.
+ *
+ * GameObject can also be used to only hold children objects for manipulation.
  */
 public class GameObject {
+
+    // TODO bring order to children and components lists so searching for them is in log(n)
 
     private Application mApplication;
     private GameObject mParent;
 
     /**
-     * List containing all GameObject's children.
+     * Contains all GameObject's children.
      *
-     * Unmodifiable, use appropriate GameObject instance
+     * This list is unmodifiable, use appropriate GameObject instance
      * methods to remove children.
+     *
+     * Adding children to this GameObject can be done through passing this
+     * object as parent into child GameObject's constructor or
+     * calling {@link com.monolith.api.GameObject#setParent(GameObject)}
+     * on the child GameObject.
      */
     public final List<GameObject> children;
     private final List<GameObject> mChildren = new ArrayList<>();
 
     /**
-     * List containing all GameObject's components.
+     * Contains all GameObject's components.
      *
-     * Unmodifiable, use appropriate GameObject instance
+     * This list is unmodifiable, use appropriate GameObject instance
      * methods to add or remove components.
      */
     public final List<Component> components;
@@ -38,6 +48,14 @@ public class GameObject {
     // None of them can be removed so make sure it is checked in removeComponent(Component) method
     public final Transform transform;
 
+    /**
+     * Creates new GameObject.
+     *
+     * This constructor is meant for constructing top level GameObjects.
+     * Creating top level object from scripts is currently not supported.
+     * if you pass null as parent appropriate lifecycle methods will not be
+     * called on this object.
+     */
     public GameObject(Application application, GameObject parent) {
         this.mApplication = application;
         this.mParent = parent;
@@ -52,6 +70,10 @@ public class GameObject {
         addComponent(transform);
     }
 
+    /**
+     * Creates new GameObject. Use this in your scripts.
+     * @param parent GameObject's parent. Can never be null.
+     */
     public GameObject(GameObject parent) {
         if(parent == null) {
             throw new IllegalStateException("This constructor cannot be used for objects without parent.");
@@ -67,10 +89,19 @@ public class GameObject {
         addComponent(transform);
     }
 
+    /**
+     * Returns GameObject's parent GameObject.
+     * @return Parent GameObject of this GameObject.
+     */
     public GameObject getParent() {
         return mParent;
     }
 
+    /**
+     * Sets new parent to this GameObject and also removes it from children of
+     * previous parent.
+     * @param parent New parent GameObject.
+     */
     public void setParent(GameObject parent) {
         if(parent == null) {
             throw new IllegalStateException("GameObject's parent cannot be set to null.");
@@ -85,8 +116,8 @@ public class GameObject {
     }
 
     /**
-     * Removes childObject from children of this object if
-     * childObject is a child of this GameObject.
+     * Removes childObject from children of this object
+     * if childObject is a child of this GameObject.
      *
      * After removing, childObject is no longer valid GameObject
      * and cannot be used any further. Also no references to it should be
@@ -108,6 +139,10 @@ public class GameObject {
         }
     }
 
+    /**
+     * Adds new {@link com.monolith.api.Component} to this GameObject.
+     * @param component {@link com.monolith.api.Component} to add.
+     */
     public void addComponent(Component component) {
         if(!mComponents.contains(component)) {
             component.setup(mApplication, this);
@@ -118,7 +153,6 @@ public class GameObject {
 
     /**
      * Used by engine. Allows removing of mandatory components.
-     * @param component
      */
     private void removeComponentInternal(Component component) {
         if(mComponents.contains(component)) {
@@ -127,6 +161,11 @@ public class GameObject {
         }
     }
 
+    /**
+     * Removes {@link com.monolith.api.Component} from this GameObject
+     * if it is it's component.
+     * @param component {@link com.monolith.api.Component} to remove.
+     */
     public void removeComponent(Component component) {
         // Make sure none of the mandatory components is removed
         if(component == transform) {
