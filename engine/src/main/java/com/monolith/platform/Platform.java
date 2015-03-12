@@ -8,13 +8,13 @@ import java.io.InputStream;
 public interface Platform {
 
     /**
-     * This method serves to open InputStreams to project files.
+     * Opens InputStreams to project files.
      *
      * In case of any exception this method must return null so
      * caller can deal with problems.
      * @param path Path to the file relative to platform's specific project files folder.
      */
-    InputStream getAssetFile(String path);
+    InputStream getAssetFileInputStream(String path);
 
     void log(String message);
 }

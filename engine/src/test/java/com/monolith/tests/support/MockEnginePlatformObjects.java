@@ -56,12 +56,17 @@ public class MockEnginePlatformObjects {
         }
 
         @Override
-        public InputStream getAssetFile(String path) {
+        public InputStream getAssetFileInputStream(String path) {
             try {
                 return new FileInputStream(new File(Constants.FILES_FOLDER_PATH + mFilesFolder + "/" + path));
             } catch (FileNotFoundException e) {
                 return null;
             }
+        }
+
+        @Override
+        public void log(String message) {
+            // empty
         }
     }
 }

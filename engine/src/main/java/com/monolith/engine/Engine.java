@@ -98,7 +98,7 @@ public class Engine {
         Serializer serializer = new Persister();
         try {
             mScenesConfig = serializer.read(SCScenes.class,
-                    mPlatform.getAssetFile(Config.SCENES_FILE));
+                    mPlatform.getAssetFileInputStream(Config.SCENES_FILE));
             // Sort scenes for quicker lookup of scenes during scene loading
             Collections.sort(mScenesConfig.scenes);
             if (mScenesConfig == null) {
@@ -121,7 +121,7 @@ public class Engine {
         ISScene scene;
         try {
             scene = new Persister().read(ISScene.class,
-                    mPlatform.getAssetFile(configFilePath));
+                    mPlatform.getAssetFileInputStream(configFilePath));
         } catch (Exception e) {
             e.printStackTrace();
             throw new IllegalStateException("Error during retrieval of scene config file " + configFilePath);

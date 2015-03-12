@@ -22,7 +22,7 @@ public class AndroidPlatform implements Platform {
     }
 
     @Override
-    public InputStream getAssetFile(String path) {
+    public InputStream getAssetFileInputStream(String path) {
         try {
             return mContext.getAssets().open(Constants.ENGINE_ASSETS_ROOT_PATH + path);
         } catch (IOException e) {

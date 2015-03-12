@@ -65,6 +65,13 @@ public class MessagingTest extends BaseEngineTest implements InputMessenger.Mess
             assertFalse("Message was received, but it was not supposed to be", mMessageReceived);
         }
 
+        // Unregister receiver and see if we still get message
+        getEngine().getInputMessenger().unregisterMessageReceiver(this, OutputMessage.class);
+        getEngine().getInputMessenger().sendMessage(new InputMessage());
+        getEngine().onUpdate();
+
+        assertFalse("Message was received, but receiver was unregistered", mMessageReceived);
+
         getEngine().onFinish();
     }
 
