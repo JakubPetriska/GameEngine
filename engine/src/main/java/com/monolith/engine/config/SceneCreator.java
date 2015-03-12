@@ -14,6 +14,10 @@ import com.monolith.engine.config.model.initial_scene_state.ISScene;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * Constructs the initial state of scene from it's definition. This definition
+ * is given in scene configuration file.
+ */
 public class SceneCreator {
 
     private Application mApplication;
@@ -22,6 +26,11 @@ public class SceneCreator {
         this.mApplication = application;
     }
 
+    /**
+     * Constructs the scene.
+     * @param scene Contains the initial scene definition.
+     * @return Constructed {@link com.monolith.engine.Scene}.
+     */
     public Scene create(ISScene scene) {
         Scene runtimeSceneTree = new Scene();
         for (ISGameObject gameObject : scene.gameObjects) {

@@ -3,7 +3,7 @@ package com.monolith.platform;
 import java.io.InputStream;
 
 /**
- * Created by Jakub Petriska on 3. 1. 2015.
+ * Represents functionality that must be separately implemented by every supported platform.
  */
 public interface Platform {
 
@@ -16,5 +16,9 @@ public interface Platform {
      */
     InputStream getAssetFileInputStream(String path);
 
+    /**
+     * Logs the message.
+     * @param message Message to log.
+     */
     void log(String message);
 }

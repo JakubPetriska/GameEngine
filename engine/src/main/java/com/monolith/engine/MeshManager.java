@@ -7,7 +7,8 @@ import com.monolith.api.Primitives;
 import java.util.HashMap;
 
 /**
- * Created by Jakub Petriska on 16. 2. 2015.
+ * Creates instances of {@link com.monolith.api.MeshData} when they are needed
+ * and also caches them for later use.
  */
 public class MeshManager {
 
@@ -21,15 +22,25 @@ public class MeshManager {
         this.mApplication = application;
     }
 
+    /**
+     * Provides the instance of {@link com.monolith.api.MeshData} on given path.
+     * Path can also be a name of primitive mesh.
+     *
+     * {@link com.monolith.api.MeshData} objects are stored so second call to this
+     * method with the same argument will return same object as the first call.
+     *
+     * @param modelPath Path to the mesh file or name of the primitive mesh.
+     * @return Constructed mesh.
+     */
     public MeshData getMesh(String modelPath) {
         MeshData result;
-        if(modelPath == null) {
+        if (modelPath == null) {
             throw new IllegalArgumentException("Model path cannot be null");
-        } else if(mNameToMeshMap.containsKey(modelPath)) {
+        } else if (mNameToMeshMap.containsKey(modelPath)) {
             result = mNameToMeshMap.get(modelPath);
         } else {
             // Model is not loaded so load it
-            if(modelPath.equals(Primitives.CUBE)) {
+            if (modelPath.equals(Primitives.CUBE)) {
                 result = createCube();
             } else {
                 throw new IllegalStateException("Unavailable mesh requested");

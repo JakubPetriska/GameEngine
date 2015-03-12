@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Internal {@link com.monolith.api.Messenger} implementation.
+ * Internal implementation of {@link com.monolith.api.Messenger}.
  */
 public class MessengerInternal implements Messenger {
 
@@ -70,7 +70,7 @@ public class MessengerInternal implements Messenger {
     // TODO Probably creating concept of System would fix this?
 
     /**
-     * This must be called by engine itself.
+     * This must be called by {@link com.monolith.engine.Engine}.
      */
     public void update() {
         // Clear the map of current messages from previous frame and cache the empty sets

@@ -7,8 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * This class allows sending messages into the engine and receive messages
- * from the engine.
+ * Internal implementation of {@link com.monolith.api.external.InputMessenger}.
  */
 public class InputMessengerInternal {
 

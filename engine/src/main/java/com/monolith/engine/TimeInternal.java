@@ -3,7 +3,7 @@ package com.monolith.engine;
 import com.monolith.api.Time;
 
 /**
- * Internal implementation of Time interface.
+ * Internal implementation of {@link com.monolith.api.Time} interface.
  */
 public class TimeInternal implements Time {
 
@@ -16,6 +16,10 @@ public class TimeInternal implements Time {
         engineInstanceStartTime = System.currentTimeMillis();
     }
 
+    /**
+     * Must be called by {@link com.monolith.engine.Engine} on the start of every frame.
+     * Recalculates values to be valid for this new frame.
+     */
     public void update() {
         float lastFrameStart = frameStart;
 

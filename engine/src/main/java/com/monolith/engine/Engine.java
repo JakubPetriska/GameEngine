@@ -1,6 +1,7 @@
 package com.monolith.engine;
 
 import com.monolith.api.Application;
+import com.monolith.api.Component;
 import com.monolith.api.DebugLog;
 import com.monolith.api.GameObject;
 import com.monolith.api.Messenger;
@@ -23,6 +24,9 @@ import org.simpleframework.xml.core.Persister;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Represents one engine instance. Engine holds everything together.
+ */
 public class Engine {
 
     private Platform mPlatform;
@@ -46,10 +50,13 @@ public class Engine {
     private Scene mCurrentScene;
 
     /**
-     * @param startSceneName Name of the scene that this engine should start at first. If null engine will
-     *                       use the default initial scene.
-     * @param platform
-     * @param touchInput
+     * Constructs new Engine instance.
+     *
+     * @param startSceneName Name of the scene that this engine should show first.
+     *                       If null, engine will use the default scene as specified
+     *                       in scenes configuration file.
+     * @param platform       {@link com.monolith.platform.Platform} instance provided by the specific platform.
+     * @param touchInput     {@link com.monolith.platform.TouchInputInternal} instance provided by the specific platform.
      */
     public Engine(String startSceneName, Platform platform, Renderer renderer, TouchInputInternal touchInput) {
         mCurrentSceneName = startSceneName;
@@ -68,6 +75,8 @@ public class Engine {
     /**
      * Swaps objects that are provided to Engine during it's creation.
      * These are platform specific objects created by platform specific code.
+     * <p/>
+     * This method allows resuming the Engine in different platform context.
      */
     public void swapProvidedObjects(Platform platform, Renderer renderer, TouchInputInternal touchInput) {
         this.mPlatform = platform;
@@ -79,6 +88,12 @@ public class Engine {
     private boolean mInitialized = false;
 
     // TODO validate all documents
+
+    /**
+     * Must be called by platform. Initializes the engine.
+     * It is possible to call this method for the second time on the same object
+     * however second initialization is not performed.
+     */
     public void onStart() {
         if (mInitialized) {
             return;
@@ -95,6 +110,10 @@ public class Engine {
         mInitialized = true;
     }
 
+    /**
+     * Loads scenes configuration file. This file contains names of all scenes together with
+     * paths to the files defining initial state for every scene.
+     */
     private void loadScenesConfig() {
         Serializer serializer = new Persister();
         try {
@@ -110,6 +129,12 @@ public class Engine {
         }
     }
 
+    /**
+     * Loads scene's initial configuration and constructs {@link com.monolith.engine.Scene} object.
+     *
+     * @param sceneName Name of the scene to construct.
+     * @return Fully constructed {@link com.monolith.engine.Scene} object.
+     */
     private Scene getScene(String sceneName) {
         // Find the scene object in the scenes definition structure
         mDummyScene.name = sceneName;
@@ -136,6 +161,10 @@ public class Engine {
         return result;
     }
 
+    /**
+     * Must be called by platform every frame.
+     * This call is dispatched to all components which results in scene state update and rendering.
+     */
     public void onUpdate() {
         // TODO create something like System? Common API for these.
         mMessenger.update();
@@ -146,6 +175,12 @@ public class Engine {
         postUpdate(mCurrentScene.gameObjects);
     }
 
+    /**
+     * Helper recursive method to call {@link Component#update()} on all
+     * {@link com.monolith.api.Component Components}.
+     *
+     * @param gameObjects {@link java.util.List} of top level scene objects.
+     */
     private void update(List<GameObject> gameObjects) {
         for (int i = 0; i < gameObjects.size(); ++i) {
             GameObject gameObject = gameObjects.get(i);
@@ -156,6 +191,12 @@ public class Engine {
         }
     }
 
+    /**
+     * Helper recursive method to call {@link Component#postUpdate()} on all
+     * {@link com.monolith.api.Component Components}.
+     *
+     * @param gameObjects {@link java.util.List} of top level scene objects.
+     */
     private void postUpdate(List<GameObject> gameObjects) {
         for (int i = 0; i < gameObjects.size(); ++i) {
             GameObject gameObject = gameObjects.get(i);
@@ -166,10 +207,20 @@ public class Engine {
         }
     }
 
+    /**
+     * Must be called by platform when this engine instance finishes.
+     * This call is dispatched to all components.
+     */
     public void onFinish() {
         finish(mCurrentScene.gameObjects);
     }
 
+    /**
+     * Helper recursive method to call {@link Component#finish()} on all
+     * {@link com.monolith.api.Component Components}.
+     *
+     * @param gameObjects {@link java.util.List} of top level scene objects.
+     */
     private void finish(List<GameObject> gameObjects) {
         for (int i = 0; i < gameObjects.size(); ++i) {
             GameObject gameObject = gameObjects.get(i);
@@ -183,7 +234,7 @@ public class Engine {
     public InputMessenger getInputMessenger() {
         return mInputMessengerInternal.getInputMessenger();
     }
-
+    
     private class ApplicationImpl implements Application {
 
         @Override

@@ -3,7 +3,8 @@ package com.monolith.platform;
 import com.monolith.api.TouchInput;
 
 /**
- * Created by Jakub Petriska on 8. 1. 2015.
+ * Internal representation of {@link com.monolith.api.TouchInput} that specific platform must
+ * provide.
  */
 public interface TouchInputInternal extends TouchInput {
     /**
