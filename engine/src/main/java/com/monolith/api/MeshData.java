@@ -5,6 +5,7 @@ package com.monolith.api;
  *
  * <strong>Mesh data are read-only.</strong>
  * Any change to any of the fields will not result in any change in the rendered mesh.
+ * Also for one model there exists only one instance of MeshData.
  *
  * <strong>Never create this class directly.</strong>
  * You should not need to create your own instances of MeshData.
@@ -31,6 +32,9 @@ public class MeshData {
 
     /**
      * Contains indices of normals of vertices of triangles in this mesh.
+     *
+     * Must be the same length as {@link com.monolith.api.MeshData#trianglesVertices}.
+     * Meshes without normals are currently not supported.
      */
     public final int[] trianglesNormals;
 

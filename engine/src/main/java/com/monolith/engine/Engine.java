@@ -248,7 +248,7 @@ public class Engine {
         }
 
         @Override
-        public MeshManager getMeshManager() {
+        public MeshManager getModelManager() {
             return mMeshManager;
         }
 
@@ -279,7 +279,7 @@ public class Engine {
 
         @Override
         public void changeScene(String newSceneName) {
-            mMeshManager = new MeshManager(mApplication);
+            mMeshManager = new MeshManager(mApplication, mPlatform);
             mCurrentScene = getScene(newSceneName);
             mCurrentSceneName = newSceneName;
         }

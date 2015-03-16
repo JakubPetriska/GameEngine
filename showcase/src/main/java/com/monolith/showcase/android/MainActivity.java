@@ -25,7 +25,8 @@ public class MainActivity extends BaseActionBarActivity {
     private int[] mExamples = new int[]{
             R.string.example_basic_activity,
             R.string.example_basic_fragment,
-            R.string.example_scene_switching
+            R.string.example_scene_switching,
+            R.string.example_imported_model
     };
 
     @Override
@@ -56,6 +57,11 @@ public class MainActivity extends BaseActionBarActivity {
                         return;
                     case R.string.example_scene_switching:
                         startActivity(new Intent(MainActivity.this, SceneSwitchingActivity.class));
+                        return;
+                    case R.string.example_imported_model:
+                        Intent intent = new Intent(MainActivity.this, MonolithActivity.class);
+                        intent.putExtra(MonolithActivity.EXTRA_DEFAULT_SCENE_NAME, "imported_model_scene");
+                        startActivity(intent);
                         return;
                 }
             }

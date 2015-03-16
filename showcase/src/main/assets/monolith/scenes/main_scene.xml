@@ -6,7 +6,7 @@
                 <position x="0" y="0" z="10" />
             </transform>
             <components>
-                <component type="mesh">
+                <component type="model">
                     <params>
                         <param name="meshPath">cube</param>
                     </params>
@@ -19,7 +19,7 @@
                         <position x="1" y="1" z="1" />
                     </transform>
                     <components>
-                        <component type="mesh">
+                        <component type="model">
                             <params>
                                 <param name="meshPath">cube</param>
                             </params>

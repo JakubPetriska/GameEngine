@@ -10,4 +10,7 @@
     <scene
         name="one_cube_scene"
         sceneFilePath="scenes/scene_switching/one_cube_scene.xml"/>
+    <scene
+        name="imported_model_scene"
+        sceneFilePath="scenes/imported_model_scene.xml"/>
 </scenes>

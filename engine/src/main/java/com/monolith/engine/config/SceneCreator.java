@@ -2,9 +2,9 @@ package com.monolith.engine.config;
 
 import com.monolith.api.Component;
 import com.monolith.api.GameObject;
+import com.monolith.api.components.Model;
 import com.monolith.engine.Scene;
 import com.monolith.api.components.Transform;
-import com.monolith.api.components.Mesh;
 import com.monolith.engine.ComponentsConstants;
 import com.monolith.api.Application;
 import com.monolith.engine.config.model.initial_scene_state.ISComponent;
@@ -61,8 +61,8 @@ public class SceneCreator {
 
     private Component convertComponent(GameObject owner, ISComponent initialComponent) {
         Component component;
-        if (ComponentsConstants.COMPONENT_TYPE_MESH.equals(initialComponent.type)) {
-            component = new Mesh();
+        if (ComponentsConstants.COMPONENT_TYPE_MODEL.equals(initialComponent.type)) {
+            component = new Model();
         } else {
 			try {
 				Class<Component> scriptClass = (Class<Component>) Class.forName(initialComponent.type);

@@ -15,7 +15,7 @@ public interface Application {
 
     TouchInput getTouchInput();
 
-    MeshManager getMeshManager();
+    MeshManager getModelManager();
 
     Messenger getMessenger();
 

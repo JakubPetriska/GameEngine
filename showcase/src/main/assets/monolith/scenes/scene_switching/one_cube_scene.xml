@@ -15,7 +15,7 @@
             </transform>
             <components>
                 <component type="com.monolith.showcase.engine.TestScriptedBehaviour"/>
-                <component type="mesh">
+                <component type="model">
                     <params>
                         <param name="meshPath">cube</param>
                     </params>

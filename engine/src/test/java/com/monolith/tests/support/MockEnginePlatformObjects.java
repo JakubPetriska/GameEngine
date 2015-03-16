@@ -2,7 +2,7 @@ package com.monolith.tests.support;
 
 import com.monolith.api.MeshData;
 import com.monolith.api.Touch;
-import com.monolith.api.components.Mesh;
+import com.monolith.api.components.Model;
 import com.monolith.platform.Platform;
 import com.monolith.api.Renderer;
 import com.monolith.platform.TouchInputInternal;
@@ -22,7 +22,7 @@ public class MockEnginePlatformObjects {
     public static class MockRenderer implements Renderer {
 
         @Override
-        public void render(Mesh mesh) {
+        public void render(Model model) {
             // Do nothing
         }
 

@@ -1,6 +1,6 @@
 package com.monolith.api;
 
-import com.monolith.api.components.Mesh;
+import com.monolith.api.components.Model;
 
 /**
  * Provides rendering functionality.
@@ -8,10 +8,10 @@ import com.monolith.api.components.Mesh;
 public interface Renderer {
 
     /**
-     * Renders mesh on the position of it's owning {@link com.monolith.api.GameObject}.
-     * @param mesh Mesh to render.
+     * Renders model on the position of it's owning {@link com.monolith.api.GameObject}.
+     * @param model Model to render.
      */
-    void render(Mesh mesh);
+    void render(Model model);
 
     /**
      * Creates instance of MeshData with supplied data.

@@ -6,7 +6,7 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 import com.monolith.api.MeshData;
-import com.monolith.api.components.Mesh;
+import com.monolith.api.components.Model;
 import com.monolith.api.Renderer;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -147,14 +147,6 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
 
         FloatBuffer dataBuffer;
 
-        /**
-         * Never use this directly. Always let platform specific code create these.
-         *
-         * @param vertices
-         * @param normals
-         * @param trianglesVertices
-         * @param trianglesNormals
-         */
         public AndroidMeshData(
                 float[] vertices, float[] normals,
                 int[] trianglesVertices, int[] trianglesNormals) {
@@ -173,10 +165,10 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
     private final Vector3f mPositionCache = new Vector3f();
 
     @Override
-    public void render(Mesh mesh) {
-        AndroidMeshData meshData = (AndroidMeshData) mesh.meshData;
+    public void render(Model model) {
+        AndroidMeshData meshData = (AndroidMeshData) model.meshData;
 
-        mesh.getGameObject().transform.getWorldPosition(mPositionCache);
+        model.getGameObject().transform.getWorldPosition(mPositionCache);
         // Create the model matrix
         Matrix.setIdentityM(mTranslationMatrix, 0);
         Matrix.translateM(mTranslationMatrix, 0,

@@ -6,7 +6,7 @@ import com.monolith.api.MeshData;
 /**
  * Component responsible for rendering a mesh.
  */
-public class Mesh extends Component {
+public class Model extends Component {
 
     /**
      * Name of primitive mesh. Imported meshes are currently not supported.
@@ -16,7 +16,7 @@ public class Mesh extends Component {
 
     @Override
     public void start() {
-        this.meshData = getApplication().getMeshManager().getMesh(meshPath);
+        this.meshData = getApplication().getModelManager().getMeshData(meshPath);
     }
 
     @Override
