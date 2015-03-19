@@ -56,7 +56,12 @@ public class SceneCreator {
     }
 
     private void convertTransform(ISGameObject.Transform what, Transform into) {
-        into.moveBy(what.position.x, what.position.y, what.position.z);
+        if(what == null) {
+            return;
+        }
+        if(what.position != null) {
+            into.moveBy(what.position.x, what.position.y, what.position.z);
+        }
     }
 
     private Component convertComponent(GameObject owner, ISComponent initialComponent) {
