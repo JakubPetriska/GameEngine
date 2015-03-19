@@ -13,4 +13,7 @@
     <scene
         name="imported_model_scene"
         sceneFilePath="scenes/imported_model_scene.xml"/>
+    <scene
+        name="rotation_scene"
+        sceneFilePath="scenes/rotation_scene.xml"/>
 </scenes>

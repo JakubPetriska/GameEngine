@@ -162,20 +162,27 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
     }
 
     // Used to retrieve object absolute position
-    private final Vector3 mPositionCache = new Vector3();
+    private final Vector3 mHelperVector = new Vector3();
 
     @Override
     public void render(Model model) {
         AndroidMeshData meshData = (AndroidMeshData) model.meshData;
 
-        model.getGameObject().transform.getWorldPosition(mPositionCache);
+        model.getGameObject().transform.getWorldPosition(mHelperVector);
         // Create the model matrix
         Matrix.setIdentityM(mTranslationMatrix, 0);
         Matrix.translateM(mTranslationMatrix, 0,
-                -mPositionCache.x, // Revert the direction because of change of the coordinate system handedness
-                mPositionCache.y,
-                mPositionCache.z);
+                -mHelperVector.x, // Revert the direction because of change of the coordinate system handedness
+                mHelperVector.y,
+                mHelperVector.z);
+
+        Vector3 rotation = model.getGameObject().transform.rotation;
         Matrix.setIdentityM(mRotationMatrix, 0);
+        // Axis are transformed according to the changed in handedness
+        Matrix.rotateM(mRotationMatrix, 0, rotation.y, 0, -1, 0);
+        Matrix.rotateM(mRotationMatrix, 0, rotation.x, 1, 0, 0);
+        Matrix.rotateM(mRotationMatrix, 0, rotation.z, 0, 0, -1);
+
         Matrix.multiplyMM(mModelMatrix, 0, mTranslationMatrix, 0, mRotationMatrix, 0);
 
         // Compose MVP matrix

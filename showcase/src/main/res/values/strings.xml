@@ -5,4 +5,5 @@
     <string name="example_basic_fragment">Using engine as Fragment</string>
     <string name="example_scene_switching">Switching scenes</string>
     <string name="example_imported_model">Imported model</string>
+    <string name="example_rotation">Rotation</string>
 </resources>

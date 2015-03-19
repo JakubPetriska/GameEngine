@@ -22,6 +22,8 @@ public class ISGameObject {
     public static class Transform {
         @Element(required = false)
         public Vector position;
+        @Element(required = false)
+        public Vector rotation;
     }
 
     public static class Vector {

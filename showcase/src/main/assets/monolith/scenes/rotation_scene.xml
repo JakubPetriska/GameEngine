@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+    <gameObjects>
+        <gameObject>
+            <transform>
+                <position x="0" y="0" z="10" />
+                <rotation x="0" y="0" z="0" />
+            </transform>
+            <components>
+                <component type="model">
+                    <params>
+                        <param name="meshPath">cube</param>
+                    </params>
+                </component>
+                <component type="com.monolith.showcase.engine.TouchRotationController"/>
+            </components>
+        </gameObject>
+    </gameObjects>
+</scene>

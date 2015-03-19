@@ -26,7 +26,8 @@ public class MainActivity extends BaseActionBarActivity {
             R.string.example_basic_activity,
             R.string.example_basic_fragment,
             R.string.example_scene_switching,
-            R.string.example_imported_model
+            R.string.example_imported_model,
+            R.string.example_rotation
     };
 
     @Override
@@ -48,22 +49,29 @@ public class MainActivity extends BaseActionBarActivity {
         mList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent;
                 switch (mExamples[position]) {
                     case R.string.example_basic_activity:
-                        startActivity(new Intent(MainActivity.this, MonolithActivity.class));
-                        return;
+                        intent = new Intent(MainActivity.this, MonolithActivity.class);
+                        break;
                     case R.string.example_basic_fragment:
-                        startActivity(new Intent(MainActivity.this, EngineAsFragmentActivity.class));
-                        return;
+                        intent = new Intent(MainActivity.this, EngineAsFragmentActivity.class);
+                        break;
                     case R.string.example_scene_switching:
-                        startActivity(new Intent(MainActivity.this, SceneSwitchingActivity.class));
-                        return;
+                        intent = new Intent(MainActivity.this, SceneSwitchingActivity.class);
+                        break;
                     case R.string.example_imported_model:
-                        Intent intent = new Intent(MainActivity.this, MonolithActivity.class);
+                        intent = new Intent(MainActivity.this, MonolithActivity.class);
                         intent.putExtra(MonolithActivity.EXTRA_DEFAULT_SCENE_NAME, "imported_model_scene");
-                        startActivity(intent);
-                        return;
+                        break;
+                    case R.string.example_rotation:
+                        intent = new Intent(MainActivity.this, MonolithActivity.class);
+                        intent.putExtra(MonolithActivity.EXTRA_DEFAULT_SCENE_NAME, "rotation_scene");
+                        break;
+                    default:
+                        throw new IllegalStateException("Unknown option.");
                 }
+                startActivity(intent);
             }
         });
     }
