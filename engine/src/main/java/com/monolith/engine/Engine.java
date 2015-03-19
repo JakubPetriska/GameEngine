@@ -41,6 +41,8 @@ public class Engine {
     private MessengerInternal mMessenger;
     private TimeInternal mTime;
 
+    private System[] mInternalSystems;
+
     private SCScenes mScenesConfig;
 
     // This is only used for searching in scenes List
@@ -68,6 +70,10 @@ public class Engine {
         mMessenger = new MessengerInternal(mInputMessengerInternal);
 
         mTime = new TimeInternal();
+
+        mInternalSystems = new System[]{
+                mTime, mMessenger, mTouchInput
+        };
 
         mApplication = new ApplicationImpl();
     }
@@ -166,10 +172,9 @@ public class Engine {
      * This call is dispatched to all components which results in scene state update and rendering.
      */
     public void onUpdate() {
-        // TODO create something like System? Common API for these.
-        mMessenger.update();
-        mTouchInput.update();
-        mTime.update();
+        for (int i = 0; i < mInternalSystems.length; ++i) {
+            mInternalSystems[i].update();
+        }
 
         update(mCurrentScene.gameObjects);
         postUpdate(mCurrentScene.gameObjects);
@@ -234,7 +239,7 @@ public class Engine {
     public InputMessenger getInputMessenger() {
         return mInputMessengerInternal.getInputMessenger();
     }
-    
+
     private class ApplicationImpl implements Application {
 
         @Override

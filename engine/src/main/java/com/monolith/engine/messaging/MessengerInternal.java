@@ -11,7 +11,7 @@ import java.util.Set;
 /**
  * Internal implementation of {@link com.monolith.api.Messenger}.
  */
-public class MessengerInternal implements Messenger {
+public class MessengerInternal implements Messenger, com.monolith.engine.System {
 
     private final InputMessengerInternal mInputMessengerInternal;
 
@@ -72,6 +72,7 @@ public class MessengerInternal implements Messenger {
     /**
      * This must be called by {@link com.monolith.engine.Engine}.
      */
+    @Override
     public void update() {
         // Clear the map of current messages from previous frame and cache the empty sets
         HashMap<String, Set<Object>> mapToClear = mCurrentMessagesMap;
