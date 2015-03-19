@@ -13,8 +13,8 @@ public class TestScriptedBehaviour extends Component {
 
     private static final float FACTOR = 0.005f;
 
-    private float mLastTouchX = -1;
-    private float mLastTouchY = -1;
+    private float mLastTouchX;
+    private float mLastTouchY;
 
     @Override
     public void update() {
@@ -24,7 +24,7 @@ public class TestScriptedBehaviour extends Component {
             float currentTouchX = touch.getX();
             float currentTouchY = touch.getY();
 
-            if (mLastTouchX != -1 && mLastTouchY != -1) {
+            if (touch.getState() != Touch.STATE_BEGAN) {
                 getGameObject().transform.translate(
                         (currentTouchX - mLastTouchX) * FACTOR,
                         -(currentTouchY - mLastTouchY) * FACTOR,
@@ -32,8 +32,8 @@ public class TestScriptedBehaviour extends Component {
             }
 
             if (touch.getState() == Touch.STATE_ENDED) {
-                mLastTouchX = -1;
-                mLastTouchY = -1;
+                mLastTouchX = 0;
+                mLastTouchY = 0;
             } else {
                 mLastTouchX = currentTouchX;
                 mLastTouchY = currentTouchY;
