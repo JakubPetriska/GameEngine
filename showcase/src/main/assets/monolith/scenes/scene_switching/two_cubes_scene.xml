@@ -14,7 +14,7 @@
                 <position x="0" y="0" z="10" />
             </transform>
             <components>
-                <component type="com.monolith.showcase.engine.TestScriptedBehaviour" />
+                <component type="com.monolith.showcase.engine.TouchPositionController" />
             </components>
             <children>
                 <gameObject>

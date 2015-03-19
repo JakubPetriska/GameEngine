@@ -11,7 +11,7 @@
                         <param name="meshPath">cube</param>
                     </params>
                 </component>
-                <component type="com.monolith.showcase.engine.TestScriptedBehaviour"/>
+                <component type="com.monolith.showcase.engine.TouchPositionController"/>
             </components>
             <children>
                 <gameObject>
