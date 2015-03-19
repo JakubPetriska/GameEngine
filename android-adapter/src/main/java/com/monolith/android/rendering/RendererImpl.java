@@ -6,10 +6,9 @@ import android.opengl.Matrix;
 import android.util.Log;
 
 import com.monolith.api.MeshData;
-import com.monolith.api.components.Model;
 import com.monolith.api.Renderer;
-
-import org.lwjgl.util.vector.Vector3f;
+import com.monolith.api.components.Model;
+import com.monolith.api.math.Vector3;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -31,13 +30,13 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
 
     private static final String vertexShaderCode =
             "uniform mat4 uMVPMatrix;" +
-                    "uniform mat4 uRotationMatrix;" +
                     "attribute vec4 vPosition;" +
-                    "attribute vec4 vNormal;" +
+                    "attribute vec3 vNormal;" +
                     "varying vec4 oNormal;" +
                     "void main() {" +
                     "  gl_Position = uMVPMatrix * vPosition;" +
-                    "  oNormal = normalize(uRotationMatrix * vNormal);" +
+                    "  vec4 normal = vec4(vNormal.x, vNormal.y, vNormal.z, 0);" +
+                    "  oNormal = normalize(uMVPMatrix * normal);" +
                     "}";
 
     private static final String fragmentShaderCode =
@@ -113,6 +112,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
     }
 
     // TODO comment this code
+
     /**
      * Creates packed buffer for MeshData object.
      */
@@ -162,7 +162,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
     }
 
     // Used to retrieve object absolute position
-    private final Vector3f mPositionCache = new Vector3f();
+    private final Vector3 mPositionCache = new Vector3();
 
     @Override
     public void render(Model model) {
@@ -216,12 +216,6 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
 
         // Apply the projection and view transformation
         GLES20.glUniformMatrix4fv(mVPMatrixHandle, 1, false, mMVPMatrix, 0);
-
-        // get handle to shape's transformation matrix
-        int rotationMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uRotationMatrix");
-
-        // Apply the projection and view transformation
-        GLES20.glUniformMatrix4fv(rotationMatrixHandle, 1, false, mRotationMatrix, 0);
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, meshData.trianglesVertices.length);
 
