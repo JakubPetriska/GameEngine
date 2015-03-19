@@ -161,6 +161,11 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         return meshData;
     }
 
+    @Override
+    public void update() {
+        
+    }
+
     // Used to retrieve object absolute position
     private final Vector3 mHelperVector = new Vector3();
 

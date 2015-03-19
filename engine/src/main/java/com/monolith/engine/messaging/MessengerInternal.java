@@ -1,6 +1,7 @@
 package com.monolith.engine.messaging;
 
 import com.monolith.api.Messenger;
+import com.monolith.engine.ISystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +12,7 @@ import java.util.Set;
 /**
  * Internal implementation of {@link com.monolith.api.Messenger}.
  */
-public class MessengerInternal implements Messenger, com.monolith.engine.System {
+public class MessengerInternal implements Messenger, ISystem {
 
     private final InputMessengerInternal mInputMessengerInternal;
 
@@ -65,9 +66,6 @@ public class MessengerInternal implements Messenger, com.monolith.engine.System 
             resultList.addAll((Set<T>) mCurrentMessagesMap.get(messageKey));
         }
     }
-
-    // TODO maybe this is not the best idea. (different api of every engine component, different lifecycle), Touch input has the same problem.
-    // TODO Probably creating concept of System would fix this?
 
     /**
      * This must be called by {@link com.monolith.engine.Engine}.

@@ -5,7 +5,7 @@ import com.monolith.api.Time;
 /**
  * Internal implementation of {@link com.monolith.api.Time} interface.
  */
-public class TimeInternal implements Time, System {
+public class TimeInternal implements Time, ISystem {
 
     private long engineInstanceStartTime;
 

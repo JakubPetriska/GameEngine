@@ -41,7 +41,7 @@ public class Engine {
     private MessengerInternal mMessenger;
     private TimeInternal mTime;
 
-    private System[] mInternalSystems;
+    private ISystem[] mInternalSystems;
 
     private SCScenes mScenesConfig;
 
@@ -71,7 +71,7 @@ public class Engine {
 
         mTime = new TimeInternal();
 
-        mInternalSystems = new System[]{
+        mInternalSystems = new ISystem[]{
                 mTime, mMessenger, mTouchInput
         };
 

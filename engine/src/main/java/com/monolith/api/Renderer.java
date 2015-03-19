@@ -1,11 +1,12 @@
 package com.monolith.api;
 
 import com.monolith.api.components.Model;
+import com.monolith.engine.ISystem;
 
 /**
  * Provides rendering functionality.
  */
-public interface Renderer {
+public interface Renderer extends ISystem {
 
     /**
      * Renders model on the position of it's owning {@link com.monolith.api.GameObject}.

@@ -30,6 +30,11 @@ public class MockEnginePlatformObjects {
         public MeshData createMeshData(float[] vertices, float[] normals, int[] trianglesVertices, int[] trianglesNormals) {
             return new MeshData(vertices, normals, trianglesVertices, trianglesNormals);
         }
+
+        @Override
+        public void update() {
+
+        }
     }
 
     public static class MockTouchInput implements TouchInputInternal {
