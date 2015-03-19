@@ -60,7 +60,7 @@ public class SceneCreator {
             return;
         }
         if(what.position != null) {
-            into.moveBy(what.position.x, what.position.y, what.position.z);
+            into.translate(what.position.x, what.position.y, what.position.z);
         }
     }
 

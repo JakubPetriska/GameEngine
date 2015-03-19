@@ -24,6 +24,12 @@ public class Vector3 {
         this.z = z;
     }
 
+    public void set(Vector3 source) {
+        this.x = source.x;
+        this.y = source.y;
+        this.z = source.z;
+    }
+
     /**
      * Adds Vector to this Vector. Result is stored in this Vector.
      * @param vector Vector that is added to this Vector.
@@ -37,13 +43,13 @@ public class Vector3 {
     /**
      * Adds to Vectors together.
      * @param result Vector in which result is stored.
-     * @param first First Vector to which the second Vector is added.
-     * @param second Second Vector that is added to the first Vector.
+     * @param left Vector to which the right Vector is added.
+     * @param right Vector that is added to the left Vector.
      */
-    public static void add(Vector3 result, Vector3 first, Vector3 second) {
-        result.x = first.x + second.x;
-        result.y = first.y + second.y;
-        result.z = first.z + second.z;
+    public static void add(Vector3 result, Vector3 left, Vector3 right) {
+        result.x = left.x + right.x;
+        result.y = left.y + right.y;
+        result.z = left.z + right.z;
     }
 
     /**
@@ -57,15 +63,15 @@ public class Vector3 {
     }
 
     /**
-     * Subtracts one Vector from another using the equation result = first - second.
+     * Subtracts one Vector from another using the equation result = left - right.
      * @param result Vector in which result is stored.
-     * @param first Vector from which the second Vector is subtracted.
-     * @param second Vector that is subtracted from first Vector.
+     * @param left Vector from which the right Vector is subtracted.
+     * @param right Vector that is subtracted from left Vector.
      */
-    public static void subtract(Vector3 result, Vector3 first, Vector3 second) {
-        result.x = first.x - second.x;
-        result.y = first.y - second.y;
-        result.z = first.z - second.z;
+    public static void subtract(Vector3 result, Vector3 left, Vector3 right) {
+        result.x = left.x - right.x;
+        result.y = left.y - right.y;
+        result.z = left.z - right.z;
     }
 
     /**

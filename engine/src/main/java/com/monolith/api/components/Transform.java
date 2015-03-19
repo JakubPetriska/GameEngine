@@ -11,11 +11,12 @@ import com.monolith.api.math.Vector3;
  */
 public class Transform extends Component {
 
+    // Used for computing, created here to avoid creating new instance over and over
+    private final Vector3 helperVector = new Vector3();
+
     public final Vector3 position = new Vector3();
 
-    private final Vector3 mCachedParentPosition = new Vector3();
-
-    public void moveBy(float x, float y, float z) {
+    public void translate(float x, float y, float z) {
         position.x += x;
         position.y += y;
         position.z += z;
@@ -24,14 +25,14 @@ public class Transform extends Component {
     /**
      * Returns world(absolute) transformation of this transform.
      *
-     * @param output Vector3f in which result will be stored.
+     * @param output Vector in which result will be stored.
      */
     public void getWorldPosition(Vector3 output) {
         if (getGameObject().getParent() != null) {
-            getGameObject().getParent().transform.getWorldPosition(mCachedParentPosition);
+            getGameObject().getParent().transform.getWorldPosition(helperVector);
+            Vector3.add(output, position, helperVector);
         } else {
-            mCachedParentPosition.set(0, 0, 0);
+            output.set(position);
         }
-        Vector3.add(output, mCachedParentPosition, position);
     }
 }
