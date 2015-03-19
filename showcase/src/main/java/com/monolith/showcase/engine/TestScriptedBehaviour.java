@@ -26,7 +26,7 @@ public class TestScriptedBehaviour extends Component {
 
             if (mLastTouchX != -1 && mLastTouchY != -1) {
                 getGameObject().transform.translate(
-                        -(currentTouchX - mLastTouchX) * FACTOR,
+                        (currentTouchX - mLastTouchX) * FACTOR,
                         -(currentTouchY - mLastTouchY) * FACTOR,
                         0);
             }

@@ -172,7 +172,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         // Create the model matrix
         Matrix.setIdentityM(mTranslationMatrix, 0);
         Matrix.translateM(mTranslationMatrix, 0,
-                mPositionCache.x,
+                -mPositionCache.x, // Revert the direction because of change of the coordinate system handedness
                 mPositionCache.y,
                 mPositionCache.z);
         Matrix.setIdentityM(mRotationMatrix, 0);
