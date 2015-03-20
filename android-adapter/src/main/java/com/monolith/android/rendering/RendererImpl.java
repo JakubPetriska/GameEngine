@@ -55,9 +55,9 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
 
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
+
+    // These are helper variables used during calculations of position of every model
     private final float[] mModelMatrix = new float[16];
-    private final float[] mTranslationMatrix = new float[16];
-    private final float[] mRotationMatrix = new float[16];
     private final float[] mMVPMatrix = new float[16];
 
     private int mProgram;
@@ -146,6 +146,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
     private static class AndroidMeshData extends MeshData {
 
         FloatBuffer dataBuffer;
+        float[] transformationMatrix = new float[16];
 
         public AndroidMeshData(
                 float[] vertices, float[] normals,
@@ -169,21 +170,17 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         AndroidMeshData meshData = (AndroidMeshData) model.meshData;
 
         model.getGameObject().transform.getWorldPosition(mHelperVector);
+
         // Create the model matrix
-        Matrix.setIdentityM(mTranslationMatrix, 0);
-        Matrix.translateM(mTranslationMatrix, 0,
+        Matrix.setIdentityM(mModelMatrix, 0);
+        Matrix.translateM(mModelMatrix, 0,
                 -mHelperVector.x, // Revert the direction because of change of the coordinate system handedness
                 mHelperVector.y,
                 mHelperVector.z);
-
         Vector3 rotation = model.getGameObject().transform.rotation;
-        Matrix.setIdentityM(mRotationMatrix, 0);
-        // Axis are transformed according to the changed in handedness
-        Matrix.rotateM(mRotationMatrix, 0, rotation.y, 0, -1, 0);
-        Matrix.rotateM(mRotationMatrix, 0, rotation.x, 1, 0, 0);
-        Matrix.rotateM(mRotationMatrix, 0, rotation.z, 0, 0, -1);
-
-        Matrix.multiplyMM(mModelMatrix, 0, mTranslationMatrix, 0, mRotationMatrix, 0);
+        Matrix.rotateM(mModelMatrix, 0, rotation.y, 0, -1, 0);
+        Matrix.rotateM(mModelMatrix, 0, rotation.x, 1, 0, 0);
+        Matrix.rotateM(mModelMatrix, 0, rotation.z, 0, 0, -1);
 
         // Compose MVP matrix
         Matrix.multiplyMM(mMVPMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
