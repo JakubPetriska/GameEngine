@@ -5,9 +5,12 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 
+import com.monolith.api.GameObject;
 import com.monolith.api.MeshData;
 import com.monolith.api.Renderer;
 import com.monolith.api.components.Model;
+import com.monolith.api.components.Transform;
+import com.monolith.api.math.Matrix4;
 import com.monolith.api.math.Vector3;
 
 import java.nio.ByteBuffer;
@@ -58,6 +61,8 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
 
     // These are helper variables used during calculations of position of every model
     private final float[] mModelMatrix = new float[16];
+    private final float[] mModelDuplicateMatrix = new float[16];
+    private final float[] mRelativeModelMatrix = new float[16];
     private final float[] mMVPMatrix = new float[16];
 
     private int mProgram;
@@ -146,7 +151,6 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
     private static class AndroidMeshData extends MeshData {
 
         FloatBuffer dataBuffer;
-        float[] transformationMatrix = new float[16];
 
         public AndroidMeshData(
                 float[] vertices, float[] normals,
@@ -162,25 +166,34 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         return meshData;
     }
 
-    // Used to retrieve object absolute position
-    private final Vector3 mHelperVector = new Vector3();
-
     @Override
     public void render(Model model) {
         AndroidMeshData meshData = (AndroidMeshData) model.meshData;
 
-        model.getGameObject().transform.getWorldPosition(mHelperVector);
-
-        // Create the model matrix
+        // TODO optimize this (twi sibling models calculate parent transformation twice)
+        // Create the model transformation matrix
         Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0,
-                -mHelperVector.x, // Revert the direction because of change of the coordinate system handedness
-                mHelperVector.y,
-                mHelperVector.z);
-        Vector3 rotation = model.getGameObject().transform.rotation;
-        Matrix.rotateM(mModelMatrix, 0, rotation.y, 0, -1, 0);
-        Matrix.rotateM(mModelMatrix, 0, rotation.x, 1, 0, 0);
-        Matrix.rotateM(mModelMatrix, 0, rotation.z, 0, 0, -1);
+        GameObject gameObject = model.getGameObject();
+        do {
+            Transform transform = gameObject.transform;
+
+            Matrix.setIdentityM(mRelativeModelMatrix, 0);
+            Vector3 position = transform.position;
+            Matrix.translateM(mRelativeModelMatrix, 0,
+                    -position.x, // Revert the direction because of change of the coordinate system handedness
+                    position.y,
+                    position.z);
+            Vector3 rotation = transform.rotation;
+            Matrix.rotateM(mRelativeModelMatrix, 0, rotation.y, 0, -1, 0);
+            Matrix.rotateM(mRelativeModelMatrix, 0, rotation.x, 1, 0, 0);
+            Matrix.rotateM(mRelativeModelMatrix, 0, rotation.z, 0, 0, -1);
+
+            Matrix.multiplyMM(mModelDuplicateMatrix, 0, mRelativeModelMatrix, 0, mModelMatrix, 0);
+
+            System.arraycopy(mModelDuplicateMatrix, 0, mModelMatrix, 0, 16);
+
+            gameObject = gameObject.getParent();
+        } while (gameObject != null);
 
         // Compose MVP matrix
         Matrix.multiplyMM(mMVPMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);

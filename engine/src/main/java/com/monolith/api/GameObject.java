@@ -148,6 +148,7 @@ public class GameObject {
     public void addComponent(Component component) {
         if(!mComponents.contains(component)) {
             component.setup(mApplication, this);
+            // Beware that game object's mandatory components need to stay at the beginning of the list
             mComponents.add(component);
             component.start();
         }
