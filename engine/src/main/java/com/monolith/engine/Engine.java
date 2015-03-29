@@ -93,7 +93,7 @@ public class Engine {
     // This flag ensures that engine is initialized only once (onStart method)
     private boolean mInitialized = false;
 
-    // TODO validate all documents
+    // TODO validate all xml files
 
     /**
      * Must be called by platform. Initializes the engine.
