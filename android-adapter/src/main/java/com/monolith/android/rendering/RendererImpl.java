@@ -141,7 +141,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
             } while (gameObject != null);
 
             Matrix.setIdentityM(mCameraMatrix, 0);
-            for(int i = 0; i < mCameraParents.size(); ++i) {
+            for (int i = 0; i < mCameraParents.size(); ++i) {
                 Transform transform = mCameraParents.get(i).transform;
 
                 Matrix.setIdentityM(mRelativeModelMatrix, 0);
