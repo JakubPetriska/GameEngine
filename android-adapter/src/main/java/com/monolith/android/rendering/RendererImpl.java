@@ -35,13 +35,14 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
 
     private static final String vertexShaderCode =
             "uniform mat4 uMVPMatrix;" +
+                    "uniform mat4 uModelMatrix;" +
                     "attribute vec4 vPosition;" +
                     "attribute vec3 vNormal;" +
                     "varying vec4 oNormal;" +
                     "void main() {" +
                     "  gl_Position = uMVPMatrix * vPosition;" +
                     "  vec4 normal = vec4(vNormal.x, vNormal.y, vNormal.z, 0);" +
-                    "  oNormal = normalize(uMVPMatrix * normal);" +
+                    "  oNormal = normalize(uModelMatrix * normal);" +
                     "}";
 
     private static final String fragmentShaderCode =
@@ -58,12 +59,12 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
     private static final float[] light = new float[]{-0.75f, 1, -0.5f, 0};
     private static final float color[] = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
 
+    // These are helper variables used during calculations of position of every model
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
-    private final float[] mCameraMatrix = new float[16];
-
-    // These are helper variables used during calculations of position of every model
-    private final float[] mModelMatrix = new float[16];
+    private final float[] mCameraMatrix = new float[16]; // Camera space transformation
+    private final float[] mModelMatrix = new float[16]; // World model transformation
+    private final float[] mMVMatrix = new float[16]; // Model View transformation matrix
     private final float[] mMVPMatrix = new float[16];
 
     private int mProgram;
@@ -248,19 +249,14 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         if (mCamera == null) {
             return;
         }
-
         AndroidMeshData meshData = (AndroidMeshData) model.meshData;
 
         createObjectTransformationMatrix(model.getGameObject(), mModelMatrix);
 
         // Compose MVP matrix
-
         Matrix.multiplyMM(mMVPMatrix, 0, mCameraMatrix, 0, mModelMatrix, 0);
-        Matrix.multiplyMM(mModelMatrix, 0, mViewMatrix, 0, mMVPMatrix, 0);
-        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mModelMatrix, 0);
-
-//        Matrix.multiplyMM(mMVPMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
-//        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVPMatrix, 0);
+        Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mMVPMatrix, 0);
+        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVMatrix, 0);
 
         GLES20.glUseProgram(mProgram);
 
@@ -291,11 +287,11 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         int lightHandle = GLES20.glGetUniformLocation(mProgram, "uLight");
         GLES20.glUniform4fv(lightHandle, 1, light, 0);
 
-        // get handle to shape's transformation matrix
         int mVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
-
-        // Apply the projection and view transformation
         GLES20.glUniformMatrix4fv(mVPMatrixHandle, 1, false, mMVPMatrix, 0);
+
+        int modelMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uModelMatrix");
+        GLES20.glUniformMatrix4fv(modelMatrixHandle, 1, false, mModelMatrix, 0);
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, meshData.trianglesVertices.length);
 
