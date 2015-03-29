@@ -14,11 +14,9 @@
                 <position x="0" y="0" z="10" />
             </transform>
             <components>
-                <component type="com.monolith.showcase.engine.TouchPositionController"/>
+                <component type="com.monolith.showcase.engine.TouchPositionController" />
                 <component type="model">
-                    <params>
-                        <param name="meshPath">cube</param>
-                    </params>
+                    <param name="meshPath">cube</param>
                 </component>
             </components>
         </gameObject>

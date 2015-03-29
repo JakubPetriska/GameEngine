@@ -23,9 +23,7 @@
                     </transform>
                     <components>
                         <component type="model">
-                            <params>
-                                <param name="meshPath">cube</param>
-                            </params>
+                            <param name="meshPath">cube</param>
                         </component>
                     </components>
                 </gameObject>
@@ -35,9 +33,7 @@
                     </transform>
                     <components>
                         <component type="model">
-                            <params>
-                                <param name="meshPath">cube</param>
-                            </params>
+                            <param name="meshPath">cube</param>
                         </component>
                     </components>
                 </gameObject>

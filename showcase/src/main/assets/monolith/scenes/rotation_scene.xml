@@ -8,11 +8,9 @@
             </transform>
             <components>
                 <component type="model">
-                    <params>
-                        <param name="meshPath">cube</param>
-                    </params>
+                    <param name="meshPath">cube</param>
                 </component>
-                <component type="com.monolith.showcase.engine.TouchRotationController"/>
+                <component type="com.monolith.showcase.engine.TouchRotationController" />
             </components>
             <children>
                 <gameObject>
@@ -22,9 +20,7 @@
                     </transform>
                     <components>
                         <component type="model">
-                            <params>
-                                <param name="meshPath">cube</param>
-                            </params>
+                            <param name="meshPath">cube</param>
                         </component>
                     </components>
                 </gameObject>
