@@ -158,13 +158,11 @@ public class Engine {
             e.printStackTrace();
             throw new IllegalStateException("Error during retrieval of scene config file " + configFilePath);
         }
-        Scene result = new SceneCreator(mApplication).create(scene);
-        // TODO remove this - in future this will not be possible due to initial state document validation
-        // TODO this actually doesn't make sense, result can never be null
-        if (result == null) {
-            throw new IllegalStateException("Scene was not created.");
-        }
-        return result;
+        SceneCreator sceneCreator = new SceneCreator(mApplication);
+        sceneCreator.create(scene);
+
+        mRenderer.setCamera(sceneCreator.camera);
+        return sceneCreator.scene;
     }
 
     /**
@@ -177,6 +175,7 @@ public class Engine {
         }
 
         update(mCurrentScene.gameObjects);
+        mRenderer.onStartRenderingFrame();
         postUpdate(mCurrentScene.gameObjects);
     }
 

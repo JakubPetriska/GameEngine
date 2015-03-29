@@ -3,23 +3,26 @@
     <gameObjects>
         <gameObject>
             <components>
-                <component type="camera"/>
+                <component type="camera" />
+                <component type="com.monolith.showcase.engine.TouchRotationController" />
             </components>
         </gameObject>
+
         <gameObject>
             <transform>
                 <position x="0" y="0" z="10" />
+                <rotation x="0" y="0" z="0" />
             </transform>
             <components>
                 <component type="model">
                     <param name="meshPath">cube</param>
                 </component>
-                <component type="com.monolith.showcase.engine.TouchPositionController" />
             </components>
             <children>
                 <gameObject>
                     <transform>
                         <position x="1" y="1" z="1" />
+                        <rotation x="0" y="0" z="0" />
                     </transform>
                     <components>
                         <component type="model">

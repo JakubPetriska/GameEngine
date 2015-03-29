@@ -16,4 +16,7 @@
     <scene
         name="rotation_scene"
         sceneFilePath="scenes/rotation_scene.xml"/>
+    <scene
+        name="camera_rotation_scene"
+        sceneFilePath="scenes/camera_rotation_scene.xml"/>
 </scenes>

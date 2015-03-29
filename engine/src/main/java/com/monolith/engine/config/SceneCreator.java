@@ -3,6 +3,7 @@ package com.monolith.engine.config;
 import com.monolith.api.Application;
 import com.monolith.api.Component;
 import com.monolith.api.GameObject;
+import com.monolith.api.components.Camera;
 import com.monolith.api.components.Model;
 import com.monolith.api.components.Transform;
 import com.monolith.engine.ComponentsConstants;
@@ -22,6 +23,10 @@ public class SceneCreator {
 
     private Application mApplication;
 
+    // Following variables are set during scene creation and contain the output
+    public Scene scene;
+    public Camera camera;
+
     public SceneCreator(Application application) {
         this.mApplication = application;
     }
@@ -32,12 +37,13 @@ public class SceneCreator {
      * @param scene Contains the initial scene definition.
      * @return Constructed {@link com.monolith.engine.Scene}.
      */
-    public Scene create(ISScene scene) {
-        Scene runtimeSceneTree = new Scene();
+    public void create(ISScene scene) {
+        camera = null;
+
+        this.scene = new Scene();
         for (ISGameObject gameObject : scene.gameObjects) {
-            runtimeSceneTree.gameObjects.add(convertGameObject(null, gameObject));
+            this.scene.gameObjects.add(convertGameObject(null, gameObject));
         }
-        return runtimeSceneTree;
     }
 
     private GameObject convertGameObject(GameObject parent, ISGameObject initialGameObject) {
@@ -70,25 +76,35 @@ public class SceneCreator {
 
     private Component convertComponent(GameObject owner, ISComponent initialComponent) {
         Component component;
-        if (ComponentsConstants.COMPONENT_TYPE_MODEL.equals(initialComponent.type)) {
-            component = new Model();
-        } else {
-            try {
-                Class<Component> scriptClass = (Class<Component>) Class.forName(initialComponent.type);
-                component = scriptClass.getConstructor().newInstance();
-            } catch (ClassCastException e) {
-                throw new IllegalStateException("Script must inherit from Component class.");
-            } catch (ClassNotFoundException e) {
-                throw new IllegalStateException("Unknown component type.");
-            } catch (NoSuchMethodException e) {
-                throw new IllegalStateException("Script must have constructor with no parameters and it must be public.");
-            } catch (IllegalAccessException e) {
-                throw new IllegalStateException("Script's constructor must be public.");
-            } catch (InstantiationException e) {
-                throw new IllegalStateException("Script could not be instantiated.");
-            } catch (InvocationTargetException e) {
-                throw new IllegalStateException("Unknown error during script retrieval.");
-            }
+        switch(initialComponent.type) {
+            case ComponentsConstants.COMPONENT_TYPE_CAMERA:
+                if(camera == null) {
+                    camera = new Camera();
+                    component = camera;
+                } else {
+                    component = new Camera();
+                }
+                break;
+            case ComponentsConstants.COMPONENT_TYPE_MODEL:
+                component = new Model();
+                break;
+            default:
+                try {
+                    Class<Component> scriptClass = (Class<Component>) Class.forName(initialComponent.type);
+                    component = scriptClass.getConstructor().newInstance();
+                } catch (ClassCastException e) {
+                    throw new IllegalStateException("Script must inherit from Component class.");
+                } catch (ClassNotFoundException e) {
+                    throw new IllegalStateException("Unknown component type.");
+                } catch (NoSuchMethodException e) {
+                    throw new IllegalStateException("Script must have constructor with no parameters and it must be public.");
+                } catch (IllegalAccessException e) {
+                    throw new IllegalStateException("Script's constructor must be public.");
+                } catch (InstantiationException e) {
+                    throw new IllegalStateException("Script could not be instantiated.");
+                } catch (InvocationTargetException e) {
+                    throw new IllegalStateException("Unknown error during script retrieval.");
+                }
         }
         Class componentClass = component.getClass();
         // Set all parameters on new component

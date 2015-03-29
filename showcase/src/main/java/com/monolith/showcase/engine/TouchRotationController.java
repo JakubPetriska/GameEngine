@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class TouchRotationController extends Component {
 
-    private static final float FACTOR = 0.5f;
+    private static final float FACTOR = 0.1f;
 
     private float mLastTouchX;
     private float mLastTouchY;

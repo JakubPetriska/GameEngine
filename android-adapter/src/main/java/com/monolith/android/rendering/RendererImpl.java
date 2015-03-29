@@ -8,6 +8,7 @@ import android.util.Log;
 import com.monolith.api.GameObject;
 import com.monolith.api.MeshData;
 import com.monolith.api.Renderer;
+import com.monolith.api.components.Camera;
 import com.monolith.api.components.Model;
 import com.monolith.api.components.Transform;
 import com.monolith.api.math.Vector3;
@@ -15,6 +16,8 @@ import com.monolith.api.math.Vector3;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -57,14 +60,20 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
 
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
+    private final float[] mCameraMatrix = new float[16];
 
     // These are helper variables used during calculations of position of every model
     private final float[] mModelMatrix = new float[16];
-    private final float[] mModelDuplicateMatrix = new float[16];
-    private final float[] mRelativeModelMatrix = new float[16];
     private final float[] mMVPMatrix = new float[16];
 
     private int mProgram;
+
+    private Camera mCamera;
+
+    @Override
+    public void setCamera(Camera camera) {
+        mCamera = camera;
+    }
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
@@ -79,7 +88,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         GLES20.glDepthFunc(GLES20.GL_LEQUAL);
         GLES20.glDepthRangef(0.0f, 1.0f);
 
-        // prepare shaders and OpenGL program
+        // Prepare shaders and OpenGL program
         int vertexShader = loadShader(
                 GLES20.GL_VERTEX_SHADER,
                 vertexShaderCode);
@@ -91,6 +100,9 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
         GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
         GLES20.glLinkProgram(mProgram);
+
+        // Set our view matrix
+        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 0, 0f, 0f, 1.0f, 0f, 1.0f, 0.0f);
     }
 
     @Override
@@ -108,11 +120,48 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
 
     @Override
     public void onDrawFrame(GL10 gl) {
+        // Empty, overridden for completeness
+    }
+
+    // Used during calculation of world-camera transformation
+    private List<GameObject> mCameraParents = new ArrayList<>();
+
+    @Override
+    public void onStartRenderingFrame() {
         // Draw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
         // Set the camera position (View matrix)
-        Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 0, 0f, 0f, 1.0f, 0f, 1.0f, 0.0f);
+        if (mCamera != null) {
+            // Get the inverse camera transformation
+            GameObject gameObject = mCamera.getGameObject();
+            do {
+                mCameraParents.add(0, gameObject);
+                gameObject = gameObject.getParent();
+            } while (gameObject != null);
+
+            Matrix.setIdentityM(mCameraMatrix, 0);
+            for(int i = 0; i < mCameraParents.size(); ++i) {
+                Transform transform = mCameraParents.get(i).transform;
+
+                Matrix.setIdentityM(mRelativeModelMatrix, 0);
+
+                Vector3 rotation = transform.rotation;
+                Matrix.rotateM(mRelativeModelMatrix, 0, -rotation.z, 0, 0, -1);
+                Matrix.rotateM(mRelativeModelMatrix, 0, -rotation.x, 1, 0, 0);
+                Matrix.rotateM(mRelativeModelMatrix, 0, -rotation.y, 0, -1, 0);
+
+                Vector3 position = transform.position;
+                Matrix.translateM(mRelativeModelMatrix, 0,
+                        position.x, // Revert the direction because of change of the coordinate system handedness
+                        -position.y,
+                        -position.z);
+
+                Matrix.multiplyMM(mModelDuplicateMatrix, 0, mRelativeModelMatrix, 0, mCameraMatrix, 0);
+                System.arraycopy(mModelDuplicateMatrix, 0, mCameraMatrix, 0, 16);
+            }
+            mCameraParents.clear();
+        }
     }
 
     // TODO comment this code
@@ -165,14 +214,13 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         return meshData;
     }
 
-    @Override
-    public void render(Model model) {
-        AndroidMeshData meshData = (AndroidMeshData) model.meshData;
+    // Helper variables that the object transformation matrix creation algorithm uses
+    private final float[] mModelDuplicateMatrix = new float[16];
+    private final float[] mRelativeModelMatrix = new float[16];
 
-        // TODO optimize this (twi sibling models calculate parent transformation twice), matrix stack maybe?
-        // Create the model transformation matrix
-        Matrix.setIdentityM(mModelMatrix, 0);
-        GameObject gameObject = model.getGameObject();
+    private void createObjectTransformationMatrix(GameObject gameObject, float[] result) {
+        // TODO optimize this (two sibling models calculate parent transformation twice), matrix stack maybe?
+        Matrix.setIdentityM(result, 0);
         do {
             Transform transform = gameObject.transform;
 
@@ -187,16 +235,32 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
             Matrix.rotateM(mRelativeModelMatrix, 0, rotation.x, 1, 0, 0);
             Matrix.rotateM(mRelativeModelMatrix, 0, rotation.z, 0, 0, -1);
 
-            Matrix.multiplyMM(mModelDuplicateMatrix, 0, mRelativeModelMatrix, 0, mModelMatrix, 0);
+            Matrix.multiplyMM(mModelDuplicateMatrix, 0, mRelativeModelMatrix, 0, result, 0);
 
-            System.arraycopy(mModelDuplicateMatrix, 0, mModelMatrix, 0, 16);
+            System.arraycopy(mModelDuplicateMatrix, 0, result, 0, 16);
 
             gameObject = gameObject.getParent();
         } while (gameObject != null);
+    }
+
+    @Override
+    public void render(Model model) {
+        if (mCamera == null) {
+            return;
+        }
+
+        AndroidMeshData meshData = (AndroidMeshData) model.meshData;
+
+        createObjectTransformationMatrix(model.getGameObject(), mModelMatrix);
 
         // Compose MVP matrix
-        Matrix.multiplyMM(mMVPMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
-        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVPMatrix, 0);
+
+        Matrix.multiplyMM(mMVPMatrix, 0, mCameraMatrix, 0, mModelMatrix, 0);
+        Matrix.multiplyMM(mModelMatrix, 0, mViewMatrix, 0, mMVPMatrix, 0);
+        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mModelMatrix, 0);
+
+//        Matrix.multiplyMM(mMVPMatrix, 0, mViewMatrix, 0, mModelMatrix, 0);
+//        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVPMatrix, 0);
 
         GLES20.glUseProgram(mProgram);
 
