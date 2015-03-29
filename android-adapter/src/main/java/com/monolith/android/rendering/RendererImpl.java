@@ -170,7 +170,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
     public void render(Model model) {
         AndroidMeshData meshData = (AndroidMeshData) model.meshData;
 
-        // TODO optimize this (twi sibling models calculate parent transformation twice)
+        // TODO optimize this (twi sibling models calculate parent transformation twice), matrix stack maybe?
         // Create the model transformation matrix
         Matrix.setIdentityM(mModelMatrix, 0);
         GameObject gameObject = model.getGameObject();
