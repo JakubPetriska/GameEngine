@@ -69,12 +69,13 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
 
     private int mProgram;
 
-//    private
+    private float mScreenRatio;
     private Camera mCamera;
 
     @Override
     public void setCamera(Camera camera) {
         mCamera = camera;
+        setupProjectionMatrixIfPossible();
     }
 
     @Override
@@ -118,12 +119,20 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         // such as screen rotation
         GLES20.glViewport(0, 0, width, height);
 
-        float ratio = (float) width / height;
+        mScreenRatio = (float) width / height;
+        setupProjectionMatrixIfPossible();
+    }
 
-        // this projection matrix is applied to object coordinates
-        // in the onDrawFrame() method
-        Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 3, 50);
-//        Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 0.3f, 100);
+    private void setupProjectionMatrixIfPossible() {
+        if(mCamera == null || mScreenRatio == 0) {
+            return;
+        }
+        Matrix.frustumM(mProjectionMatrix, 0,
+                -mScreenRatio * mCamera.near, // Left
+                mScreenRatio * mCamera.near, // Right
+                -1 * mCamera.near, // Bottom
+                1 * mCamera.near, // Top
+                mCamera.near, mCamera.far);
     }
 
     @Override

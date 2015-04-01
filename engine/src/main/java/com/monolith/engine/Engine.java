@@ -91,7 +91,7 @@ public class Engine {
         this.mPlatform = platform;
         this.mRenderer = renderer;
         this.mTouchInput = touchInput;
-        
+
         mRenderer.setCamera(camera);
     }
 
