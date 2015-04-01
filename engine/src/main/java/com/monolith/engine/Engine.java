@@ -22,6 +22,7 @@ import com.monolith.platform.TouchInputInternal;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class Engine {
     private MessengerInternal mMessenger;
     private TimeInternal mTime;
 
-    private ISystem[] mInternalSystems;
+    private List<ISystem> mInternalSystems = new ArrayList<>();
 
     private SCScenes mScenesConfig;
 
@@ -72,9 +73,9 @@ public class Engine {
 
         mTime = new TimeInternal();
 
-        mInternalSystems = new ISystem[]{
-                mTime, mMessenger, mTouchInput
-        };
+        mInternalSystems.add(mTime);
+        mInternalSystems.add(mMessenger);
+        mInternalSystems.add(mTouchInput);
 
         mApplication = new ApplicationImpl();
     }
@@ -90,6 +91,9 @@ public class Engine {
 
         this.mPlatform = platform;
         this.mRenderer = renderer;
+
+        mInternalSystems.remove(mTouchInput);
+        mInternalSystems.add(touchInput);
         this.mTouchInput = touchInput;
 
         mRenderer.setCamera(camera);
@@ -175,8 +179,8 @@ public class Engine {
      * This call is dispatched to all components which results in scene state update and rendering.
      */
     public void onUpdate() {
-        for (int i = 0; i < mInternalSystems.length; ++i) {
-            mInternalSystems[i].update();
+        for (int i = 0; i < mInternalSystems.size(); ++i) {
+            mInternalSystems.get(i).update();
         }
 
         update(mCurrentScene.gameObjects);
