@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+    <gameObjects>
+        <!--Floor  -->
+        <gameObject>
+            <transform>
+                <position x="0" y="-0.25" z="0" />
+                <scale x="10" y="0.5" z="10" />
+            </transform>
+            <components>
+                <component type="model">
+                    <param name="meshPath">cube</param>
+                </component>
+            </components>
+        </gameObject>
+
+        <gameObject>
+            <transform>
+                <position x="0" y="1" z="0" />
+            </transform>
+            <components>
+                <component type="camera"/>
+                <component type="com.monolith.showcase.engine.TouchRotationController" />
+            </components>
+        </gameObject>
+
+        <!--<gameObject>-->
+            <!--<transform>-->
+                <!--<position x="0" y="0" z="10" />-->
+                <!--<rotation x="0" y="0" z="0" />-->
+            <!--</transform>-->
+            <!--<components>-->
+                <!--<component type="model">-->
+                    <!--<param name="meshPath">cube</param>-->
+                <!--</component>-->
+                <!--<component type="com.monolith.showcase.engine.TouchRotationController" />-->
+            <!--</components>-->
+        <!--</gameObject>-->
+    </gameObjects>
+</scene>
