@@ -35,14 +35,14 @@ public class TouchInputImpl implements TouchInputInternal {
     public void onTouchEvent(MotionEvent event) {
         int pointerId = event.getPointerId(event.getActionIndex());
         Touch touch = null;
-        for(int i = 0; i < mTouchesToUpdate.size(); ++i) {
+        for (int i = 0; i < mTouchesToUpdate.size(); ++i) {
             Touch ithTouch = mTouchesToUpdate.get(i);
-            if(ithTouch.getId() == pointerId) {
+            if (ithTouch.getId() == pointerId) {
                 touch = ithTouch;
             }
         }
-        if(touch == null) {
-            if(mFreeTouches.size() > 0) {
+        if (touch == null) {
+            if (mFreeTouches.size() > 0) {
                 touch = mFreeTouches.remove(0);
             } else {
                 touch = new Touch();
@@ -64,26 +64,27 @@ public class TouchInputImpl implements TouchInputInternal {
                 return Touch.STATE_RUNNING;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_POINTER_UP:
+            case MotionEvent.ACTION_CANCEL:
                 return Touch.STATE_ENDED;
             default:
-                throw new IllegalStateException("Unhandled MotionEvent action");
+                throw new IllegalStateException("Unhandled MotionEvent action " + action);
         }
     }
 
     @Override
     public void update() {
-        for(int i = 0; i < mTouches.size(); ++i) {
+        for (int i = 0; i < mTouches.size(); ++i) {
             Touch ithTouch = mTouches.get(i);
-            if(ithTouch.getState() == Touch.STATE_ENDED) {
+            if (ithTouch.getState() == Touch.STATE_ENDED) {
                 mFreeTouches.add(mTouches.remove(i));
-            } else if(ithTouch.getState() == Touch.STATE_BEGAN) {
+            } else if (ithTouch.getState() == Touch.STATE_BEGAN) {
                 // Change the state to Moving so for every gesture
                 // state is BEGAN only in one game loop iteration
                 ithTouch.setState(Touch.STATE_RUNNING);
             }
         }
 
-        for(int i = 0; i < mTouchesToUpdate.size(); ++i) {
+        for (int i = 0; i < mTouchesToUpdate.size(); ++i) {
             Touch ithTouchToUpdate = mTouchesToUpdate.get(i);
             Touch ithTouch = mTouches.get(i);
 
@@ -92,12 +93,12 @@ public class TouchInputImpl implements TouchInputInternal {
             ithTouch.setY(ithTouchToUpdate.getY());
         }
 
-        while(mNewTouchesToUpdate.size() > 0) {
+        while (mNewTouchesToUpdate.size() > 0) {
             Touch ithTouch = mNewTouchesToUpdate.remove(0);
             mTouchesToUpdate.add(ithTouch);
 
             Touch newTouch;
-            if(mFreeTouches.size() > 0) {
+            if (mFreeTouches.size() > 0) {
                 newTouch = mFreeTouches.remove(0);
             } else {
                 newTouch = new Touch();
@@ -110,11 +111,11 @@ public class TouchInputImpl implements TouchInputInternal {
             mTouches.add(newTouch);
         }
 
-        for(int i = 0; i < mTouchesToUpdate.size(); ++i) {
+        for (int i = 0; i < mTouchesToUpdate.size(); ++i) {
             Touch ithTouch = mTouchesToUpdate.get(i);
-            if(ithTouch.getState() == Touch.STATE_ENDED) {
+            if (ithTouch.getState() == Touch.STATE_ENDED) {
                 mFreeTouches.add(mTouchesToUpdate.remove(i));
-            } else if(ithTouch.getState() == Touch.STATE_BEGAN) {
+            } else if (ithTouch.getState() == Touch.STATE_BEGAN) {
                 // Change the state to Moving so for every gesture
                 // state is BEGAN only in one game loop iteration
                 ithTouch.setState(Touch.STATE_RUNNING);
