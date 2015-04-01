@@ -10,14 +10,14 @@ public class Cube {
 
     public static MeshData getCube(Renderer renderer) {
         float vertices[] = {
-                -1, 1, -1,   // top left front
-                1, 1, -1,    // top right front
-                1, -1, -1,   // bottom right front
-                -1, -1, -1,  // bottom left front
-                -1, 1, 1,    // top left back
-                1, 1, 1,     // top right back
-                1, -1, 1,    // bottom right back
-                -1, -1, 1};  // bottom left back
+                -0.5f, 0.5f, -0.5f,   // top left front
+                0.5f, 0.5f, -0.5f,    // top right front
+                0.5f, -0.5f, -0.5f,   // bottom right front
+                -0.5f, -0.5f, -0.5f,  // bottom left front
+                -0.5f, 0.5f, 0.5f,    // top left back
+                0.5f, 0.5f, 0.5f,     // top right back
+                0.5f, -0.5f, 0.5f,    // bottom right back
+                -0.5f, -0.5f, 0.5f};  // bottom left back
 
         float normals[] = new float[]{
                 0, 0, -1, // front

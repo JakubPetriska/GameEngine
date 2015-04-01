@@ -5,7 +5,7 @@
         <gameObject>
             <transform>
                 <position x="0" y="-0.25" z="0" />
-                <scale x="10" y="0.5" z="10" />
+                <scale x="15" y="0.5" z="15" />
             </transform>
             <components>
                 <component type="model">
@@ -14,27 +14,67 @@
             </components>
         </gameObject>
 
+        <!-- Camera -->
         <gameObject>
             <transform>
-                <position x="0" y="2" z="0" />
+                <position x="0" y="1" z="0" />
             </transform>
             <components>
-                <component type="camera"/>
+                <component type="camera" />
                 <component type="com.monolith.showcase.engine.TouchRotationController" />
             </components>
         </gameObject>
 
-        <!--<gameObject>-->
-            <!--<transform>-->
-                <!--<position x="0" y="0" z="10" />-->
-                <!--<rotation x="0" y="0" z="0" />-->
-            <!--</transform>-->
-            <!--<components>-->
-                <!--<component type="model">-->
-                    <!--<param name="meshPath">cube</param>-->
-                <!--</component>-->
-                <!--<component type="com.monolith.showcase.engine.TouchRotationController" />-->
-            <!--</components>-->
-        <!--</gameObject>-->
+        <!-- Cubes -->
+        <gameObject>
+            <children>
+                <gameObject>
+                    <transform>
+                        <position x="5" y="1" z="6" />
+                        <scale x="2" y="2" z="2" />
+                    </transform>
+                    <components>
+                        <component type="model">
+                            <param name="meshPath">cube</param>
+                        </component>
+                    </components>
+                </gameObject>
+
+                <gameObject>
+                    <transform>
+                        <position x="-3" y="0.5" z="3" />
+                    </transform>
+                    <components>
+                        <component type="model">
+                            <param name="meshPath">cube</param>
+                        </component>
+                    </components>
+                </gameObject>
+
+                <gameObject>
+                    <transform>
+                        <position x="-2.5" y="1" z="0" />
+                        <scale x="2" y="2" z="2" />
+                    </transform>
+                    <components>
+                        <component type="model">
+                            <param name="meshPath">cube</param>
+                        </component>
+                    </components>
+                </gameObject>
+
+                <gameObject>
+                    <transform>
+                        <position x="0" y="25" z="-3" />
+                        <scale x="4" y="50" z="1" />
+                    </transform>
+                    <components>
+                        <component type="model">
+                            <param name="meshPath">cube</param>
+                        </component>
+                    </components>
+                </gameObject>
+            </children>
+        </gameObject>
     </gameObjects>
 </scene>

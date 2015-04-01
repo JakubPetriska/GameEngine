@@ -16,7 +16,7 @@
         </gameObject>
         <gameObject>
             <transform>
-                <position x="0" y="0" z="10" />
+                <position x="0" y="0" z="3" />
             </transform>
             <components>
                 <component type="com.monolith.showcase.engine.TouchPositionController" />

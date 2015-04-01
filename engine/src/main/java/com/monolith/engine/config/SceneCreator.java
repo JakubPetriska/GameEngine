@@ -64,6 +64,9 @@ public class SceneCreator {
 
     private void convertTransform(ISGameObject.Transform what, Transform into) {
         if (what == null) {
+            into.scale.x = 1;
+            into.scale.y = 1;
+            into.scale.z = 1;
             return;
         }
         if (what.position != null) {
