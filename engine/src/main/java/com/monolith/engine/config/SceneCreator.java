@@ -72,6 +72,15 @@ public class SceneCreator {
         if (what.rotation != null) {
             into.rotate(what.rotation.x, what.rotation.y, what.rotation.z);
         }
+        if(what.scale != null) {
+            into.scale.x = what.scale.x;
+            into.scale.y = what.scale.y;
+            into.scale.z = what.scale.z;
+        } else {
+            into.scale.x = 1;
+            into.scale.y = 1;
+            into.scale.z = 1;
+        }
     }
 
     private Component convertComponent(GameObject owner, ISComponent initialComponent) {

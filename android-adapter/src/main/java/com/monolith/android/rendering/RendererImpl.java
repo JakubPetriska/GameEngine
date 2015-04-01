@@ -226,15 +226,20 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
             Transform transform = gameObject.transform;
 
             Matrix.setIdentityM(mRelativeModelMatrix, 0);
+
             Vector3 position = transform.position;
             Matrix.translateM(mRelativeModelMatrix, 0,
                     -position.x, // Revert the direction because of change of the coordinate system handedness
                     position.y,
                     position.z);
+
             Vector3 rotation = transform.rotation;
             Matrix.rotateM(mRelativeModelMatrix, 0, rotation.y, 0, -1, 0);
             Matrix.rotateM(mRelativeModelMatrix, 0, rotation.x, 1, 0, 0);
             Matrix.rotateM(mRelativeModelMatrix, 0, rotation.z, 0, 0, -1);
+
+            Vector3 scale = transform.scale;
+            Matrix.scaleM(mRelativeModelMatrix, 0, scale.x, scale.y, scale.z);
 
             Matrix.multiplyMM(mModelDuplicateMatrix, 0, mRelativeModelMatrix, 0, result, 0);
 

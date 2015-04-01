@@ -24,6 +24,11 @@ public class Transform extends Component {
      */
     public final Vector3 rotation = new Vector3();
 
+    /**
+     * Scale of this transform relative to parent.
+     */
+    public final Vector3 scale = new Vector3();
+
     public void translate(float x, float y, float z) {
         position.x += x;
         position.y += y;
