@@ -69,6 +69,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
 
     private int mProgram;
 
+//    private
     private Camera mCamera;
 
     @Override
@@ -117,6 +118,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         // this projection matrix is applied to object coordinates
         // in the onDrawFrame() method
         Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 3, 50);
+//        Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 0.3f, 100);
     }
 
     @Override
