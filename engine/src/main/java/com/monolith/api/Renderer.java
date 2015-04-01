@@ -34,4 +34,6 @@ public interface Renderer {
             int[] trianglesVertices, int[] trianglesNormals);
 
     void setCamera(Camera camera);
+
+    Camera getCamera();
 }

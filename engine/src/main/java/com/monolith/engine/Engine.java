@@ -8,6 +8,7 @@ import com.monolith.api.Messenger;
 import com.monolith.api.Renderer;
 import com.monolith.api.Time;
 import com.monolith.api.TouchInput;
+import com.monolith.api.components.Camera;
 import com.monolith.api.external.InputMessenger;
 import com.monolith.engine.config.SceneCreator;
 import com.monolith.engine.config.model.initial_scene_state.ISScene;
@@ -85,9 +86,13 @@ public class Engine {
      * This method allows resuming the Engine in different platform context.
      */
     public void swapProvidedObjects(Platform platform, Renderer renderer, TouchInputInternal touchInput) {
+        Camera camera = mRenderer.getCamera();
+
         this.mPlatform = platform;
         this.mRenderer = renderer;
         this.mTouchInput = touchInput;
+        
+        mRenderer.setCamera(camera);
     }
 
     // This flag ensures that engine is initialized only once (onStart method)

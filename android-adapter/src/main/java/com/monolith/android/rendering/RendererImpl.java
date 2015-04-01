@@ -78,6 +78,11 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
     }
 
     @Override
+    public Camera getCamera() {
+        return mCamera;
+    }
+
+    @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
