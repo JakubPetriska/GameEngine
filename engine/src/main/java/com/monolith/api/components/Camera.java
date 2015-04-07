@@ -8,4 +8,9 @@ import com.monolith.api.Component;
 public class Camera extends Component {
     public float near = 0.5f;
     public float far = 500;
+
+    /**
+     * Vertical field of view angle in degrees.
+     */
+    public float fieldOfView = 60;
 }

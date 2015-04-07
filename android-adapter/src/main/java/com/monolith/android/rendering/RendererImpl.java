@@ -127,11 +127,14 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         if(mCamera == null || mScreenRatio == 0) {
             return;
         }
+
+        float halfHeight = (float) (Math.sin(Math.toRadians(mCamera.fieldOfView / 2)) * mCamera.near);
+        float halfWidth = mScreenRatio * halfHeight;
         Matrix.frustumM(mProjectionMatrix, 0,
-                -mScreenRatio * mCamera.near, // Left
-                mScreenRatio * mCamera.near, // Right
-                -1 * mCamera.near, // Bottom
-                1 * mCamera.near, // Top
+                -halfWidth, // Left
+                halfWidth, // Right
+                -halfHeight, // Bottom
+                halfHeight, // Top
                 mCamera.near, mCamera.far);
     }
 
