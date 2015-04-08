@@ -18,8 +18,6 @@ import java.util.List;
  */
 public class GameObject {
 
-    // TODO bring order to children and components lists so searching for them is in log(n)
-
     private Application mApplication;
     private GameObject mParent;
 
@@ -182,21 +180,42 @@ public class GameObject {
         removeComponentInternal(component);
     }
 
-    public <T> T getComponent(Class<T> componentClass) {
+    // TODO bring order to children and components lists so searching for them is in O(log(n))
+
+    /**
+     * Returns the specific component of type T attached to this GameObject.
+     * <p/>
+     * In case there is more than one component of type T attached
+     * to this GameObject the first that could be found is returned.
+     *
+     * @param componentClass Class of the requested component.
+     * @param <T>            Type of the component to be returned.
+     * @return The instance of T attached to this GameObject as component
+     * or null if no instance of T is attached to this GameObject.
+     */
+    public <T extends Component> T getComponent(Class<T> componentClass) {
         for (int i = 0; i < mComponents.size(); ++i) {
             Component component = mComponents.get(i);
-            if(componentClass.isInstance(component)) {
+            if (componentClass.isInstance(component)) {
                 return (T) component;
             }
         }
         return null;
     }
 
+    /**
+     * Returns the {@link java.util.List} of all components of type T
+     * attached to this GameObject.
+     *
+     * @param componentsClass Class of the requested components.
+     * @param <T>             Type of the components to be returned.
+     * @return List of the instances of T attached to this GameObject as components.
+     */
     public <T extends Component> List<T> getComponents(Class<T> componentsClass) {
         List<T> resultList = new ArrayList<>();
         for (int i = 0; i < mComponents.size(); ++i) {
             Component component = mComponents.get(i);
-            if(componentsClass.isInstance(component)) {
+            if (componentsClass.isInstance(component)) {
                 resultList.add((T) component);
             }
         }
