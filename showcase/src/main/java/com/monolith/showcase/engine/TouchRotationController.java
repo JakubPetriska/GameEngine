@@ -25,7 +25,7 @@ public class TouchRotationController extends Component {
             float currentTouchY = touch.getY();
 
             if (touch.getState() != Touch.STATE_BEGAN) {
-                getGameObject().transform.rotate(
+                getGameObject().transform.rotateBy(
                         -(currentTouchY - mLastTouchY) * FACTOR,
                         -(currentTouchX - mLastTouchX) * FACTOR,
                         0);

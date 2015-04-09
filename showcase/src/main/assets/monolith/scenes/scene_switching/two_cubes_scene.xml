@@ -24,7 +24,7 @@
             <children>
                 <gameObject>
                     <transform>
-                        <position x="2" y="0" z="0" />
+                        <position x="1" y="0" z="0" />
                     </transform>
                     <components>
                         <component type="model">
@@ -34,7 +34,7 @@
                 </gameObject>
                 <gameObject>
                     <transform>
-                        <position x="-2" y="0" z="0" />
+                        <position x="-1" y="0" z="0" />
                     </transform>
                     <components>
                         <component type="model">

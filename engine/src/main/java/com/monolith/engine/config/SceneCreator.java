@@ -63,26 +63,17 @@ public class SceneCreator {
     }
 
     private void convertTransform(ISGameObject.Transform what, Transform into) {
-        if (what == null) {
-            into.scale.x = 1;
-            into.scale.y = 1;
-            into.scale.z = 1;
+        if(what == null) {
             return;
         }
         if (what.position != null) {
-            into.translate(what.position.x, what.position.y, what.position.z);
+            into.translateBy(what.position.x, what.position.y, what.position.z);
         }
         if (what.rotation != null) {
-            into.rotate(what.rotation.x, what.rotation.y, what.rotation.z);
+            into.rotateBy(what.rotation.x, what.rotation.y, what.rotation.z);
         }
         if(what.scale != null) {
-            into.scale.x = what.scale.x;
-            into.scale.y = what.scale.y;
-            into.scale.z = what.scale.z;
-        } else {
-            into.scale.x = 1;
-            into.scale.y = 1;
-            into.scale.z = 1;
+            into.setScale(what.scale.x, what.scale.y, what.scale.z);
         }
     }
 

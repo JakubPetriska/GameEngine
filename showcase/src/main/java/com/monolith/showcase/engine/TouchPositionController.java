@@ -25,7 +25,7 @@ public class TouchPositionController extends Component {
             float currentTouchY = touch.getY();
 
             if (touch.getState() != Touch.STATE_BEGAN) {
-                getGameObject().transform.translate(
+                getGameObject().transform.translateBy(
                         (currentTouchX - mLastTouchX) * FACTOR,
                         -(currentTouchY - mLastTouchY) * FACTOR,
                         0);

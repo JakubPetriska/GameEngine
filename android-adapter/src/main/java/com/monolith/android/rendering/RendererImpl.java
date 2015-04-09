@@ -10,6 +10,7 @@ import com.monolith.api.MeshData;
 import com.monolith.api.components.Camera;
 import com.monolith.api.components.Model;
 import com.monolith.api.components.Transform;
+import com.monolith.api.math.Matrix44;
 import com.monolith.api.math.Vector3;
 import com.monolith.engine.FullRenderer;
 
@@ -146,6 +147,10 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
     // Used during calculation of world-camera transformation
     private List<GameObject> mCameraParents = new ArrayList<>();
 
+    // Helper variables that the object transformation matrix creation algorithm uses
+    private final float[] mModelDuplicateMatrix = new float[16];
+    private final float[] mRelativeModelMatrix = new float[16];
+
     @Override
     public void onStartRenderingFrame() {
         // Draw background color
@@ -166,16 +171,26 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
 
                 Matrix.setIdentityM(mRelativeModelMatrix, 0);
 
-                Vector3 rotation = transform.rotation;
-                Matrix.rotateM(mRelativeModelMatrix, 0, -rotation.z, 0, 0, -1);
-                Matrix.rotateM(mRelativeModelMatrix, 0, -rotation.x, 1, 0, 0);
-                Matrix.rotateM(mRelativeModelMatrix, 0, -rotation.y, 0, -1, 0);
+                // TODO uncomment, invert and test this
+//                Matrix.scaleM(mRelativeModelMatrix, 0,
+//                        transform.getScaleX(),
+//                        transform.getScaleY(),
+//                        transform.getScaleZ());
 
-                Vector3 position = transform.position;
+                Matrix.rotateM(mRelativeModelMatrix, 0,
+                        -transform.getRotationZ(),
+                        0, 0, -1);
+                Matrix.rotateM(mRelativeModelMatrix, 0,
+                        -transform.getRotationX(),
+                        1, 0, 0);
+                Matrix.rotateM(mRelativeModelMatrix, 0,
+                        -transform.getRotationY(),
+                        0, -1, 0);
+
                 Matrix.translateM(mRelativeModelMatrix, 0,
-                        position.x, // Revert the direction because of change of the coordinate system handedness
-                        -position.y,
-                        -position.z);
+                        transform.getPositionX(), // Revert the direction because of change of the coordinate system handedness
+                        -transform.getPositionY(),
+                        -transform.getRotationZ());
 
                 Matrix.multiplyMM(mModelDuplicateMatrix, 0, mRelativeModelMatrix, 0, mCameraMatrix, 0);
                 System.arraycopy(mModelDuplicateMatrix, 0, mCameraMatrix, 0, 16);
@@ -234,40 +249,6 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         return meshData;
     }
 
-    // Helper variables that the object transformation matrix creation algorithm uses
-    private final float[] mModelDuplicateMatrix = new float[16];
-    private final float[] mRelativeModelMatrix = new float[16];
-
-    private void createObjectTransformationMatrix(GameObject gameObject, float[] result) {
-        // TODO optimize this (two sibling models calculate parent transformation twice), matrix stack maybe?
-        Matrix.setIdentityM(result, 0);
-        do {
-            Transform transform = gameObject.transform;
-
-            Matrix.setIdentityM(mRelativeModelMatrix, 0);
-
-            Vector3 position = transform.position;
-            Matrix.translateM(mRelativeModelMatrix, 0,
-                    -position.x, // Revert the direction because of change of the coordinate system handedness
-                    position.y,
-                    position.z);
-
-            Vector3 rotation = transform.rotation;
-            Matrix.rotateM(mRelativeModelMatrix, 0, rotation.y, 0, -1, 0);
-            Matrix.rotateM(mRelativeModelMatrix, 0, rotation.x, 1, 0, 0);
-            Matrix.rotateM(mRelativeModelMatrix, 0, rotation.z, 0, 0, -1);
-
-            Vector3 scale = transform.scale;
-            Matrix.scaleM(mRelativeModelMatrix, 0, scale.x, scale.y, scale.z);
-
-            Matrix.multiplyMM(mModelDuplicateMatrix, 0, mRelativeModelMatrix, 0, result, 0);
-
-            System.arraycopy(mModelDuplicateMatrix, 0, result, 0, 16);
-
-            gameObject = gameObject.getParent();
-        } while (gameObject != null);
-    }
-
     @Override
     public void render(Model model) {
         if (mCamera == null) {
@@ -275,10 +256,10 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         }
         AndroidMeshData meshData = (AndroidMeshData) model.meshData;
 
-        createObjectTransformationMatrix(model.getGameObject(), mModelMatrix);
+        float[] modelMatrix = model.getGameObject().transform.getRenderingTransformationMatrix().getValues();
 
         // Compose MVP matrix
-        Matrix.multiplyMM(mMVPMatrix, 0, mCameraMatrix, 0, mModelMatrix, 0);
+        Matrix.multiplyMM(mMVPMatrix, 0, mCameraMatrix, 0, modelMatrix, 0);
         Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mMVPMatrix, 0);
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVMatrix, 0);
 
@@ -315,7 +296,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         GLES20.glUniformMatrix4fv(mVPMatrixHandle, 1, false, mMVPMatrix, 0);
 
         int modelMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uModelMatrix");
-        GLES20.glUniformMatrix4fv(modelMatrixHandle, 1, false, mModelMatrix, 0);
+        GLES20.glUniformMatrix4fv(modelMatrixHandle, 1, false, modelMatrix, 0);
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, meshData.trianglesVertices.length);
 
@@ -323,7 +304,6 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         GLES20.glDisableVertexAttribArray(positionHandle);
         GLES20.glDisableVertexAttribArray(normalHandle);
     }
-
 
 
     /**
