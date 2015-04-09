@@ -22,13 +22,21 @@ public class BoxCollider extends Component {
         this.meshData = getApplication().getModelManager().getMeshData(Primitives.CUBE);
     }
 
-    private static final Matrix44 mHelperMatrix = new Matrix44();
+    private static final Matrix44 mColliderAbsoluteTransformation = new Matrix44();
+    private static final Matrix44 mColliderLocalTransformation = new Matrix44();
 
     @Override
     public void postUpdate() {
         if (getApplication().debugSettings.drawColliders) {
-            Matrix44 transformation = getGameObject().transform.getRenderingTransformationMatrix();
-            getApplication().getRenderer().renderWireframe(meshData, Color.GREEN, transformation);
+            Matrix44 objectTransformation = getGameObject().transform.getRenderingTransformationMatrix();
+
+            // TODO this should be platform dependent, currently is adjusted for OpenGL
+            mColliderLocalTransformation.setIdentity();
+            mColliderLocalTransformation.scale(sizeX, sizeY, sizeZ);
+
+            Matrix44.multiply(mColliderAbsoluteTransformation, objectTransformation, mColliderLocalTransformation);
+
+            getApplication().getRenderer().renderWireframe(meshData, Color.GREEN, mColliderAbsoluteTransformation);
         }
     }
 }
