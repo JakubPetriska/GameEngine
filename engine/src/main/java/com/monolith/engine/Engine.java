@@ -81,6 +81,8 @@ public class Engine {
         mInternalSystems.add(mTouchInput);
 
         mApplication = new ApplicationImpl(parseDebugSettingsFile());
+
+        mRenderer.setApplication(mApplication);
     }
 
     private DebugSettings parseDebugSettingsFile() {

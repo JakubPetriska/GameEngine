@@ -5,6 +5,7 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 
+import com.monolith.api.Application;
 import com.monolith.api.Color;
 import com.monolith.api.GameObject;
 import com.monolith.api.MeshData;
@@ -28,6 +29,8 @@ import javax.microedition.khronos.opengles.GL10;
 public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRenderer {
 
     private static final String TAG = "RendererImpl";
+
+    private Application mApplication;
 
     public static final int COORDS_PER_VERTEX_POSITION = 3;
     public static final int COORDS_PER_VERTEX_NORMAL = 3;
@@ -100,6 +103,11 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
     }
 
     @Override
+    public void setApplication(Application application) {
+        mApplication = application;
+    }
+
+    @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -125,7 +133,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         GLES20.glAttachShader(mShaderProgramObject, fragmentShader); // add the fragment shader to program
         GLES20.glLinkProgram(mShaderProgramObject);
 
-        if(true) { // TODO add debug mode condition
+        if(mApplication.debugSettings.debug) {
             // Prepare shaders and OpenGL program for debuggong lines
             vertexShader = loadShader(
                     GLES20.GL_VERTEX_SHADER,
