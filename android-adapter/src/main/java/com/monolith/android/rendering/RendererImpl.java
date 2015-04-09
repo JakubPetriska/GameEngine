@@ -170,7 +170,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
                 Transform transform = mCameraParents.get(i).transform;
 
                 Matrix.setIdentityM(mRelativeModelMatrix, 0);
-                
+
                 // TODO floating point comparison using == - fix this!
                 Matrix.scaleM(mRelativeModelMatrix, 0,
                         transform.getScaleX() == 0 ? 0 : 1 / transform.getScaleX(),
@@ -250,13 +250,13 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
     }
 
     @Override
-    public void render(Model model) {
+    public void render(MeshData mesh, Matrix44 transformation) {
         if (mCamera == null) {
             return;
         }
-        AndroidMeshData meshData = (AndroidMeshData) model.meshData;
+        AndroidMeshData meshData = (AndroidMeshData) mesh;
 
-        float[] modelMatrix = model.getGameObject().transform.getRenderingTransformationMatrix().getValues();
+        float[] modelMatrix = transformation.getValues();
 
         // Compose MVP matrix
         Matrix.multiplyMM(mMVPMatrix, 0, mCameraMatrix, 0, modelMatrix, 0);

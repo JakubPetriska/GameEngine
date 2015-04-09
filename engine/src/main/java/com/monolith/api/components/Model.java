@@ -21,6 +21,8 @@ public class Model extends Component {
 
     @Override
     public void postUpdate() {
-        getApplication().getRenderer().render(this);
+        getApplication().getRenderer().render(
+                meshData,
+                getGameObject().transform.getRenderingTransformationMatrix());
     }
 }

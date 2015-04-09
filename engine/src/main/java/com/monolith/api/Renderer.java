@@ -2,6 +2,7 @@ package com.monolith.api;
 
 import com.monolith.api.components.Camera;
 import com.monolith.api.components.Model;
+import com.monolith.api.math.Matrix44;
 
 /**
  * Provides rendering functionality.
@@ -18,9 +19,10 @@ public interface Renderer {
     /**
      * Renders model on the position of it's owning {@link com.monolith.api.GameObject}.
      *
-     * @param model Model to render.
+     * @param mesh Mesh to render.
+     * @param transformation Transformation of the rendered object.
      */
-    void render(Model model);
+    void render(MeshData mesh, Matrix44 transformation);
 
     /**
      * Creates instance of MeshData with supplied data.
