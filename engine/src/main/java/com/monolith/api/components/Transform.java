@@ -132,7 +132,7 @@ public class Transform extends Component {
     }
 
     // Helper matrix for calculations of transformation matrices
-    private final Matrix44 mHelperMatrix = new Matrix44();
+    private static final Matrix44 mHelperMatrix = new Matrix44();
 
     public Matrix44 getTransformationMatrix() {
         if(!mTransformationMatrixValid) {
