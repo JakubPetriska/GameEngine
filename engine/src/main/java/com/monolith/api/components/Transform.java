@@ -7,7 +7,7 @@ import com.monolith.api.math.Vector3;
 
 import java.util.List;
 
-// TODD comment this class
+// TODO comment this class
 /**
  * Holds transformation data of a {@link com.monolith.api.GameObject}.
  * <p/>

@@ -19,7 +19,9 @@
                     <param name="meshPath">cube</param>
                 </component>
                 <component type="com.monolith.showcase.engine.TouchRotationController" />
-                <!--<component type="boxCollider"></component>-->
+                <component type="boxCollider">
+
+                </component>
             </components>
         </gameObject>
     </gameObjects>

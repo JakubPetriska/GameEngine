@@ -228,7 +228,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
                 Matrix.translateM(mRelativeModelMatrix, 0,
                         transform.getPositionX(), // Revert the direction because of change of the coordinate system handedness
                         -transform.getPositionY(),
-                        -transform.getRotationZ());
+                        -transform.getPositionZ());
 
                 Matrix.multiplyMM(mModelDuplicateMatrix, 0, mRelativeModelMatrix, 0, mCameraMatrix, 0);
                 System.arraycopy(mModelDuplicateMatrix, 0, mCameraMatrix, 0, 16);

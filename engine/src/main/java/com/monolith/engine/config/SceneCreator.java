@@ -3,6 +3,7 @@ package com.monolith.engine.config;
 import com.monolith.api.Application;
 import com.monolith.api.Component;
 import com.monolith.api.GameObject;
+import com.monolith.api.components.BoxCollider;
 import com.monolith.api.components.Camera;
 import com.monolith.api.components.Model;
 import com.monolith.api.components.Transform;
@@ -90,6 +91,9 @@ public class SceneCreator {
                 break;
             case ComponentsConstants.COMPONENT_TYPE_MODEL:
                 component = new Model();
+                break;
+            case ComponentsConstants.COMPONENT_TYPE_BOX_COLLIDER:
+                component = new BoxCollider();
                 break;
             default:
                 try {

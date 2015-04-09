@@ -22,9 +22,11 @@ public class BoxCollider extends Component {
         this.meshData = getApplication().getModelManager().getMeshData(Primitives.CUBE);
     }
 
+//    private static final Matrix44
+
     @Override
     public void postUpdate() {
-        if(getApplication().debugSettings.drawColliders) {
+        if (getApplication().debugSettings.drawColliders) {
             Matrix44 transformation = getGameObject().transform.getRenderingTransformationMatrix();
             getApplication().getRenderer().renderWireframe(meshData, Color.GREEN, transformation);
         }

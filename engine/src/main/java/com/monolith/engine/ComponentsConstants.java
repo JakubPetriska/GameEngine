@@ -6,4 +6,5 @@ package com.monolith.engine;
 public class ComponentsConstants {
 	public static final String COMPONENT_TYPE_CAMERA = "camera";
 	public static final String COMPONENT_TYPE_MODEL = "model";
+	public static final String COMPONENT_TYPE_BOX_COLLIDER = "boxCollider";
 }
