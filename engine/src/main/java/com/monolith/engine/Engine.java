@@ -11,8 +11,8 @@ import com.monolith.api.Time;
 import com.monolith.api.TouchInput;
 import com.monolith.api.components.Camera;
 import com.monolith.api.external.InputMessenger;
-import com.monolith.api.math.Vector3;
 import com.monolith.engine.config.SceneCreator;
+import com.monolith.engine.config.model.debug.DebugSettingsModel;
 import com.monolith.engine.config.model.initial_scene_state.ISScene;
 import com.monolith.engine.config.model.scenes_config.SCScene;
 import com.monolith.engine.config.model.scenes_config.SCScenes;
@@ -24,6 +24,7 @@ import com.monolith.platform.TouchInputInternal;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -79,9 +80,26 @@ public class Engine {
         mInternalSystems.add(mMessenger);
         mInternalSystems.add(mTouchInput);
 
+        mApplication = new ApplicationImpl(parseDebugSettingsFile());
+    }
 
-        // TODO parse debug settings here
-        mApplication = new ApplicationImpl(new DebugSettings());
+    private DebugSettings parseDebugSettingsFile() {
+        InputStream debugFileInputStream = mPlatform.getAssetFileInputStream(Config.DEBUG_FILE);
+        if (debugFileInputStream == null) {
+            return new DebugSettings();
+        } else {
+            Serializer serializer = new Persister();
+            DebugSettingsModel parsedDebugSetings;
+            try {
+                parsedDebugSetings = serializer.read(DebugSettingsModel.class, debugFileInputStream);
+                if (parsedDebugSetings == null) {
+                    throw new IllegalStateException();
+                }
+            } catch (Exception e) {
+                throw new IllegalStateException("Error during retrieval of debug config file.", e);
+            }
+            return new DebugSettings(parsedDebugSetings);
+        }
     }
 
     /**

@@ -1,5 +1,7 @@
 package com.monolith.api;
 
+import com.monolith.engine.config.model.debug.DebugSettingsModel;
+
 /**
  * Created by Jakub on 9. 4. 2015.
  */
@@ -13,8 +15,8 @@ public class DebugSettings {
         drawColliders = false;
     }
 
-    public DebugSettings(boolean debug, boolean drawColliders) {
-        this.debug = debug;
-        this.drawColliders = drawColliders;
+    public DebugSettings(DebugSettingsModel model) {
+        this.debug = true;
+        this.drawColliders = model.drawColliders == null ? true : model.drawColliders;
     }
 }
