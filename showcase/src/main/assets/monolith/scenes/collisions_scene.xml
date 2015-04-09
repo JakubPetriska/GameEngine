@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+    <gameObjects>
+        <!-- Camera -->
+        <gameObject>
+            <components>
+                <component type="camera" />
+            </components>
+        </gameObject>
+
+        <!-- Objects -->
+        <gameObject>
+            <transform>
+                <position x="0" y="0" z="4" />
+                <scale x="1" y="1" z="1" />
+            </transform>
+            <components>
+                <component type="model">
+                    <param name="meshPath">cube</param>
+                </component>
+                <component type="com.monolith.showcase.engine.TouchRotationController" />
+                <!--<component type="boxCollider"></component>-->
+            </components>
+        </gameObject>
+    </gameObjects>
+</scene>

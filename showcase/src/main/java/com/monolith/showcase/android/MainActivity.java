@@ -29,7 +29,8 @@ public class MainActivity extends BaseActionBarActivity {
             R.string.example_imported_model,
             R.string.example_rotation,
             R.string.example_camera_rotation,
-            R.string.example_environment
+            R.string.example_environment,
+            R.string.example_collisions
     };
 
     @Override
@@ -77,6 +78,10 @@ public class MainActivity extends BaseActionBarActivity {
                     case R.string.example_environment:
                         intent = new Intent(MainActivity.this, MonolithActivity.class);
                         intent.putExtra(MonolithActivity.EXTRA_DEFAULT_SCENE_NAME, "example_environment_scene");
+                        break;
+                    case R.string.example_collisions:
+                        intent = new Intent(MainActivity.this, MonolithActivity.class);
+                        intent.putExtra(MonolithActivity.EXTRA_DEFAULT_SCENE_NAME, "collisions_scene");
                         break;
                     default:
                         throw new IllegalStateException("Unknown option.");

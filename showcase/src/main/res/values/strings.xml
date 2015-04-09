@@ -8,4 +8,5 @@
     <string name="example_rotation">Rotation</string>
     <string name="example_camera_rotation">Camera rotation</string>
     <string name="example_environment">Environment</string>
+    <string name="example_collisions">Collisions</string>
 </resources>
