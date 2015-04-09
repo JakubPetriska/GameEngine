@@ -5,13 +5,16 @@ package com.monolith.api;
  */
 public class DebugSettings {
 
+    public final boolean debug;
     public final boolean drawColliders;
 
     public DebugSettings() {
+        debug = false;
         drawColliders = false;
     }
 
-    public DebugSettings(boolean drawColliders) {
+    public DebugSettings(boolean debug, boolean drawColliders) {
+        this.debug = debug;
         this.drawColliders = drawColliders;
     }
 }

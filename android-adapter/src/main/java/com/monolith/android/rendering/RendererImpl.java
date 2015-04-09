@@ -5,13 +5,12 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.util.Log;
 
+import com.monolith.api.Color;
 import com.monolith.api.GameObject;
 import com.monolith.api.MeshData;
 import com.monolith.api.components.Camera;
-import com.monolith.api.components.Model;
 import com.monolith.api.components.Transform;
 import com.monolith.api.math.Matrix44;
-import com.monolith.api.math.Vector3;
 import com.monolith.engine.FullRenderer;
 
 import java.nio.ByteBuffer;
@@ -34,7 +33,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
     public static final int COORDS_PER_VERTEX_NORMAL = 3;
     public static final int VERTEX_STRIDE = (COORDS_PER_VERTEX_POSITION + COORDS_PER_VERTEX_NORMAL) * 4; // 4 bytes per vertex
 
-    private static final String vertexShaderCode =
+    private static final String vertexShaderObject =
             "uniform mat4 uMVPMatrix;" +
                     "uniform mat4 uModelMatrix;" +
                     "attribute vec4 vPosition;" +
@@ -46,7 +45,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
                     "  oNormal = normalize(uModelMatrix * normal);" +
                     "}";
 
-    private static final String fragmentShaderCode =
+    private static final String fragmentShaderObject =
             "precision mediump float;" +
                     "uniform vec4 uLight;" +
                     "uniform vec4 uColor;" +
@@ -57,18 +56,34 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
                     "  gl_FragColor = ((factor * (1.0 - minFactor)) + minFactor) * uColor;" +
                     "}";
 
+    private static final String vertexShaderLine =
+            "uniform mat4 uMVPMatrix;" +
+                    "attribute vec4 vPosition;" +
+                    "void main() {" +
+                    "  gl_Position = uMVPMatrix * vPosition;" +
+                    "}";
+
+    private static final String fragmentShaderLine =
+            "precision mediump float;" +
+                    "uniform vec4 vColor;" +
+                    "void main() {" +
+                    "  gl_FragColor = vColor;" +
+                    "}";
+
     private static final float[] light = new float[]{-0.75f, 1, -0.5f, 0};
-    private static final float color[] = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
+    private static final float[] color = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
+
+    private static final float[] wireframeLineColor = {0, 0, 0, 0};
 
     // These are helper variables used during calculations of position of every model
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
     private final float[] mCameraMatrix = new float[16]; // Camera space transformation
-    private final float[] mModelMatrix = new float[16]; // World model transformation
     private final float[] mMVMatrix = new float[16]; // Model View transformation matrix
     private final float[] mMVPMatrix = new float[16];
 
-    private int mProgram;
+    private int mShaderProgramObject;
+    private int mShaderProgramLine;
 
     private float mScreenRatio;
     private Camera mCamera;
@@ -97,18 +112,33 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         GLES20.glDepthFunc(GLES20.GL_LEQUAL);
         GLES20.glDepthRangef(0.0f, 1.0f);
 
-        // Prepare shaders and OpenGL program
+        // Prepare shaders and OpenGL program for normal 3D objects
         int vertexShader = loadShader(
                 GLES20.GL_VERTEX_SHADER,
-                vertexShaderCode);
+                vertexShaderObject);
         int fragmentShader = loadShader(
                 GLES20.GL_FRAGMENT_SHADER,
-                fragmentShaderCode);
+                fragmentShaderObject);
 
-        mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-        GLES20.glAttachShader(mProgram, vertexShader);   // add the vertex shader to program
-        GLES20.glAttachShader(mProgram, fragmentShader); // add the fragment shader to program
-        GLES20.glLinkProgram(mProgram);
+        mShaderProgramObject = GLES20.glCreateProgram();             // create empty OpenGL Program
+        GLES20.glAttachShader(mShaderProgramObject, vertexShader);   // add the vertex shader to program
+        GLES20.glAttachShader(mShaderProgramObject, fragmentShader); // add the fragment shader to program
+        GLES20.glLinkProgram(mShaderProgramObject);
+
+        if(true) { // TODO add debug mode condition
+            // Prepare shaders and OpenGL program for debuggong lines
+            vertexShader = loadShader(
+                    GLES20.GL_VERTEX_SHADER,
+                    vertexShaderLine);
+            fragmentShader = loadShader(
+                    GLES20.GL_FRAGMENT_SHADER,
+                    fragmentShaderLine);
+
+            mShaderProgramLine = GLES20.glCreateProgram();             // create empty OpenGL Program
+            GLES20.glAttachShader(mShaderProgramLine, vertexShader);   // add the vertex shader to program
+            GLES20.glAttachShader(mShaderProgramLine, fragmentShader); // add the fragment shader to program
+            GLES20.glLinkProgram(mShaderProgramLine);
+        }
 
         // Set our view matrix
         Matrix.setLookAtM(mViewMatrix, 0, 0, 0, 0, 0f, 0f, 1.0f, 0f, 1.0f, 0.0f);
@@ -231,9 +261,59 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         return resultBuffer;
     }
 
+    /**
+     * Creates packed buffer for MeshData wireframe object.
+     *
+     * Wireframe is drawn as GL_LINES.
+     */
+    private static FloatBuffer getWireframeBuffer(MeshData meshData) {
+        int vertexCount = meshData.trianglesVertices.length;
+
+        // Create a packed data buffer containing position data for each vertex
+        float[] vertexData = new float[
+                (vertexCount * RendererImpl.COORDS_PER_VERTEX_POSITION) * 2]; // All vertices are duplicated for lines
+        int vertexDataPositionOffset = 0;
+        for (int i = 0; i < vertexCount; i += 3) {
+
+            int sourceVertexPositionOffset = meshData.trianglesVertices[i] * RendererImpl.COORDS_PER_VERTEX_POSITION;
+            System.arraycopy(meshData.vertices, sourceVertexPositionOffset, vertexData, vertexDataPositionOffset, RendererImpl.COORDS_PER_VERTEX_POSITION);
+            vertexDataPositionOffset += 3;
+
+            sourceVertexPositionOffset = meshData.trianglesVertices[i + 1] * RendererImpl.COORDS_PER_VERTEX_POSITION;
+            System.arraycopy(meshData.vertices, sourceVertexPositionOffset, vertexData, vertexDataPositionOffset, RendererImpl.COORDS_PER_VERTEX_POSITION);
+            vertexDataPositionOffset += 3;
+
+            sourceVertexPositionOffset = meshData.trianglesVertices[i + 1] * RendererImpl.COORDS_PER_VERTEX_POSITION;
+            System.arraycopy(meshData.vertices, sourceVertexPositionOffset, vertexData, vertexDataPositionOffset, RendererImpl.COORDS_PER_VERTEX_POSITION);
+            vertexDataPositionOffset += 3;
+
+            sourceVertexPositionOffset = meshData.trianglesVertices[i + 2] * RendererImpl.COORDS_PER_VERTEX_POSITION;
+            System.arraycopy(meshData.vertices, sourceVertexPositionOffset, vertexData, vertexDataPositionOffset, RendererImpl.COORDS_PER_VERTEX_POSITION);
+            vertexDataPositionOffset += 3;
+
+            sourceVertexPositionOffset = meshData.trianglesVertices[i + 2] * RendererImpl.COORDS_PER_VERTEX_POSITION;
+            System.arraycopy(meshData.vertices, sourceVertexPositionOffset, vertexData, vertexDataPositionOffset, RendererImpl.COORDS_PER_VERTEX_POSITION);
+            vertexDataPositionOffset += 3;
+
+            sourceVertexPositionOffset = meshData.trianglesVertices[i] * RendererImpl.COORDS_PER_VERTEX_POSITION;
+            System.arraycopy(meshData.vertices, sourceVertexPositionOffset, vertexData, vertexDataPositionOffset, RendererImpl.COORDS_PER_VERTEX_POSITION);
+            vertexDataPositionOffset += 3;
+        }
+
+        ByteBuffer vb = ByteBuffer.allocateDirect(
+                // (# of coordinate values * 4 bytes per float)
+                vertexData.length * 4);
+        vb.order(ByteOrder.nativeOrder());
+        FloatBuffer resultBuffer = vb.asFloatBuffer();
+        resultBuffer.put(vertexData);
+        resultBuffer.position(0);
+        return resultBuffer;
+    }
+
     private static class AndroidMeshData extends MeshData {
 
         FloatBuffer dataBuffer;
+        FloatBuffer wireframeDataBuffer;
 
         public AndroidMeshData(
                 float[] vertices, float[] normals,
@@ -263,10 +343,10 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mMVPMatrix, 0);
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVMatrix, 0);
 
-        GLES20.glUseProgram(mProgram);
+        GLES20.glUseProgram(mShaderProgramObject);
 
         meshData.dataBuffer.position(0);
-        int positionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
+        int positionHandle = GLES20.glGetAttribLocation(mShaderProgramObject, "vPosition");
         GLES20.glEnableVertexAttribArray(positionHandle);
         GLES20.glVertexAttribPointer(
                 positionHandle, COORDS_PER_VERTEX_POSITION,
@@ -274,7 +354,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
                 VERTEX_STRIDE, meshData.dataBuffer);
 
         meshData.dataBuffer.position(COORDS_PER_VERTEX_POSITION);
-        int normalHandle = GLES20.glGetAttribLocation(mProgram, "vNormal");
+        int normalHandle = GLES20.glGetAttribLocation(mShaderProgramObject, "vNormal");
         GLES20.glEnableVertexAttribArray(normalHandle);
         GLES20.glVertexAttribPointer(
                 normalHandle, COORDS_PER_VERTEX_NORMAL,
@@ -282,20 +362,20 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
                 VERTEX_STRIDE, meshData.dataBuffer);
 
 
-        // get handle to fragment shader's vColor member
-        int colorHandle = GLES20.glGetUniformLocation(mProgram, "uColor");
+        // Get handle to fragment shader's vColor member
+        int colorHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uColor");
 
         // Set color for drawing the triangle
         GLES20.glUniform4fv(colorHandle, 1, color, 0);
 
-        // set shader's light vector
-        int lightHandle = GLES20.glGetUniformLocation(mProgram, "uLight");
+        // Set shader's light vector
+        int lightHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uLight");
         GLES20.glUniform4fv(lightHandle, 1, light, 0);
 
-        int mVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
+        int mVPMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uMVPMatrix");
         GLES20.glUniformMatrix4fv(mVPMatrixHandle, 1, false, mMVPMatrix, 0);
 
-        int modelMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uModelMatrix");
+        int modelMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uModelMatrix");
         GLES20.glUniformMatrix4fv(modelMatrixHandle, 1, false, modelMatrix, 0);
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, meshData.trianglesVertices.length);
@@ -303,6 +383,56 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         // Disable vertex array
         GLES20.glDisableVertexAttribArray(positionHandle);
         GLES20.glDisableVertexAttribArray(normalHandle);
+    }
+
+    @Override
+    public void renderWireframe(MeshData mesh, Color color, Matrix44 transformation) {
+        if (mCamera == null) {
+            return;
+        }
+        if(mShaderProgramLine == 0) {
+            throw new IllegalStateException("Wireframe rendering is only available during debug mode.");
+        }
+
+        AndroidMeshData meshData = (AndroidMeshData) mesh;
+        if(meshData.wireframeDataBuffer == null) {
+            meshData.wireframeDataBuffer = getWireframeBuffer(meshData);
+        }
+
+        float[] modelMatrix = transformation.getValues();
+
+        // Compose MVP matrix
+        Matrix.multiplyMM(mMVPMatrix, 0, mCameraMatrix, 0, modelMatrix, 0);
+        Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mMVPMatrix, 0);
+        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVMatrix, 0);
+
+        GLES20.glUseProgram(mShaderProgramLine);
+
+        meshData.wireframeDataBuffer.position(0);
+        int positionHandle = GLES20.glGetAttribLocation(mShaderProgramLine, "vPosition");
+        GLES20.glEnableVertexAttribArray(positionHandle);
+        GLES20.glVertexAttribPointer(
+                positionHandle, COORDS_PER_VERTEX_POSITION,
+                GLES20.GL_FLOAT, false,
+                COORDS_PER_VERTEX_POSITION * 4, meshData.wireframeDataBuffer);
+
+        // Get handle to fragment shader's vColor member
+        int colorHandle = GLES20.glGetUniformLocation(mShaderProgramLine, "vColor");
+
+        // Set color for drawing the lines
+        wireframeLineColor[0] = color.red;
+        wireframeLineColor[1] = color.green;
+        wireframeLineColor[2] = color.blue;
+        wireframeLineColor[3] = color.alpha;
+        GLES20.glUniform4fv(colorHandle, 1, wireframeLineColor, 0);
+
+        int mVPMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramLine, "uMVPMatrix");
+        GLES20.glUniformMatrix4fv(mVPMatrixHandle, 1, false, mMVPMatrix, 0);
+
+        GLES20.glDrawArrays(GLES20.GL_LINES, 0, meshData.trianglesVertices.length * 2);
+
+        // Disable vertex array
+        GLES20.glDisableVertexAttribArray(positionHandle);
     }
 
     /**
@@ -333,7 +463,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
      * just after making it:
      * <p/>
      * <pre>
-     * mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
+     * mColorHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "vColor");
      * MyGLRenderer.checkGlError("glGetUniformLocation");</pre>
      *
      * If the operation is not successful, the check throws an error.

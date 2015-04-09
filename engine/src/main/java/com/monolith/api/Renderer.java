@@ -25,6 +25,15 @@ public interface Renderer {
     void render(MeshData mesh, Matrix44 transformation);
 
     /**
+     * Renders wireframe of the given mesh. Use
+     *
+     * @param mesh Mesh to render.
+     * @param color Color of the rendered wireframe.
+     * @param transformation Transformation of the rendered object.
+     */
+    void renderWireframe(MeshData mesh, Color color, Matrix44 transformation);
+
+    /**
      * Creates instance of MeshData with supplied data.
      * Implementation can return a subclass of MeshData to which it can store it's specific
      * data to use during rendering.
