@@ -7,11 +7,11 @@ import android.util.Log;
 
 import com.monolith.api.GameObject;
 import com.monolith.api.MeshData;
-import com.monolith.api.Renderer;
 import com.monolith.api.components.Camera;
 import com.monolith.api.components.Model;
 import com.monolith.api.components.Transform;
 import com.monolith.api.math.Vector3;
+import com.monolith.engine.FullRenderer;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -25,7 +25,7 @@ import javax.microedition.khronos.opengles.GL10;
 /**
  * Created by Jakub Petriska on 3. 1. 2015.
  */
-public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
+public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRenderer {
 
     private static final String TAG = "RendererImpl";
 
@@ -124,7 +124,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
     }
 
     private void setupProjectionMatrixIfPossible() {
-        if(mCamera == null || mScreenRatio == 0) {
+        if (mCamera == null || mScreenRatio == 0) {
             return;
         }
 
@@ -323,6 +323,8 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, Renderer {
         GLES20.glDisableVertexAttribArray(positionHandle);
         GLES20.glDisableVertexAttribArray(normalHandle);
     }
+
+
 
     /**
      * Utility method for compiling a OpenGL shader.

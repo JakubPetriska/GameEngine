@@ -2,7 +2,8 @@ package com.monolith.engine;
 
 import com.monolith.api.Application;
 import com.monolith.api.Component;
-import com.monolith.api.DebugLog;
+import com.monolith.api.DebugSettings;
+import com.monolith.api.DebugUtility;
 import com.monolith.api.GameObject;
 import com.monolith.api.Messenger;
 import com.monolith.api.Renderer;
@@ -10,6 +11,7 @@ import com.monolith.api.Time;
 import com.monolith.api.TouchInput;
 import com.monolith.api.components.Camera;
 import com.monolith.api.external.InputMessenger;
+import com.monolith.api.math.Vector3;
 import com.monolith.engine.config.SceneCreator;
 import com.monolith.engine.config.model.initial_scene_state.ISScene;
 import com.monolith.engine.config.model.scenes_config.SCScene;
@@ -37,7 +39,7 @@ public class Engine {
     private InputMessengerInternal mInputMessengerInternal;
 
     // Application objects
-    private Renderer mRenderer;
+    private FullRenderer mRenderer;
     private TouchInputInternal mTouchInput;
     private MeshManager mMeshManager;
     private MessengerInternal mMessenger;
@@ -62,7 +64,7 @@ public class Engine {
      * @param platform       {@link com.monolith.platform.Platform} instance provided by the specific platform.
      * @param touchInput     {@link com.monolith.platform.TouchInputInternal} instance provided by the specific platform.
      */
-    public Engine(String startSceneName, Platform platform, Renderer renderer, TouchInputInternal touchInput) {
+    public Engine(String startSceneName, Platform platform, FullRenderer renderer, TouchInputInternal touchInput) {
         mCurrentSceneName = startSceneName;
         this.mPlatform = platform;
         this.mRenderer = renderer;
@@ -77,7 +79,9 @@ public class Engine {
         mInternalSystems.add(mMessenger);
         mInternalSystems.add(mTouchInput);
 
-        mApplication = new ApplicationImpl();
+
+        // TODO parse debug settings here
+        mApplication = new ApplicationImpl(new DebugSettings());
     }
 
     /**
@@ -86,7 +90,7 @@ public class Engine {
      * <p/>
      * This method allows resuming the Engine in different platform context.
      */
-    public void swapProvidedObjects(Platform platform, Renderer renderer, TouchInputInternal touchInput) {
+    public void swapProvidedObjects(Platform platform, FullRenderer renderer, TouchInputInternal touchInput) {
         Camera camera = mRenderer.getCamera();
 
         this.mPlatform = platform;
@@ -248,7 +252,11 @@ public class Engine {
         return mInputMessengerInternal.getInputMessenger();
     }
 
-    private class ApplicationImpl implements Application {
+    private class ApplicationImpl extends Application {
+
+        public ApplicationImpl(DebugSettings debugSettings) {
+            super(debugSettings);
+        }
 
         @Override
         public Renderer getRenderer() {
@@ -275,19 +283,19 @@ public class Engine {
             return mTime;
         }
 
-        private DebugLog mDebugLog;
+        private DebugUtility mDebugUtility;
 
         @Override
-        public DebugLog getDebugLog() {
-            if (mDebugLog == null) {
-                mDebugLog = new DebugLog() {
+        public DebugUtility getDebugUtility() {
+            if (mDebugUtility == null) {
+                mDebugUtility = new DebugUtility() {
                     @Override
                     public void log(String message) {
                         mPlatform.log(message);
                     }
                 };
             }
-            return mDebugLog;
+            return mDebugUtility;
         }
 
         @Override

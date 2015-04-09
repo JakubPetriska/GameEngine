@@ -10,20 +10,26 @@ import com.monolith.engine.MeshManager;
  *
  * Contains global application functionality, such as scene changing.
  */
-public interface Application {
-    Renderer getRenderer();
+public abstract class Application {
+    public final DebugSettings debugSettings;
 
-    TouchInput getTouchInput();
+    public Application(DebugSettings debugSettings) {
+        this.debugSettings = debugSettings;
+    }
 
-    MeshManager getModelManager();
+    public abstract Renderer getRenderer();
 
-    Messenger getMessenger();
+    public abstract TouchInput getTouchInput();
 
-    Time getTime();
+    public abstract MeshManager getModelManager();
 
-    DebugLog getDebugLog();
+    public abstract Messenger getMessenger();
 
-    void changeScene(String newSceneName);
+    public abstract Time getTime();
 
-    String getCurrentSceneName();
+    public abstract DebugUtility getDebugUtility();
+
+    public abstract void changeScene(String newSceneName);
+
+    public abstract String getCurrentSceneName();
 }
