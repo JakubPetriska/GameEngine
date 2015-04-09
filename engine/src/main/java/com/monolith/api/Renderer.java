@@ -17,7 +17,7 @@ public interface Renderer {
     void onStartRenderingFrame();
 
     /**
-     * Renders model on the position of it's owning {@link com.monolith.api.GameObject}.
+     * Renders model.
      *
      * @param mesh Mesh to render.
      * @param transformation Transformation of the rendered object.
