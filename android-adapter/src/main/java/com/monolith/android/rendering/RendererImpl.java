@@ -251,6 +251,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
                 (vertexCount * RendererImpl.COORDS_PER_VERTEX_POSITION)
                         + (vertexCount * RendererImpl.COORDS_PER_VERTEX_NORMAL)];
         for (int i = 0; i < vertexCount; i++) {
+            // We need to reverse the order of vertices in triangles due to change in coordinate system handedness
             int vertexDataPositionOffset = (vertexCount - 1 - i) * 6;
             int vertexDataNormalOffset = vertexDataPositionOffset + RendererImpl.COORDS_PER_VERTEX_POSITION;
             int sourcePositionOffset = meshData.trianglesVertices[i] * RendererImpl.COORDS_PER_VERTEX_POSITION;

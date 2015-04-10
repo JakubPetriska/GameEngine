@@ -29,7 +29,7 @@ public class BoxCollider extends Component {
     public void postUpdate() {
         if (getApplication().debugSettings.drawColliders) {
             Matrix44 objectTransformation = getGameObject().transform.getTransformationMatrix();
-            
+
             mColliderLocalTransformation.setIdentity();
             mColliderLocalTransformation.scale(sizeX, sizeY, sizeZ);
 
