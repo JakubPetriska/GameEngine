@@ -93,6 +93,8 @@ public class Transform extends Component {
         invalidate();
     }
 
+    // TODO adjust the rotation so it is in range 0 - 360
+
     public void rotateBy(float x, float y, float z) {
         mRotation.x += x;
         mRotation.y += y;

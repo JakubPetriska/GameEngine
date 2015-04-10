@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+    <gameObjects>
+        <gameObject>
+            <components>
+                <component type="camera"/>
+            </components>
+        </gameObject>
+        <gameObject>
+            <transform>
+                <position x="0" y="0" z="4" />
+                <rotation x="0" y="0" z="0" />
+            </transform>
+            <components>
+                <component type="model">
+                    <param name="meshPath">cube</param>
+                </component>
+                <component type="com.monolith.showcase.engine.RotationTestController" />
+            </components>
+        </gameObject>
+    </gameObjects>
+</scene>
