@@ -84,6 +84,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
     private final float[] mCameraMatrix = new float[16]; // Camera space transformation
     private final float[] mMVMatrix = new float[16]; // Model View transformation matrix
     private final float[] mMVPMatrix = new float[16];
+    private final Matrix44 mModelMatrixCopy = new Matrix44();
 
     private int mShaderProgramObject;
     private int mShaderProgramLine;
@@ -250,7 +251,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
                 (vertexCount * RendererImpl.COORDS_PER_VERTEX_POSITION)
                         + (vertexCount * RendererImpl.COORDS_PER_VERTEX_NORMAL)];
         for (int i = 0; i < vertexCount; i++) {
-            int vertexDataPositionOffset = i * 6;
+            int vertexDataPositionOffset = (vertexCount - 1 - i) * 6;
             int vertexDataNormalOffset = vertexDataPositionOffset + RendererImpl.COORDS_PER_VERTEX_POSITION;
             int sourcePositionOffset = meshData.trianglesVertices[i] * RendererImpl.COORDS_PER_VERTEX_POSITION;
             int sourceNormalOffset = meshData.trianglesNormals[i] * RendererImpl.COORDS_PER_VERTEX_NORMAL;
@@ -344,10 +345,15 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         }
         AndroidMeshData meshData = (AndroidMeshData) mesh;
 
-        float[] modelMatrix = transformation.getValues();
+        // Copy the transformation matrix
+        transformation.copy(mModelMatrixCopy);
+
+        // Scale matrix according to handedness change
+        mModelMatrixCopy.scale(-1, 1, 1);
 
         // Compose MVP matrix
-        Matrix.multiplyMM(mMVPMatrix, 0, mCameraMatrix, 0, modelMatrix, 0);
+        Matrix.multiplyMM(mMVPMatrix, 0, mCameraMatrix, 0, mModelMatrixCopy.getValues(), 0);
+
         Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mMVPMatrix, 0);
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVMatrix, 0);
 
@@ -384,7 +390,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         GLES20.glUniformMatrix4fv(mVPMatrixHandle, 1, false, mMVPMatrix, 0);
 
         int modelMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uModelMatrix");
-        GLES20.glUniformMatrix4fv(modelMatrixHandle, 1, false, modelMatrix, 0);
+        GLES20.glUniformMatrix4fv(modelMatrixHandle, 1, false, mModelMatrixCopy.getValues(), 0);
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, meshData.trianglesVertices.length);
 
@@ -407,10 +413,14 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
             meshData.wireframeDataBuffer = getWireframeBuffer(meshData);
         }
 
-        float[] modelMatrix = transformation.getValues();
+        // Copy the transformation matrix
+        transformation.copy(mModelMatrixCopy);
+
+        // Scale matrix according to handedness change
+        mModelMatrixCopy.scale(-1, 1, 1);
 
         // Compose MVP matrix
-        Matrix.multiplyMM(mMVPMatrix, 0, mCameraMatrix, 0, modelMatrix, 0);
+        Matrix.multiplyMM(mMVPMatrix, 0, mCameraMatrix, 0, mModelMatrixCopy.getValues(), 0);
         Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mMVPMatrix, 0);
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVMatrix, 0);
 

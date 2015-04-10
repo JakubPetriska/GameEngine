@@ -19,9 +19,6 @@ public class Transform extends Component {
     private boolean mTransformationMatrixValid = false;
     private final Matrix44 mTransformationMatrix = new Matrix44();
 
-    private boolean mRenderingTransformationMatrixValid = false;
-    private final Matrix44 mRenderingTransformationMatrix = new Matrix44();
-
     /**
      * Translation of this transform relative to parent.
      */
@@ -125,7 +122,6 @@ public class Transform extends Component {
 
     private void invalidate() {
         mTransformationMatrixValid = false;
-        mRenderingTransformationMatrixValid = false;
 
         List<GameObject> children = getGameObject().children;
         for(int i = 0; i < children.size(); ++i) {
@@ -136,6 +132,7 @@ public class Transform extends Component {
     // Helper matrix for calculations of transformation matrices
     private static final Matrix44 mHelperMatrix = new Matrix44();
 
+    // TODO If anybody changes this matrix but not through the transformation rendering goes nuts
     public Matrix44 getTransformationMatrix() {
         if(!mTransformationMatrixValid) {
             GameObject parent = getGameObject().getParent();
@@ -156,28 +153,5 @@ public class Transform extends Component {
             mTransformationMatrixValid = true;
         }
         return mTransformationMatrix;
-    }
-
-    public Matrix44 getRenderingTransformationMatrix() {
-        if(!mRenderingTransformationMatrixValid) {
-            GameObject parent = getGameObject().getParent();
-            boolean hasParent = parent != null;
-            Matrix44 parentTransformation = hasParent ? parent.transform.getRenderingTransformationMatrix() : null;
-            Matrix44 localTransformation = hasParent ? mHelperMatrix : mRenderingTransformationMatrix;
-
-            // TODO this should be platform dependent, currently is adjusted for OpenGL
-            localTransformation.setIdentity();
-            localTransformation.scale(mScale);
-            localTransformation.rotateZ(-mRotation.z);
-            localTransformation.rotateX(mRotation.x);
-            localTransformation.rotateY(-mRotation.y);
-            localTransformation.translate(-mPosition.x, mPosition.y, mPosition.z);
-
-            if(hasParent) {
-                Matrix44.multiply(mRenderingTransformationMatrix, parentTransformation, localTransformation);
-            }
-            mRenderingTransformationMatrixValid = true;
-        }
-        return mRenderingTransformationMatrix;
     }
 }

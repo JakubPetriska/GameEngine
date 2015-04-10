@@ -23,6 +23,6 @@ public class Model extends Component {
     public void postUpdate() {
         getApplication().getRenderer().render(
                 meshData,
-                getGameObject().transform.getRenderingTransformationMatrix());
+                getGameObject().transform.getTransformationMatrix());
     }
 }

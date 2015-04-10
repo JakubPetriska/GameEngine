@@ -204,7 +204,7 @@ public class Matrix44 {
         result.z = point.x * mValues[2] + point.y * mValues[6] + point.z * mValues[10] + mValues[14];
     }
 
-    private void copy(Matrix44 into) {
+    public void copy(Matrix44 into) {
         System.arraycopy(mValues, 0, into.mValues, 0, 16);
     }
 }

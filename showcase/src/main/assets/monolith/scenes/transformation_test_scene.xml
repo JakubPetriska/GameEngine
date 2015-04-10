@@ -15,6 +15,7 @@
                     <param name="meshPath">cube</param>
                 </component>
                 <component type="com.monolith.showcase.engine.RotationTestController" />
+                <component type="boxCollider"/>
             </components>
         </gameObject>
     </gameObjects>

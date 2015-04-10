@@ -28,9 +28,8 @@ public class BoxCollider extends Component {
     @Override
     public void postUpdate() {
         if (getApplication().debugSettings.drawColliders) {
-            Matrix44 objectTransformation = getGameObject().transform.getRenderingTransformationMatrix();
-
-            // TODO this should be platform dependent, currently is adjusted for OpenGL
+            Matrix44 objectTransformation = getGameObject().transform.getTransformationMatrix();
+            
             mColliderLocalTransformation.setIdentity();
             mColliderLocalTransformation.scale(sizeX, sizeY, sizeZ);
 
