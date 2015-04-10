@@ -120,6 +120,7 @@ public class Engine {
         mInternalSystems.add(touchInput);
         this.mTouchInput = touchInput;
 
+        mRenderer.setApplication(mApplication);
         mRenderer.setCamera(camera);
     }
 
@@ -174,7 +175,7 @@ public class Engine {
      * @param sceneName Name of the scene to construct.
      * @return Fully constructed {@link com.monolith.engine.Scene} object.
      */
-    private Scene getScene(String sceneName) {
+    private SceneCreator getScene(String sceneName) {
         // Find the scene object in the scenes definition structure
         mDummyScene.name = sceneName;
         int sceneIndex = Collections.binarySearch(mScenesConfig.scenes, mDummyScene);
@@ -193,9 +194,7 @@ public class Engine {
         }
         SceneCreator sceneCreator = new SceneCreator(mApplication);
         sceneCreator.create(scene);
-
-        mRenderer.setCamera(sceneCreator.camera);
-        return sceneCreator.scene;
+        return sceneCreator;
     }
 
     /**
@@ -321,7 +320,11 @@ public class Engine {
         @Override
         public void changeScene(String newSceneName) {
             mMeshManager = new MeshManager(mApplication, mPlatform);
-            mCurrentScene = getScene(newSceneName);
+
+            SceneCreator newSceneCreator = getScene(newSceneName);
+            mCurrentScene = newSceneCreator.scene;
+            mRenderer.setCamera(newSceneCreator.camera);
+
             mCurrentSceneName = newSceneName;
         }
 
