@@ -18,7 +18,7 @@
             android:name="com.monolith.showcase.android.examples.SceneSwitchingActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
-            android:name=".android.examples.RotationTestActivity"
+            android:name=".android.examples.TransformationTestActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
     </application>
 </manifest>

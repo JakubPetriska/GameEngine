@@ -12,18 +12,18 @@ import butterknife.OnClick;
 /**
  * Created by Jakub on 10. 4. 2015.
  */
-public class RotationTestActivity extends FragmentActivity {
+public class TransformationTestActivity extends FragmentActivity {
 
     private MonolithFragment mMonolithFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rotation_test);
+        setContentView(R.layout.activity_transformation_test);
         ButterKnife.inject(this);
 
         if (savedInstanceState == null) {
-            mMonolithFragment = MonolithFragment.newInstance("rotation_test_scene");
+            mMonolithFragment = MonolithFragment.newInstance("transformation_test_scene");
             getSupportFragmentManager().beginTransaction().add(R.id.engine_container, mMonolithFragment).commit();
         } else {
             mMonolithFragment = (MonolithFragment) getSupportFragmentManager().findFragmentById(R.id.engine_container);

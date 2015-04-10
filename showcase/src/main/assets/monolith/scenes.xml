@@ -14,8 +14,8 @@
         name="imported_model_scene"
         sceneFilePath="scenes/imported_model_scene.xml"/>
     <scene
-        name="rotation_test_scene"
-        sceneFilePath="scenes/rotation_test_scene.xml"/>
+        name="transformation_test_scene"
+        sceneFilePath="scenes/transformation_test_scene.xml"/>
     <scene
         name="camera_rotation_scene"
         sceneFilePath="scenes/camera_rotation_scene.xml"/>

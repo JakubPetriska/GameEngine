@@ -8,8 +8,7 @@
         </gameObject>
         <gameObject>
             <transform>
-                <position x="0" y="0" z="4" />
-                <rotation x="0" y="0" z="0" />
+                <position x="0.5" y="0.5" z="4" />
             </transform>
             <components>
                 <component type="model">

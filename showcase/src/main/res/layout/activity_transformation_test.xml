@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:padding="16dp"
-        android:text="@string/rotation_test_description"
+        android:text="@string/transformation_test_description"
         android:gravity="center_horizontal"/>
 
     <LinearLayout

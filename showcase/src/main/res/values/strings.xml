@@ -5,10 +5,10 @@
     <string name="example_basic_fragment">Using engine as Fragment</string>
     <string name="example_scene_switching">Switching scenes</string>
     <string name="example_imported_model">Imported model</string>
-    <string name="example_rotation_test">Rotation test</string>
+    <string name="example_transformation_test">Transformation test</string>
     <string name="example_camera_rotation">Camera rotation</string>
     <string name="example_environment">Environment</string>
     <string name="example_collisions">Collisions</string>
 
-    <string name="rotation_test_description">Script rotates the cube in the positive rotation of selected axis. Serves to check for bugs in object transformations.</string>
+    <string name="transformation_test_description">Script rotates the cube in the positive rotation of selected axis. Also cube is translated into positive directions of all axes. Serves to check for bugs in object transformations.</string>
 </resources>

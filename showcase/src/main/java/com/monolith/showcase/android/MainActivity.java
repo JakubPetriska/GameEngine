@@ -10,7 +10,7 @@ import android.widget.ListView;
 import com.monolith.api.android.MonolithActivity;
 import com.monolith.showcase.R;
 import com.monolith.showcase.android.examples.EngineAsFragmentActivity;
-import com.monolith.showcase.android.examples.RotationTestActivity;
+import com.monolith.showcase.android.examples.TransformationTestActivity;
 import com.monolith.showcase.android.examples.SceneSwitchingActivity;
 
 import butterknife.InjectView;
@@ -28,7 +28,7 @@ public class MainActivity extends BaseActionBarActivity {
             R.string.example_basic_fragment,
             R.string.example_scene_switching,
             R.string.example_imported_model,
-            R.string.example_rotation_test,
+            R.string.example_transformation_test,
             R.string.example_camera_rotation,
             R.string.example_environment,
             R.string.example_collisions
@@ -68,8 +68,8 @@ public class MainActivity extends BaseActionBarActivity {
                         intent = new Intent(MainActivity.this, MonolithActivity.class);
                         intent.putExtra(MonolithActivity.EXTRA_DEFAULT_SCENE_NAME, "imported_model_scene");
                         break;
-                    case R.string.example_rotation_test:
-                        intent = new Intent(MainActivity.this, RotationTestActivity.class);
+                    case R.string.example_transformation_test:
+                        intent = new Intent(MainActivity.this, TransformationTestActivity.class);
                         break;
                     case R.string.example_camera_rotation:
                         intent = new Intent(MainActivity.this, MonolithActivity.class);
