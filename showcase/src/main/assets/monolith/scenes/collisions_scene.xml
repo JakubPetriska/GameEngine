@@ -22,6 +22,10 @@
                     <param name="sizeX">1</param>
                     <param name="sizeY">1</param>
                     <param name="sizeZ">1</param>
+
+                    <param name="offsetX">0</param>
+                    <param name="offsetY">0</param>
+                    <param name="offsetZ">0</param>
                 </component>
             </components>
         </gameObject>

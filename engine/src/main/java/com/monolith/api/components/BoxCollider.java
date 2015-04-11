@@ -15,6 +15,10 @@ public class BoxCollider extends Component {
     public float sizeY = 1;
     public float sizeZ = 1;
 
+    public float offsetX = 0;
+    public float offsetY = 0;
+    public float offsetZ = 0;
+
     private MeshData meshData;
 
     @Override
@@ -32,6 +36,7 @@ public class BoxCollider extends Component {
 
             mColliderLocalTransformation.setIdentity();
             mColliderLocalTransformation.scale(sizeX, sizeY, sizeZ);
+            mColliderLocalTransformation.translate(offsetX, offsetY, offsetZ);
 
             Matrix44.multiply(mColliderAbsoluteTransformation, objectTransformation, mColliderLocalTransformation);
 
