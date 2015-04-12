@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.monolith.api.android.MonolithActivity;
 import com.monolith.showcase.R;
 import com.monolith.showcase.android.examples.EngineAsFragmentActivity;
+import com.monolith.showcase.android.examples.ExampleEnvironmentActivity;
 import com.monolith.showcase.android.examples.TransformationTestActivity;
 import com.monolith.showcase.android.examples.SceneSwitchingActivity;
 
@@ -76,8 +77,7 @@ public class MainActivity extends BaseActionBarActivity {
                         intent.putExtra(MonolithActivity.EXTRA_DEFAULT_SCENE_NAME, "camera_rotation_scene");
                         break;
                     case R.string.example_environment:
-                        intent = new Intent(MainActivity.this, MonolithActivity.class);
-                        intent.putExtra(MonolithActivity.EXTRA_DEFAULT_SCENE_NAME, "example_environment_scene");
+                        intent = new Intent(MainActivity.this, ExampleEnvironmentActivity.class);
                         break;
                     case R.string.example_collisions:
                         intent = new Intent(MainActivity.this, MonolithActivity.class);

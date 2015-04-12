@@ -24,6 +24,7 @@
                     <param name="fieldOfView">70</param>
                 </component>
                 <component type="com.monolith.showcase.engine.TouchRotationController" />
+                <component type="com.monolith.showcase.engine.SimpleMovementController" />
             </components>
         </gameObject>
 

@@ -14,11 +14,10 @@
             </intent-filter>
         </activity>
         <activity android:name="com.monolith.showcase.android.examples.EngineAsFragmentActivity" />
+        <activity android:name="com.monolith.showcase.android.examples.SceneSwitchingActivity" />
+        <activity android:name=".android.examples.TransformationTestActivity" />
         <activity
-            android:name="com.monolith.showcase.android.examples.SceneSwitchingActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity
-            android:name=".android.examples.TransformationTestActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:name=".android.examples.ExampleEnvironmentActivity"
+            android:theme="@style/AppThemeLight" />
     </application>
 </manifest>
