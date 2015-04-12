@@ -6,6 +6,7 @@ import com.monolith.api.MeshData;
 import com.monolith.api.Primitives;
 import com.monolith.api.math.Matrix44;
 
+//TODO add documentation
 /**
  * Created by Jakub on 9. 4. 2015.
  */
