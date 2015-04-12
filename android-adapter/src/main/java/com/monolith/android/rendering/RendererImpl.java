@@ -50,12 +50,12 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
 
     private static final String fragmentShaderObject =
             "precision mediump float;" +
-                    "uniform vec4 uLight;" +
+                    "uniform vec4 uLightDirection;" +
                     "uniform vec4 uColor;" +
                     "varying vec4 oNormal;" +
                     "void main() {" +
-                    "  float minFactor = 0.1;" +
-                    "  float factor = max(0.0, dot(oNormal, normalize(uLight)));" +
+                    "  float minFactor = 0.3;" +
+                    "  float factor = max(0.0, dot(oNormal, normalize(uLightDirection)));" +
                     "  gl_FragColor = ((factor * (1.0 - minFactor)) + minFactor) * uColor;" +
                     "}";
 
@@ -73,7 +73,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
                     "  gl_FragColor = vColor;" +
                     "}";
 
-    private static final float[] light = new float[]{-0.75f, 1, -0.5f, 0};
+    private static final float[] lightDirection = new float[]{-0.75f, 1, -0.5f, 0};
     private static final float[] color = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
 
     private static final float[] wireframeLineColor = {0, 0, 0, 0};
@@ -383,9 +383,9 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         // Set color for drawing the triangle
         GLES20.glUniform4fv(colorHandle, 1, color, 0);
 
-        // Set shader's light vector
-        int lightHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uLight");
-        GLES20.glUniform4fv(lightHandle, 1, light, 0);
+        // Set shader's lightDirection vector
+        int lightHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uLightDirection");
+        GLES20.glUniform4fv(lightHandle, 1, lightDirection, 0);
 
         int mVPMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uMVPMatrix");
         GLES20.glUniformMatrix4fv(mVPMatrixHandle, 1, false, mMVPMatrix, 0);
