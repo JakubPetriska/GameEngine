@@ -16,6 +16,10 @@ import java.util.List;
  */
 public class Transform extends Component {
 
+    // Used for translation calculations
+    private static final Vector3 sWorkVector = new Vector3();
+    private static final Vector3 sWorkVector2 = new Vector3();
+
     private boolean mTransformationMatrixValid = false;
     private final Matrix44 mTransformationMatrix = new Matrix44();
 
@@ -76,14 +80,27 @@ public class Transform extends Component {
         return mScale.z;
     }
 
+    /**
+     * Translation is done relative to the already present transform. TODO finish this comment
+     * @param x
+     * @param y
+     * @param z
+     */
     public void translateBy(float x, float y, float z) {
-        mPosition.x += x;
-        mPosition.y += y;
-        mPosition.z += z;
+        sWorkVector.x = x;
+        sWorkVector.y = y;
+        sWorkVector.z = z;
+
+        Matrix44 transformationMatrix = getTransformationMatrix();
+        transformationMatrix.transformVector(sWorkVector2, sWorkVector);
+
+        mPosition.x += sWorkVector2.x;
+        mPosition.y += sWorkVector2.y;
+        mPosition.z += sWorkVector2.z;
         invalidate();
     }
 
-    public void setTranslation(float x, float y, float z) {
+    public void setPosition(float x, float y, float z) {
         mPosition.x = x;
         mPosition.y = y;
         mPosition.z = z;
