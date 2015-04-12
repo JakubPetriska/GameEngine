@@ -33,6 +33,11 @@ public class TimeInternal implements Time, ISystem {
     }
 
     @Override
+    public void postUpdate() {
+
+    }
+
+    @Override
     public float getTime() {
         return frameStart;
     }

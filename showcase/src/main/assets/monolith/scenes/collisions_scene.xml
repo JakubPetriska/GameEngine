@@ -11,23 +11,73 @@
         <!-- Objects -->
         <gameObject>
             <transform>
-                <position x="0" y="0" z="4" />
+                <position x="0" y="0" z="6" />
             </transform>
-            <components>
-                <component type="model">
-                    <param name="meshPath">cube</param>
-                </component>
-                <component type="com.monolith.showcase.engine.TouchRotationController" />
-                <component type="boxCollider">
-                    <param name="sizeX">1</param>
-                    <param name="sizeY">1</param>
-                    <param name="sizeZ">1</param>
+            <children>
+                <!-- Controlled cubes -->
+                <gameObject>
+                    <components>
+                        <component type="com.monolith.showcase.engine.TouchPositionController" />
+                    </components>
+                    <children>
+                        <gameObject>
+                            <transform>
+                                <position x="0" y="1" z="0" />
+                            </transform>
+                            <components>
+                                <component type="model">
+                                    <param name="meshPath">cube</param>
+                                </component>
+                                <component type="boxCollider">
+                                    <param name="sizeX">1</param>
+                                    <param name="sizeY">1</param>
+                                    <param name="sizeZ">1</param>
 
-                    <param name="offsetX">0</param>
-                    <param name="offsetY">0</param>
-                    <param name="offsetZ">0</param>
-                </component>
-            </components>
+                                    <param name="offsetX">0</param>
+                                    <param name="offsetY">0</param>
+                                    <param name="offsetZ">0</param>
+                                </component>
+                            </components>
+                        </gameObject>
+                        <gameObject>
+                            <transform>
+                                <position x="0" y="-1" z="0" />
+                                <rotation x="0" y="45" z="0" />
+                            </transform>
+                            <components>
+                                <component type="model">
+                                    <param name="meshPath">cube</param>
+                                </component>
+                                <component type="boxCollider" />
+                            </components>
+                        </gameObject>
+                    </children>
+                </gameObject>
+
+                <!-- Static cubes -->
+                <gameObject>
+                    <transform>
+                        <position x="2" y="0" z="0" />
+                    </transform>
+                    <components>
+                        <component type="model">
+                            <param name="meshPath">cube</param>
+                        </component>
+                        <component type="boxCollider" />
+                    </components>
+                </gameObject>
+                <gameObject>
+                    <transform>
+                        <position x="-2" y="0" z="0" />
+                    </transform>
+                    <components>
+                        <component type="model">
+                            <param name="meshPath">cube</param>
+                        </component>
+                        <component type="boxCollider" />
+                    </components>
+                </gameObject>
+            </children>
         </gameObject>
     </gameObjects>
 </scene>

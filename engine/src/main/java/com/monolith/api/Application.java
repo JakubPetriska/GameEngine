@@ -25,6 +25,8 @@ public abstract class Application {
 
     public abstract Messenger getMessenger();
 
+    public abstract CollisionSystem getCollisionSystem();
+
     public abstract Time getTime();
 
     public abstract DebugUtility getDebugUtility();

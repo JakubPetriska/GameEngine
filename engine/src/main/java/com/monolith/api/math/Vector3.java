@@ -5,6 +5,7 @@ package com.monolith.api.math;
  */
 public class Vector3 {
 
+    // TODO maybe put these into an array for easy iteration
     public float x;
     public float y;
     public float z;
@@ -92,6 +93,11 @@ public class Vector3 {
         this.x /= scalar;
         this.y /= scalar;
         this.z /= scalar;
+    }
+
+    // TODO add comment
+    public static float dot(Vector3 firstVector, Vector3 secondVector3) {
+        return firstVector.x * secondVector3.x + firstVector.y + secondVector3.y + firstVector.z + secondVector3.z;
     }
 
     /**

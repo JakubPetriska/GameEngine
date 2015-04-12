@@ -1,6 +1,7 @@
 package com.monolith.engine;
 
 import com.monolith.api.Application;
+import com.monolith.api.CollisionSystem;
 import com.monolith.api.Component;
 import com.monolith.api.DebugSettings;
 import com.monolith.api.DebugUtility;
@@ -45,6 +46,7 @@ public class Engine {
     private MeshManager mMeshManager;
     private MessengerInternal mMessenger;
     private TimeInternal mTime;
+    private CollisionSystem mCollisionSystem;
 
     private List<ISystem> mInternalSystems = new ArrayList<>();
 
@@ -75,10 +77,12 @@ public class Engine {
         mMessenger = new MessengerInternal(mInputMessengerInternal);
 
         mTime = new TimeInternal();
+        mCollisionSystem = new CollisionSystem();
 
         mInternalSystems.add(mTime);
         mInternalSystems.add(mMessenger);
         mInternalSystems.add(mTouchInput);
+        mInternalSystems.add(mCollisionSystem);
 
         mApplication = new ApplicationImpl(parseDebugSettingsFile());
 
@@ -209,6 +213,10 @@ public class Engine {
         update(mCurrentScene.gameObjects);
         mRenderer.onStartRenderingFrame();
         postUpdate(mCurrentScene.gameObjects);
+
+        for (int i = 0; i < mInternalSystems.size(); ++i) {
+            mInternalSystems.get(i).postUpdate();
+        }
     }
 
     /**
@@ -295,6 +303,11 @@ public class Engine {
         @Override
         public Messenger getMessenger() {
             return mMessenger;
+        }
+
+        @Override
+        public CollisionSystem getCollisionSystem() {
+            return mCollisionSystem;
         }
 
         @Override

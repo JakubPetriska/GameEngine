@@ -17,8 +17,8 @@ import java.util.List;
 public class Transform extends Component {
 
     // Used for translation calculations
-    private static final Vector3 sWorkVector = new Vector3();
-    private static final Vector3 sWorkVector2 = new Vector3();
+    private final Vector3 sWorkVector = new Vector3();
+    private final Vector3 sWorkVector2 = new Vector3();
 
     private boolean mTransformationMatrixValid = false;
     private final Matrix44 mTransformationMatrix = new Matrix44();
@@ -147,7 +147,7 @@ public class Transform extends Component {
     }
 
     // Helper matrix for calculations of transformation matrices
-    private static final Matrix44 mHelperMatrix = new Matrix44();
+    private final Matrix44 mHelperMatrix = new Matrix44();
 
     // TODO If anybody changes this matrix but not through the transformation rendering goes nuts
     public Matrix44 getTransformationMatrix() {

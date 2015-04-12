@@ -192,16 +192,32 @@ public class Matrix44 {
         res[15] = l[3] * r[12] + l[7] * r[13] + l[11] * r[14] + l[15] * r[15];
     }
 
+    public void transformVector(Vector3 vector) {
+        transformVector(vector, vector);
+    }
+
     public void transformVector(Vector3 result, Vector3 vector) {
-        result.x = vector.x * mValues[0] + vector.y * mValues[4] + vector.z * mValues[8];
-        result.y = vector.x * mValues[1] + vector.y * mValues[5] + vector.z * mValues[9];
-        result.z = vector.x * mValues[2] + vector.y * mValues[6] + vector.z * mValues[10];
+        float x = vector.x * mValues[0] + vector.y * mValues[4] + vector.z * mValues[8];
+        float y = vector.x * mValues[1] + vector.y * mValues[5] + vector.z * mValues[9];
+        float z = vector.x * mValues[2] + vector.y * mValues[6] + vector.z * mValues[10];
+
+        result.x = x;
+        result.y = y;
+        result.z = z;
+    }
+
+    public void transformPoint(Vector3 point) {
+        transformPoint(point, point);
     }
 
     public void transformPoint(Vector3 result, Vector3 point) {
-        result.x = point.x * mValues[0] + point.y * mValues[4] + point.z * mValues[8] + mValues[12];
-        result.y = point.x * mValues[1] + point.y * mValues[5] + point.z * mValues[9] + mValues[13];
-        result.z = point.x * mValues[2] + point.y * mValues[6] + point.z * mValues[10] + mValues[14];
+        float x = point.x * mValues[0] + point.y * mValues[4] + point.z * mValues[8] + mValues[12];
+        float y = point.x * mValues[1] + point.y * mValues[5] + point.z * mValues[9] + mValues[13];
+        float z = point.x * mValues[2] + point.y * mValues[6] + point.z * mValues[10] + mValues[14];
+
+        result.x = x;
+        result.y = y;
+        result.z = z;
     }
 
     public void copy(Matrix44 into) {

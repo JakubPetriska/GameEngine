@@ -84,6 +84,11 @@ public class MessengerInternal implements Messenger, ISystem {
         mCachingMessagesMap = mapToClear;
     }
 
+    @Override
+    public void postUpdate() {
+
+    }
+
     private String getMessageKey(Object message) {
         return getMessageKey(message.getClass());
     }

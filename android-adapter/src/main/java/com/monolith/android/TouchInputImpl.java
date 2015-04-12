@@ -124,6 +124,11 @@ public class TouchInputImpl implements TouchInputInternal {
     }
 
     @Override
+    public void postUpdate() {
+
+    }
+
+    @Override
     public List<Touch> getTouches() {
         return mTouches;
     }
