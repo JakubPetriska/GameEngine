@@ -38,6 +38,9 @@
                                     <param name="offsetY">0</param>
                                     <param name="offsetZ">0</param>
                                 </component>
+                                <component type="com.monolith.showcase.engine.CollisionsHandler">
+                                    <param name="name">Collider 2</param>
+                                </component>
                             </components>
                         </gameObject>
                         <gameObject>
@@ -50,6 +53,9 @@
                                     <param name="meshPath">cube</param>
                                 </component>
                                 <component type="boxCollider" />
+                                <component type="com.monolith.showcase.engine.CollisionsHandler">
+                                    <param name="name">Collider 1</param>
+                                </component>
                             </components>
                         </gameObject>
                     </children>
