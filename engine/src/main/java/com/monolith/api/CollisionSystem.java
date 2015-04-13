@@ -14,6 +14,7 @@ import java.util.List;
 public class CollisionSystem implements ISystem {
 
     private List<BoxCollider> mColliders = new ArrayList<>();
+    private List<List<BoxCollider>> mCollidingColliders = new ArrayList<>();
     private List<Obb> mObbs = new ArrayList<>();
 
     // These represent coordinates of second OBB represented in coordinate space of the first OBB.
@@ -54,6 +55,7 @@ public class CollisionSystem implements ISystem {
         if (!mColliders.contains(collider)) {
             mColliders.add(collider);
             mObbs.add(new Obb());
+            mCollidingColliders.add(new ArrayList<BoxCollider>());
         }
     }
 
@@ -61,8 +63,14 @@ public class CollisionSystem implements ISystem {
         int index = mColliders.indexOf(collider);
         if (index > -1) {
             mColliders.remove(index);
-            // TODO maybe keep the OBB objects in cache for a while to avoid too much garbage collection
+            // TODO maybe keep the OBB and List<BoxCollider> objects in cache for a while to avoid too much garbage collection
             mObbs.remove(index);
+            List<BoxCollider> collidingColliders = mCollidingColliders.remove(index);
+            while(collidingColliders.size() > 0) {
+                BoxCollider collidingCollider = collidingColliders.remove(0);
+                collider.onCollisionEnded(collidingCollider);
+                collidingCollider.onCollisionEnded(collider);
+            }
         }
     }
 
@@ -88,9 +96,19 @@ public class CollisionSystem implements ISystem {
                     transformObb(secondCollider, secondObb);
                 }
 
-                if (testCollision(firstObb, secondObb)) {
+                boolean colliding = testCollision(firstObb, secondObb);
+                // TODO optimize this search
+                List<BoxCollider> collidingColliders = mCollidingColliders.get(i);
+                int index = collidingColliders.indexOf(secondCollider);
+                boolean wereCollidingBefore = index > -1;
+                if (colliding && !wereCollidingBefore) {
                     firstCollider.onCollisionDetected(secondCollider);
                     secondCollider.onCollisionDetected(firstCollider);
+                    collidingColliders.add(secondCollider);
+                } else if(!colliding && wereCollidingBefore) {
+                    firstCollider.onCollisionEnded(secondCollider);
+                    secondCollider.onCollisionEnded(firstCollider);
+                    collidingColliders.remove(index);
                 }
             }
         }

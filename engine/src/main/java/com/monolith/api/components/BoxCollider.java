@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //TODO add documentation
+
 /**
  * Created by Jakub on 9. 4. 2015.
  */
@@ -27,13 +28,14 @@ public class BoxCollider extends Component {
     private final Matrix44 sColliderLocalTransformation = new Matrix44(); // Used during calculations
     private List<CollisionListener> mListeners = new ArrayList<>();
 
-    // TODO just for debuging add collision exit callback to fully enable this
-    private boolean mColliding;
+    private int mCollidingCollidersCount = 0;
 
     private MeshData meshData;
 
     public interface CollisionListener {
         void onCollisionDetected(BoxCollider collisionObject);
+
+        void onCollisionEnded(BoxCollider collisionObject);
     }
 
     public void registerCollisionListener(CollisionListener listener) {
@@ -60,9 +62,16 @@ public class BoxCollider extends Component {
     }
 
     public void onCollisionDetected(BoxCollider collisionObject) {
-        mColliding = true;
+        ++mCollidingCollidersCount;
         for (int i = 0; i < mListeners.size(); ++i) {
             mListeners.get(i).onCollisionDetected(collisionObject);
+        }
+    }
+
+    public void onCollisionEnded(BoxCollider collisionObject) {
+        --mCollidingCollidersCount;
+        for (int i = 0; i < mListeners.size(); ++i) {
+            mListeners.get(i).onCollisionEnded(collisionObject);
         }
     }
 
@@ -80,7 +89,7 @@ public class BoxCollider extends Component {
 
         if (getApplication().debugSettings.drawColliders) {
             getApplication().getRenderer().renderWireframe(meshData,
-                    mColliding ? Color.RED : Color.GREEN,
+                    mCollidingCollidersCount > 0 ? Color.RED : Color.GREEN,
                     mColliderAbsoluteTransformation);
         }
     }
