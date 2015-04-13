@@ -137,7 +137,7 @@ public class Vector3 {
     }
 
     public static float dot(Vector3 firstVector, Vector3 secondVector3) {
-        return firstVector.mValues[0] * secondVector3.mValues[0] + firstVector.mValues[1] + secondVector3.mValues[1] + firstVector.mValues[2] + secondVector3.mValues[2];
+        return firstVector.mValues[0] * secondVector3.mValues[0] + firstVector.mValues[1] * secondVector3.mValues[1] + firstVector.mValues[2] * secondVector3.mValues[2];
     }
 
     /**

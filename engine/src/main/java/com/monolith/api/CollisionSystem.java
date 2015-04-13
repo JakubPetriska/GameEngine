@@ -16,6 +16,16 @@ public class CollisionSystem implements ISystem {
     private List<BoxCollider> mColliders = new ArrayList<>();
     private List<Obb> mObbs = new ArrayList<>();
 
+    // These represent coordinates of second OBB represented in coordinate space of the first OBB.
+    private final Matrix44 mRotation = new Matrix44();
+    private final Matrix44 mAbsRotation = new Matrix44();
+    private final Vector3 mTranslation = new Vector3();
+
+    public CollisionSystem() {
+        mRotation.setIdentity();
+        mAbsRotation.setIdentity();
+    }
+
     private static class Obb {
         final Vector3 center = new Vector3();
         final Vector3[] axes = new Vector3[3];
@@ -101,14 +111,8 @@ public class CollisionSystem implements ISystem {
         );
     }
 
-    // These represent coordinates of second OBB represented in
-    // coordinate space of the first OBB.
-    private final Matrix44 mRotation = new Matrix44();
-    private final Matrix44 mAbsRotation = new Matrix44();
-    private final Vector3 mTranslation = new Vector3();
-
     private boolean testCollision(Obb firstObb, Obb secondObb) {
-        mRotation.setIdentity();
+        // TODO interleave this with first tests
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 mRotation.set(i, j, Vector3.dot(firstObb.axes[i], secondObb.axes[j]));
@@ -120,21 +124,41 @@ public class CollisionSystem implements ISystem {
         float translationZ = Vector3.dot(mTranslation, firstObb.axes[2]);
         mTranslation.set(translationX, translationY, translationZ);
 
+        // TODO interleave this with first tests
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 mAbsRotation.set(i, j, Math.abs(mRotation.get(i, j)));
             }
         }
 
+        float[] firstObbSize = firstObb.size.getValues();
+        float[] secondObbSize = secondObb.size.getValues();
+        float[] translationValues = mTranslation.getValues();
+
         for (int i = 0; i < 3; ++i) {
-            float ra = firstObb.size.getValues()[i];
-            float rb = secondObb.size.getX() * mAbsRotation.get(i, 0)
-                    + secondObb.size.getY() * mAbsRotation.get(i, 1)
-                    + secondObb.size.getZ() * mAbsRotation.get(i, 2);
-            if (Math.abs(mTranslation.getValues()[i]) > ra + rb) {
+            float ra = firstObbSize[i];
+            float rb = secondObbSize[0] * mAbsRotation.get(i, 0)
+                    + secondObbSize[1] * mAbsRotation.get(i, 1)
+                    + secondObbSize[2] * mAbsRotation.get(i, 2);
+            if (Math.abs(translationValues[i]) > ra + rb) {
                 return false;
             }
         }
+
+        for (int i = 0; i < 3; ++i) {
+            float ra = firstObbSize[0] * mAbsRotation.get(0, i)
+                    + firstObbSize[1] * mAbsRotation.get(1, i)
+                    + firstObbSize[2] * mAbsRotation.get(2, i);
+            float rb = secondObbSize[i];
+            float t = translationX * mRotation.get(0, i)
+                    + translationY * mRotation.get(1, i)
+                    + translationZ * mRotation.get(2, i);
+            if (Math.abs(t) > ra + rb) {
+                return false;
+            }
+        }
+
+        // TODO add rest of the test
 
         return true;
     }
