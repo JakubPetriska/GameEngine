@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 //TODO add documentation
-
 /**
  * Created by Jakub on 9. 4. 2015.
  */
