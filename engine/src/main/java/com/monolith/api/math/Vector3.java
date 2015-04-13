@@ -104,6 +104,12 @@ public class Vector3 {
         this.mValues[2] -= vector.mValues[2];
     }
 
+    public void subtract(float x, float y, float z) {
+        this.mValues[0] -= x;
+        this.mValues[1] -= y;
+        this.mValues[2] -= z;
+    }
+
     /**
      * Subtracts one Vector from another using the equation result = left - right.
      * @param result Vector in which result is stored.
@@ -138,6 +144,14 @@ public class Vector3 {
 
     public static float dot(Vector3 firstVector, Vector3 secondVector3) {
         return firstVector.mValues[0] * secondVector3.mValues[0] + firstVector.mValues[1] * secondVector3.mValues[1] + firstVector.mValues[2] * secondVector3.mValues[2];
+    }
+
+    public float length() {
+        return (float) Math.sqrt(mValues[0] * mValues[0] + mValues[1] * mValues[1] + mValues[2] * mValues[2]);
+    }
+
+    public void normalize() {
+        divide(length());
     }
 
     /**

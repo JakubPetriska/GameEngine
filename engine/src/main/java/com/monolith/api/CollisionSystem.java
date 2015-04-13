@@ -122,10 +122,18 @@ public class CollisionSystem implements ISystem {
         transformation.transformVector(obb.axes[0]);
         transformation.transformVector(obb.axes[1]);
         transformation.transformVector(obb.axes[2]);
+
+        float xAxisLength = obb.axes[0].length();
+        obb.axes[0].divide(xAxisLength);
+        float yAxisLength = obb.axes[1].length();
+        obb.axes[1].divide(yAxisLength);
+        float zAxisLength = obb.axes[2].length();
+        obb.axes[2].divide(zAxisLength);
+
         obb.size.set(
-                Math.abs(collider.sizeX / 2),
-                Math.abs(collider.sizeY / 2),
-                Math.abs(collider.sizeY / 2)
+                0.5f * xAxisLength,
+                0.5f * yAxisLength,
+                0.5f * zAxisLength
         );
     }
 
