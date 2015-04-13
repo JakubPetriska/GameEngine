@@ -1,6 +1,7 @@
 package com.monolith.api.math;
 
 // TODO comment this class
+
 /**
  * Represents 4x4 matrix of floats.
  * <p/>
@@ -29,9 +30,13 @@ public class Matrix44 {
 
     public Matrix44(float[] values) {
         if (values.length < 16) {
-            throw new IllegalStateException("Array backing a matrix must be at least 16 elements long.");
+            throw new IllegalStateException("Array backing a Matrix44 must be at least 16 elements long.");
         }
         this.mValues = values;
+    }
+
+    public float[] getValues() {
+        return mValues;
     }
 
     /**
@@ -56,10 +61,6 @@ public class Matrix44 {
         mValues[row + column * 4] = value;
     }
 
-    public float[] getValues() {
-        return mValues;
-    }
-
     public void setIdentity() {
         for (int i = 0; i < 16; ++i) {
             mValues[i] =
@@ -69,7 +70,10 @@ public class Matrix44 {
     }
 
     public void translate(Vector3 translation) {
-        translate(translation.x, translation.y, translation.z);
+        translate(
+                translation.getX(),
+                translation.getY(),
+                translation.getZ());
     }
 
     public void translate(float x, float y, float z) {
@@ -148,7 +152,7 @@ public class Matrix44 {
     }
 
     public void scale(Vector3 scale) {
-        scale(scale.x, scale.y, scale.z);
+        scale(scale.getX(), scale.getY(), scale.getZ());
     }
 
     public void scale(float x, float y, float z) {
@@ -197,13 +201,11 @@ public class Matrix44 {
     }
 
     public void transformVector(Vector3 result, Vector3 vector) {
-        float x = vector.x * mValues[0] + vector.y * mValues[4] + vector.z * mValues[8];
-        float y = vector.x * mValues[1] + vector.y * mValues[5] + vector.z * mValues[9];
-        float z = vector.x * mValues[2] + vector.y * mValues[6] + vector.z * mValues[10];
+        float x = vector.getX() * mValues[0] + vector.getY() * mValues[4] + vector.getZ() * mValues[8];
+        float y = vector.getX() * mValues[1] + vector.getY() * mValues[5] + vector.getZ() * mValues[9];
+        float z = vector.getX() * mValues[2] + vector.getY() * mValues[6] + vector.getZ() * mValues[10];
 
-        result.x = x;
-        result.y = y;
-        result.z = z;
+        result.set(x, y, z);
     }
 
     public void transformPoint(Vector3 point) {
@@ -211,13 +213,11 @@ public class Matrix44 {
     }
 
     public void transformPoint(Vector3 result, Vector3 point) {
-        float x = point.x * mValues[0] + point.y * mValues[4] + point.z * mValues[8] + mValues[12];
-        float y = point.x * mValues[1] + point.y * mValues[5] + point.z * mValues[9] + mValues[13];
-        float z = point.x * mValues[2] + point.y * mValues[6] + point.z * mValues[10] + mValues[14];
+        float x = point.getX() * mValues[0] + point.getY() * mValues[4] + point.getZ() * mValues[8] + mValues[12];
+        float y = point.getX() * mValues[1] + point.getY() * mValues[5] + point.getZ() * mValues[9] + mValues[13];
+        float z = point.getX() * mValues[2] + point.getY() * mValues[6] + point.getZ() * mValues[10] + mValues[14];
 
-        result.x = x;
-        result.y = y;
-        result.z = z;
+        result.set(x, y, z);
     }
 
     public void copy(Matrix44 into) {

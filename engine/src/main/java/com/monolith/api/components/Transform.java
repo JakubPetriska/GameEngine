@@ -39,45 +39,43 @@ public class Transform extends Component {
     private final Vector3 mScale = new Vector3();
 
     public Transform() {
-        mScale.x = 1;
-        mScale.y = 1;
-        mScale.z = 1;
+        mScale.set(1, 1, 1);
     }
 
     public float getPositionX() {
-        return mPosition.x;
+        return mPosition.getX();
     }
 
     public float getPositionY() {
-        return mPosition.y;
+        return mPosition.getY();
     }
 
     public float getPositionZ() {
-        return mPosition.z;
+        return mPosition.getZ();
     }
 
     public float getRotationX() {
-        return mRotation.x;
+        return mRotation.getX();
     }
 
     public float getRotationY() {
-        return mRotation.y;
+        return mRotation.getY();
     }
 
     public float getRotationZ() {
-        return mRotation.z;
+        return mRotation.getZ();
     }
 
     public float getScaleX() {
-        return mScale.x;
+        return mScale.getX();
     }
 
     public float getScaleY() {
-        return mScale.y;
+        return mScale.getY();
     }
 
     public float getScaleZ() {
-        return mScale.z;
+        return mScale.getZ();
     }
 
     /**
@@ -87,53 +85,41 @@ public class Transform extends Component {
      * @param z
      */
     public void translateBy(float x, float y, float z) {
-        sWorkVector.x = x;
-        sWorkVector.y = y;
-        sWorkVector.z = z;
+        sWorkVector.set(x, y, z);
 
         Matrix44 transformationMatrix = getTransformationMatrix();
         transformationMatrix.transformVector(sWorkVector2, sWorkVector);
 
-        mPosition.x += sWorkVector2.x;
-        mPosition.y += sWorkVector2.y;
-        mPosition.z += sWorkVector2.z;
+        mPosition.add(sWorkVector2);
         invalidate();
     }
 
     public void setPosition(float x, float y, float z) {
-        mPosition.x = x;
-        mPosition.y = y;
-        mPosition.z = z;
+        mPosition.set(x, y, z);
         invalidate();
     }
 
     // TODO adjust the rotation so it is in range 0 - 360
 
     public void rotateBy(float x, float y, float z) {
-        mRotation.x += x;
-        mRotation.y += y;
-        mRotation.z += z;
+        mRotation.add(x, y, z);
         invalidate();
     }
 
     public void setRotation(float x, float y, float z) {
-        mRotation.x = x;
-        mRotation.y = y;
-        mRotation.z = z;
+        mRotation.set(x, y ,z);
         invalidate();
     }
 
     public void scaleBy(float x, float y, float z) {
-        mScale.x = x;
-        mScale.y = y;
-        mScale.z = z;
+        mScale.setX(mScale.getX() * x);
+        mScale.setY(mScale.getY() * y);
+        mScale.setZ(mScale.getZ() * z);
         invalidate();
     }
 
     public void setScale(float x, float y, float z) {
-        mScale.x = x;
-        mScale.y = y;
-        mScale.z = z;
+        mScale.set(x, y, z);
         invalidate();
     }
 
@@ -159,9 +145,9 @@ public class Transform extends Component {
 
             localTransformation.setIdentity();
             localTransformation.scale(mScale);
-            localTransformation.rotateZ(mRotation.z);
-            localTransformation.rotateX(mRotation.x);
-            localTransformation.rotateY(mRotation.y);
+            localTransformation.rotateZ(mRotation.getZ());
+            localTransformation.rotateX(mRotation.getX());
+            localTransformation.rotateY(mRotation.getY());
             localTransformation.translate(mPosition);
 
             if(hasParent) {

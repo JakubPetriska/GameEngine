@@ -118,6 +118,7 @@ public class CollisionSystem implements ISystem {
         float translationX = Vector3.dot(mTranslation, firstObb.axes[0]);
         float translationY = Vector3.dot(mTranslation, firstObb.axes[1]);
         float translationZ = Vector3.dot(mTranslation, firstObb.axes[2]);
+        mTranslation.set(translationX, translationY, translationZ);
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -126,13 +127,11 @@ public class CollisionSystem implements ISystem {
         }
 
         for (int i = 0; i < 3; ++i) {
-            float ra = i == 0 ? firstObb.size.x : i == 2 ? firstObb.size.y : firstObb.size.z;
-            float rb = secondObb.size.x * mAbsRotation.get(i, 0)
-                    + secondObb.size.y * mAbsRotation.get(i, 1)
-                    + secondObb.size.z * mAbsRotation.get(i, 2);
-            if (Math.abs(
-                    i == 0 ? translationX : i == 2 ? translationY : translationZ
-            ) > ra + rb) {
+            float ra = firstObb.size.getValues()[i];
+            float rb = secondObb.size.getX() * mAbsRotation.get(i, 0)
+                    + secondObb.size.getY() * mAbsRotation.get(i, 1)
+                    + secondObb.size.getZ() * mAbsRotation.get(i, 2);
+            if (Math.abs(mTranslation.getValues()[i]) > ra + rb) {
                 return false;
             }
         }

@@ -1,34 +1,69 @@
 package com.monolith.api.math;
 
+// TODO add comments
 /**
  * Represents three dimensional vector.
  */
 public class Vector3 {
-
-    // TODO maybe put these into an array for easy iteration
-    public float x;
-    public float y;
-    public float z;
+    
+    private final float[] mValues;
 
     public Vector3() {
+        mValues = new float[3];
+    }
+
+    public Vector3(float[] values) {
+        if (values.length < 3) {
+            throw new IllegalStateException("Array backing a Vector3 must be at least 3 elements long.");
+        }
+        mValues = values;
     }
 
     public Vector3(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this();
+        this.mValues[0] = x;
+        this.mValues[1] = y;
+        this.mValues[2] = z;
+    }
+
+    public float[] getValues() {
+        return mValues;
     }
 
     public void set(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.mValues[0] = x;
+        this.mValues[1] = y;
+        this.mValues[2] = z;
     }
 
     public void set(Vector3 source) {
-        this.x = source.x;
-        this.y = source.y;
-        this.z = source.z;
+        this.mValues[0] = source.mValues[0];
+        this.mValues[1] = source.mValues[1];
+        this.mValues[2] = source.mValues[2];
+    }
+
+    public float getX() {
+        return mValues[0];
+    }
+
+    public void setX(float value) {
+        mValues[0] = value;
+    }
+
+    public float getY() {
+        return mValues[1];
+    }
+
+    public void setY(float value) {
+        mValues[1] = value;
+    }
+
+    public float getZ() {
+        return mValues[2];
+    }
+
+    public void setZ(float value) {
+        mValues[2] = value;
     }
 
     /**
@@ -36,9 +71,15 @@ public class Vector3 {
      * @param vector Vector that is added to this Vector.
      */
     public void add(Vector3 vector) {
-        this.x += vector.x;
-        this.y += vector.y;
-        this.z += vector.z;
+        this.mValues[0] += vector.mValues[0];
+        this.mValues[1] += vector.mValues[1];
+        this.mValues[2] += vector.mValues[2];
+    }
+
+    public void add(float x, float y, float z) {
+        this.mValues[0] += x;
+        this.mValues[1] += y;
+        this.mValues[2] += z;
     }
 
     /**
@@ -48,9 +89,9 @@ public class Vector3 {
      * @param right Vector that is added to the left Vector.
      */
     public static void add(Vector3 result, Vector3 left, Vector3 right) {
-        result.x = left.x + right.x;
-        result.y = left.y + right.y;
-        result.z = left.z + right.z;
+        result.mValues[0] = left.mValues[0] + right.mValues[0];
+        result.mValues[1] = left.mValues[1] + right.mValues[1];
+        result.mValues[2] = left.mValues[2] + right.mValues[2];
     }
 
     /**
@@ -58,9 +99,9 @@ public class Vector3 {
      * @param vector Vector that is subtracted from this Vector.
      */
     public void subtract(Vector3 vector) {
-        this.x -= vector.x;
-        this.y -= vector.y;
-        this.z -= vector.z;
+        this.mValues[0] -= vector.mValues[0];
+        this.mValues[1] -= vector.mValues[1];
+        this.mValues[2] -= vector.mValues[2];
     }
 
     /**
@@ -70,9 +111,9 @@ public class Vector3 {
      * @param right Vector that is subtracted from left Vector.
      */
     public static void subtract(Vector3 result, Vector3 left, Vector3 right) {
-        result.x = left.x - right.x;
-        result.y = left.y - right.y;
-        result.z = left.z - right.z;
+        result.mValues[0] = left.mValues[0] - right.mValues[0];
+        result.mValues[1] = left.mValues[1] - right.mValues[1];
+        result.mValues[2] = left.mValues[2] - right.mValues[2];
     }
 
     /**
@@ -80,9 +121,9 @@ public class Vector3 {
      * @param scalar Scalar that this Vector is multiplied by.
      */
     public void multiply(float scalar) {
-        this.x *= scalar;
-        this.y *= scalar;
-        this.z *= scalar;
+        this.mValues[0] *= scalar;
+        this.mValues[1] *= scalar;
+        this.mValues[2] *= scalar;
     }
 
     /**
@@ -90,23 +131,22 @@ public class Vector3 {
      * @param scalar Scalar that this Vector is divided by.
      */
     public void divide(float scalar) {
-        this.x /= scalar;
-        this.y /= scalar;
-        this.z /= scalar;
+        this.mValues[0] /= scalar;
+        this.mValues[1] /= scalar;
+        this.mValues[2] /= scalar;
     }
 
-    // TODO add comment
     public static float dot(Vector3 firstVector, Vector3 secondVector3) {
-        return firstVector.x * secondVector3.x + firstVector.y + secondVector3.y + firstVector.z + secondVector3.z;
+        return firstVector.mValues[0] * secondVector3.mValues[0] + firstVector.mValues[1] + secondVector3.mValues[1] + firstVector.mValues[2] + secondVector3.mValues[2];
     }
 
     /**
      * Negates this Vector.
      */
     public void negate() {
-        this.x *= -1;
-        this.y *= -1;
-        this.z *= -1;
+        this.mValues[0] *= -1;
+        this.mValues[1] *= -1;
+        this.mValues[2] *= -1;
     }
 
     @Override
@@ -114,9 +154,9 @@ public class Vector3 {
         if(obj instanceof Vector3) {
             Vector3 other = (Vector3) obj;
             // TODO floating point comparison using == - fix this!
-            return this.x == other.x
-                    && this.y == other.y
-                    && this.z == other.z;
+            return this.mValues[0] == other.mValues[0]
+                    && this.mValues[1] == other.mValues[1]
+                    && this.mValues[2] == other.mValues[2];
         } else {
             return false;
         }
