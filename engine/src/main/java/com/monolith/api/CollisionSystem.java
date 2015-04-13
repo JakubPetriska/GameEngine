@@ -66,7 +66,7 @@ public class CollisionSystem implements ISystem {
             // TODO maybe keep the OBB and List<BoxCollider> objects in cache for a while to avoid too much garbage collection
             mObbs.remove(index);
             List<BoxCollider> collidingColliders = mCollidingColliders.remove(index);
-            while(collidingColliders.size() > 0) {
+            while (collidingColliders.size() > 0) {
                 BoxCollider collidingCollider = collidingColliders.remove(0);
                 collider.onCollisionEnded(collidingCollider);
                 collidingCollider.onCollisionEnded(collider);
@@ -105,7 +105,7 @@ public class CollisionSystem implements ISystem {
                     firstCollider.onCollisionDetected(secondCollider);
                     secondCollider.onCollisionDetected(firstCollider);
                     collidingColliders.add(secondCollider);
-                } else if(!colliding && wereCollidingBefore) {
+                } else if (!colliding && wereCollidingBefore) {
                     firstCollider.onCollisionEnded(secondCollider);
                     secondCollider.onCollisionEnded(firstCollider);
                     collidingColliders.remove(index);
@@ -137,17 +137,17 @@ public class CollisionSystem implements ISystem {
         );
     }
 
-    private boolean testCollision(Obb firstObb, Obb secondObb) {
+    private boolean testCollision(Obb a, Obb b) {
         // TODO interleave this with first tests
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                mRotation.set(i, j, Vector3.dot(firstObb.axes[i], secondObb.axes[j]));
+                mRotation.set(i, j, Vector3.dot(a.axes[i], b.axes[j]));
             }
         }
-        Vector3.subtract(mTranslation, secondObb.center, firstObb.center);
-        float translationX = Vector3.dot(mTranslation, firstObb.axes[0]);
-        float translationY = Vector3.dot(mTranslation, firstObb.axes[1]);
-        float translationZ = Vector3.dot(mTranslation, firstObb.axes[2]);
+        Vector3.subtract(mTranslation, b.center, a.center);
+        float translationX = Vector3.dot(mTranslation, a.axes[0]);
+        float translationY = Vector3.dot(mTranslation, a.axes[1]);
+        float translationZ = Vector3.dot(mTranslation, a.axes[2]);
         mTranslation.set(translationX, translationY, translationZ);
 
         // TODO interleave this with first tests
@@ -157,34 +157,106 @@ public class CollisionSystem implements ISystem {
             }
         }
 
-        float[] firstObbSize = firstObb.size.getValues();
-        float[] secondObbSize = secondObb.size.getValues();
-        float[] translationValues = mTranslation.getValues();
+        float[] aSize = a.size.getValues();
+        float[] bSize = b.size.getValues();
+        float[] t = mTranslation.getValues();
+        float rA;
+        float rB;
 
+        // Testing on axes of first OBB
         for (int i = 0; i < 3; ++i) {
-            float ra = firstObbSize[i];
-            float rb = secondObbSize[0] * mAbsRotation.get(i, 0)
-                    + secondObbSize[1] * mAbsRotation.get(i, 1)
-                    + secondObbSize[2] * mAbsRotation.get(i, 2);
-            if (Math.abs(translationValues[i]) > ra + rb) {
+            rA = aSize[i];
+            rB = bSize[0] * mAbsRotation.get(i, 0)
+                    + bSize[1] * mAbsRotation.get(i, 1)
+                    + bSize[2] * mAbsRotation.get(i, 2);
+            if (Math.abs(t[i]) > rA + rB) {
                 return false;
             }
         }
 
+        // Testing on axes of second OBB
         for (int i = 0; i < 3; ++i) {
-            float ra = firstObbSize[0] * mAbsRotation.get(0, i)
-                    + firstObbSize[1] * mAbsRotation.get(1, i)
-                    + firstObbSize[2] * mAbsRotation.get(2, i);
-            float rb = secondObbSize[i];
-            float t = translationX * mRotation.get(0, i)
-                    + translationY * mRotation.get(1, i)
-                    + translationZ * mRotation.get(2, i);
-            if (Math.abs(t) > ra + rb) {
+            rA = aSize[0] * mAbsRotation.get(0, i)
+                    + aSize[1] * mAbsRotation.get(1, i)
+                    + aSize[2] * mAbsRotation.get(2, i);
+            rB = bSize[i];
+            if (Math.abs(t[0] * mRotation.get(0, i) + t[1] * mRotation.get(1, i) + t[2] * mRotation.get(2, i))
+                    > rA + rB) {
                 return false;
             }
         }
 
-        // TODO add rest of the test
+        // Test a0 x b0
+        rA = aSize[1] * mAbsRotation.get(2, 0) + aSize[2] * mAbsRotation.get(1, 0);
+        rB = bSize[1] * mAbsRotation.get(0, 2) + bSize[2] * mAbsRotation.get(0, 1);
+        if (Math.abs(t[2] * mRotation.get(1, 0) - t[1] * mRotation.get(2, 0))
+                > rA + rB) {
+            return false;
+        }
+
+        // Test a0 x b1
+        rA = aSize[1] * mAbsRotation.get(2, 1) + aSize[2] * mAbsRotation.get(1, 1);
+        rB = bSize[0] * mAbsRotation.get(0, 2) + bSize[2] * mAbsRotation.get(0, 0);
+        if (Math.abs(t[2] * mRotation.get(1, 1) - t[1] * mRotation.get(2, 1))
+                > rA + rB) {
+            return false;
+        }
+
+        // Test a0 x b2
+        rA = aSize[1] * mAbsRotation.get(2, 2) + aSize[2] * mAbsRotation.get(1, 2);
+        rB = bSize[0] * mAbsRotation.get(0, 1) + bSize[1] * mAbsRotation.get(0, 0);
+        if (Math.abs(t[2] * mRotation.get(1, 2) - t[1] * mRotation.get(2, 2))
+                > rA + rB) {
+            return false;
+        }
+
+        // Test a1 x b0
+        rA = aSize[0] * mAbsRotation.get(2, 0) + aSize[2] * mAbsRotation.get(0, 0);
+        rB = bSize[1] * mAbsRotation.get(1, 2) + bSize[2] * mAbsRotation.get(1, 1);
+        if (Math.abs(t[0] * mRotation.get(2, 0) - t[2] * mRotation.get(0, 0))
+                > rA + rB) {
+            return false;
+        }
+
+        // Test a1 x b1
+        rA = aSize[0] * mAbsRotation.get(2, 1) + aSize[2] * mAbsRotation.get(0, 1);
+        rB = bSize[0] * mAbsRotation.get(1, 2) + bSize[2] * mAbsRotation.get(1, 0);
+        if (Math.abs(t[0] * mRotation.get(2, 1) - t[2] * mRotation.get(0, 1))
+                > rA + rB) {
+            return false;
+        }
+
+        // Test a1 x b2
+        rA = aSize[0] * mAbsRotation.get(2, 2) + aSize[2] * mAbsRotation.get(0, 2);
+        rB = bSize[0] * mAbsRotation.get(1, 1) + bSize[1] * mAbsRotation.get(1, 0);
+        if (Math.abs(t[0] * mRotation.get(2, 2) - t[2] * mRotation.get(0, 2))
+                > rA + rB) {
+            return false;
+        }
+
+        // Test a2 x b0
+        rA = aSize[0] * mAbsRotation.get(1, 0) + aSize[1] * mAbsRotation.get(0, 0);
+        rB = bSize[1] * mAbsRotation.get(2, 2) + bSize[2] * mAbsRotation.get(2, 1);
+        if (Math.abs(t[1] * mRotation.get(0, 0) - t[0] * mRotation.get(1, 0))
+                > rA + rB) {
+            return false;
+        }
+
+        // Test a2 x b1
+        rA = aSize[0] * mAbsRotation.get(1, 1) + aSize[1] * mAbsRotation.get(0, 1);
+        rB = bSize[0] * mAbsRotation.get(2, 2) + bSize[2] * mAbsRotation.get(2, 0);
+        if (Math.abs(t[1] * mRotation.get(0, 1) - t[0] * mRotation.get(1, 1))
+                > rA + rB) {
+            return false;
+        }
+
+        // Test a2 x b2
+        rA = aSize[0] * mAbsRotation.get(1, 2) + aSize[1] * mAbsRotation.get(0, 2);
+        rB = bSize[0] * mAbsRotation.get(2, 1) + bSize[1] * mAbsRotation.get(2, 0);
+        if (Math.abs(t[1] * mRotation.get(0, 2) - t[0] * mRotation.get(1, 2))
+                > rA + rB) {
+            return false;
+        }
 
         return true;
     }
