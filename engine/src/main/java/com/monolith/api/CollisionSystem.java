@@ -144,6 +144,7 @@ public class CollisionSystem implements ISystem {
                 mRotation.set(i, j, Vector3.dot(a.axes[i], b.axes[j]));
             }
         }
+        
         Vector3.subtract(mTranslation, b.center, a.center);
         float translationX = Vector3.dot(mTranslation, a.axes[0]);
         float translationY = Vector3.dot(mTranslation, a.axes[1]);
