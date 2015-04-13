@@ -138,25 +138,11 @@ public class CollisionSystem implements ISystem {
     }
 
     private boolean testCollision(Obb a, Obb b) {
-        // TODO interleave this with first tests
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                mRotation.set(i, j, Vector3.dot(a.axes[i], b.axes[j]));
-            }
-        }
-        
         Vector3.subtract(mTranslation, b.center, a.center);
         float translationX = Vector3.dot(mTranslation, a.axes[0]);
         float translationY = Vector3.dot(mTranslation, a.axes[1]);
         float translationZ = Vector3.dot(mTranslation, a.axes[2]);
         mTranslation.set(translationX, translationY, translationZ);
-
-        // TODO interleave this with first tests
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                mAbsRotation.set(i, j, Math.abs(mRotation.get(i, j)));
-            }
-        }
 
         float[] aSize = a.size.getValues();
         float[] bSize = b.size.getValues();
@@ -166,6 +152,11 @@ public class CollisionSystem implements ISystem {
 
         // Testing on axes of first OBB
         for (int i = 0; i < 3; ++i) {
+            for (int j = 0; j < 3; j++) {
+                mRotation.set(i, j, Vector3.dot(a.axes[i], b.axes[j]));
+                mAbsRotation.set(i, j, Math.abs(mRotation.get(i, j)));
+            }
+
             rA = aSize[i];
             rB = bSize[0] * mAbsRotation.get(i, 0)
                     + bSize[1] * mAbsRotation.get(i, 1)
