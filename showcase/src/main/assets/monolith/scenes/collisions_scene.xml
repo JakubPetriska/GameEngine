@@ -11,7 +11,7 @@
         <!-- Objects -->
         <gameObject>
             <transform>
-                <position x="0" y="0" z="6" />
+                <position x="0" y="0" z="8" />
             </transform>
             <children>
                 <!-- Controlled cubes -->
@@ -59,6 +59,7 @@
                 <gameObject>
                     <transform>
                         <position x="2" y="0" z="0" />
+                        <rotation x="0" y="0" z="45" />
                     </transform>
                     <components>
                         <component type="model">
