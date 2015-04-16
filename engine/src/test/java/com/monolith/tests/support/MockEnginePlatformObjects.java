@@ -1,10 +1,13 @@
 package com.monolith.tests.support;
 
+import com.monolith.api.Application;
+import com.monolith.api.Color;
 import com.monolith.api.MeshData;
 import com.monolith.api.Touch;
-import com.monolith.api.components.Model;
+import com.monolith.api.components.Camera;
+import com.monolith.api.math.Matrix44;
+import com.monolith.engine.FullRenderer;
 import com.monolith.platform.Platform;
-import com.monolith.api.Renderer;
 import com.monolith.platform.TouchInputInternal;
 
 import java.io.File;
@@ -19,16 +22,41 @@ import java.util.List;
  */
 public class MockEnginePlatformObjects {
 
-    public static class MockRenderer implements Renderer {
+    public static class MockRenderer implements FullRenderer {
 
         @Override
-        public void render(Model model) {
+        public void onStartRenderingFrame() {
+
+        }
+
+        @Override
+        public void render(MeshData mesh, Matrix44 transformation) {
+            // Do nothing
+        }
+
+        @Override
+        public void renderWireframe(MeshData mesh, Color color, Matrix44 transformation) {
             // Do nothing
         }
 
         @Override
         public MeshData createMeshData(float[] vertices, float[] normals, int[] trianglesVertices, int[] trianglesNormals) {
             return new MeshData(vertices, normals, trianglesVertices, trianglesNormals);
+        }
+
+        @Override
+        public void setCamera(Camera camera) {
+
+        }
+
+        @Override
+        public Camera getCamera() {
+            return null;
+        }
+
+        @Override
+        public void setApplication(Application application) {
+
         }
     }
 
@@ -39,6 +67,11 @@ public class MockEnginePlatformObjects {
         @Override
         public void update() {
             // Do nothing
+        }
+
+        @Override
+        public void postUpdate() {
+
         }
 
         @Override
