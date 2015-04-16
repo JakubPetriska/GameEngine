@@ -7,7 +7,7 @@ import com.monolith.api.Time;
  */
 public class TimeInternal implements Time, ISystem {
 
-    private long engineInstanceStartTime;
+    private final long engineInstanceStartTime;
 
     private float frameStart;
     private float timeDelta;

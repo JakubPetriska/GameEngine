@@ -14,9 +14,9 @@ public interface Time {
 
     /**
      * Returns time delta between the start of this frame and
-     * the last frame.
+     * the last frame in seconds.
      * @return Time delta between the start of this frame and
-     * the last frame.
+     * the last frame in seconds.
      */
     float getTimeDelta();
 }
