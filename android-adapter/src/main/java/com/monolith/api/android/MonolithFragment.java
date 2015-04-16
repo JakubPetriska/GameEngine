@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.monolith.android.AndroidPlatform;
 import com.monolith.android.Constants;
 import com.monolith.android.EngineObjectStore;
 import com.monolith.android.MyGLSurfaceView;
@@ -19,6 +20,7 @@ import com.monolith.engine.Engine;
  */
 public class MonolithFragment extends Fragment {
 
+    private Engine mEngine;
     private String mDefaultSceneName = null;
     private MyGLSurfaceView mGlSurfaceView;
 
@@ -28,7 +30,7 @@ public class MonolithFragment extends Fragment {
      * @return New instance of this fragment.
      */
     public static MonolithFragment newInstance() {
-        return new MonolithFragment();
+        return newInstance(null);
     }
 
     /**
@@ -40,8 +42,9 @@ public class MonolithFragment extends Fragment {
      * @return New instance of this fragment.
      */
     public static MonolithFragment newInstance(String defaultSceneName) {
-        MonolithFragment fragment = newInstance();
+        MonolithFragment fragment = new MonolithFragment();
         fragment.mDefaultSceneName = defaultSceneName;
+        fragment.createEngine();
         return fragment;
     }
 
@@ -49,12 +52,17 @@ public class MonolithFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         if (savedInstanceState != null
                 && savedInstanceState.containsKey(Constants.KEY_ENGINE_OBJECT_STORE_KEY)) {
-            Engine engine = EngineObjectStore.retrieve(savedInstanceState.getString(Constants.KEY_ENGINE_OBJECT_STORE_KEY));
-            mGlSurfaceView = new MyGLSurfaceView(getActivity(), engine);
-        } else {
-            mGlSurfaceView = new MyGLSurfaceView(getActivity(), mDefaultSceneName);
+            mEngine = EngineObjectStore.retrieve(savedInstanceState.getString(Constants.KEY_ENGINE_OBJECT_STORE_KEY));
         }
+        if(mEngine == null) {
+            createEngine();
+        }
+        mGlSurfaceView = new MyGLSurfaceView(getActivity(), mEngine);
         return mGlSurfaceView;
+    }
+
+    private void createEngine() {
+        mEngine = new Engine(mDefaultSceneName);
     }
 
     @Override
@@ -88,6 +96,6 @@ public class MonolithFragment extends Fragment {
      * @return The {@link com.monolith.api.external.InputMessenger} instance.
      */
     public InputMessenger getInputMessenger() {
-        return mGlSurfaceView == null ? null : mGlSurfaceView.getEngine().getInputMessenger();
+        return mEngine.getInputMessenger();
     }
 }

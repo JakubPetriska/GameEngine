@@ -64,14 +64,9 @@ public class Engine {
      * @param startSceneName Name of the scene that this engine should show first.
      *                       If null, engine will use the default scene as specified
      *                       in scenes configuration file.
-     * @param platform       {@link com.monolith.platform.Platform} instance provided by the specific platform.
-     * @param touchInput     {@link com.monolith.platform.TouchInputInternal} instance provided by the specific platform.
      */
-    public Engine(String startSceneName, Platform platform, FullRenderer renderer, TouchInputInternal touchInput) {
+    public Engine(String startSceneName) {
         mCurrentSceneName = startSceneName;
-        this.mPlatform = platform;
-        this.mRenderer = renderer;
-        this.mTouchInput = touchInput;
 
         mInputMessengerInternal = new InputMessengerInternal();
         mMessenger = new MessengerInternal(mInputMessengerInternal);
@@ -81,12 +76,7 @@ public class Engine {
 
         mInternalSystems.add(mTime);
         mInternalSystems.add(mMessenger);
-        mInternalSystems.add(mTouchInput);
         mInternalSystems.add(mCollisionSystem);
-
-        mApplication = new ApplicationImpl(parseDebugSettingsFile());
-
-        mRenderer.setApplication(mApplication);
     }
 
     private DebugSettings parseDebugSettingsFile() {
@@ -109,13 +99,15 @@ public class Engine {
     }
 
     /**
-     * Swaps objects that are provided to Engine during it's creation.
+     * Inserts objects that are provided to Engine during it's creation.
      * These are platform specific objects created by platform specific code.
-     * <p/>
-     * This method allows resuming the Engine in different platform context.
+     *
+     * @param platform {@link com.monolith.platform.Platform} instance provided by the specific platform.
+     * @param renderer TODO add documentation
+     * @param touchInput {@link com.monolith.platform.TouchInputInternal} instance provided by the specific platform.
      */
-    public void swapProvidedObjects(Platform platform, FullRenderer renderer, TouchInputInternal touchInput) {
-        Camera camera = mRenderer.getCamera();
+    public void insertProvidedObjects(Platform platform, FullRenderer renderer, TouchInputInternal touchInput) {
+        Camera camera = mRenderer != null ? mRenderer.getCamera() : null;
 
         this.mPlatform = platform;
         this.mRenderer = renderer;
@@ -123,6 +115,10 @@ public class Engine {
         mInternalSystems.remove(mTouchInput);
         mInternalSystems.add(touchInput);
         this.mTouchInput = touchInput;
+
+        if(mApplication == null) {
+            mApplication = new ApplicationImpl(parseDebugSettingsFile());
+        }
 
         mRenderer.setApplication(mApplication);
         mRenderer.setCamera(camera);

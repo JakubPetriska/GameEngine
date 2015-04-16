@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Window;
 
+import com.monolith.android.AndroidPlatform;
 import com.monolith.android.Constants;
 import com.monolith.android.EngineObjectStore;
 import com.monolith.android.MyGLSurfaceView;
@@ -27,13 +28,14 @@ public class MonolithActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+        Engine engine;
         if (savedInstanceState != null
                 && savedInstanceState.containsKey(Constants.KEY_ENGINE_OBJECT_STORE_KEY)) {
-            Engine engine = EngineObjectStore.retrieve(savedInstanceState.getString(Constants.KEY_ENGINE_OBJECT_STORE_KEY));
-            mGlSurfaceView = new MyGLSurfaceView(this, engine);
+            engine = EngineObjectStore.retrieve(savedInstanceState.getString(Constants.KEY_ENGINE_OBJECT_STORE_KEY));
         } else {
-            mGlSurfaceView = new MyGLSurfaceView(this, getIntent().getStringExtra(EXTRA_DEFAULT_SCENE_NAME));
+            engine = new Engine(getIntent().getStringExtra(EXTRA_DEFAULT_SCENE_NAME));
         }
+        mGlSurfaceView = new MyGLSurfaceView(this, engine);
         setContentView(mGlSurfaceView);
     }
 
@@ -60,14 +62,5 @@ public class MonolithActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         mGlSurfaceView.getEngine().onFinish();
-    }
-
-    /**
-     * Returns the {@link com.monolith.api.external.InputMessenger} instance.
-     *
-     * @return The {@link com.monolith.api.external.InputMessenger} instance.
-     */
-    public InputMessenger getInputMessenger() {
-        return mGlSurfaceView == null ? null : mGlSurfaceView.getEngine().getInputMessenger();
     }
 }
