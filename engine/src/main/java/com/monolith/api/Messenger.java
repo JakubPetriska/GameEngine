@@ -16,11 +16,20 @@ public interface Messenger {
     void sendMessage(Object message);
 
     /**
-     * Return messages of the given class received during the previous frame.
+     * Get messages of the given type received during the previous frame.
      *
      * @param resultList    List into which all available messages will be added.
      * @param messagesClass Class of the requested messages.
      * @param <T>           Type of requested messages.
      */
     <T> void getMessages(List<T> resultList, Class<T> messagesClass);
+
+    /**
+     * Get last message of the given type received during the previous frame.
+     *
+     * @param messagesClass
+     * @param <T>
+     * @return
+     */
+    <T> T getLastMessage(Class<T> messagesClass);
 }
