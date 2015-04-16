@@ -15,12 +15,12 @@
             </transform>
             <children>
                 <!-- Controlled cubes -->
-                <gameObject>
+                <gameObject tag="parent">
                     <components>
                         <component type="com.monolith.showcase.engine.TouchPositionController" />
                     </components>
                     <children>
-                        <gameObject>
+                        <gameObject tag="topChild">
                             <transform>
                                 <position x="0" y="1" z="0" />
                                 <scale x="1.5" y="1.5" z="1.5" />
@@ -43,7 +43,7 @@
                                 </component>
                             </components>
                         </gameObject>
-                        <gameObject>
+                        <gameObject tag="bottomChild">
                             <transform>
                                 <position x="0" y="-1" z="0" />
                                 <rotation x="0" y="45" z="0" />

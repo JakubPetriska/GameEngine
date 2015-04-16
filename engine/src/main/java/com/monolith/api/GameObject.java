@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+// TODO Complete documentation
 /**
  * Represents an object. GameObject serves only as container for functionality.
  * GameObject itself will not be displayed in final rendered content in any way.
@@ -17,6 +18,8 @@ import java.util.List;
  * GameObject can also be used to only hold children objects for manipulation.
  */
 public class GameObject {
+
+    public final String tag;
 
     private Application mApplication;
     private GameObject mParent;
@@ -48,6 +51,10 @@ public class GameObject {
     // None of them can be removed so make sure it is checked in removeComponent(Component) method
     public final Transform transform;
 
+    public GameObject(Application application, GameObject parent) {
+        this(application, parent, "");
+    }
+
     /**
      * Creates new GameObject.
      * <p/>
@@ -56,7 +63,8 @@ public class GameObject {
      * if you pass null as parent appropriate lifecycle methods will not be
      * called on this object.
      */
-    public GameObject(Application application, GameObject parent) {
+    public GameObject(Application application, GameObject parent, String tag) {
+        this.tag = tag;
         this.mApplication = application;
         this.mParent = parent;
         children = Collections.unmodifiableList(mChildren);
@@ -70,15 +78,20 @@ public class GameObject {
         addComponent(transform);
     }
 
+    public GameObject(GameObject parent) {
+        this(parent, "");
+    }
+
     /**
      * Creates new GameObject. Use this in your scripts.
      *
      * @param parent GameObject's parent. Can never be null.
      */
-    public GameObject(GameObject parent) {
+    public GameObject(GameObject parent, String tag) {
         if (parent == null) {
             throw new IllegalStateException("This constructor cannot be used for objects without parent.");
         }
+        this.tag = tag;
         this.mApplication = parent.mApplication;
         this.mParent = parent;
         children = Collections.unmodifiableList(mChildren);

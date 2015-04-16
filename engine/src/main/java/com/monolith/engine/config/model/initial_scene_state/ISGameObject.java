@@ -10,6 +10,9 @@ import java.util.List;
 @Root
 public class ISGameObject {
 
+    @Attribute(required = false)
+    public String tag;
+
     @Element(required = false)
     public Transform transform;
 
