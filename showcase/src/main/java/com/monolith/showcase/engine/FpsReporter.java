@@ -18,7 +18,7 @@ public class FpsReporter extends Component {
         ++frameCount;
 
         if(frameCount == AVERAGING_FACTOR) {
-            float fps = 60 / (frameTimeSum / frameCount);
+            float fps = frameCount / frameTimeSum;
             getApplication().getMessenger().sendMessage(fps);
 
             frameCount = 0;
