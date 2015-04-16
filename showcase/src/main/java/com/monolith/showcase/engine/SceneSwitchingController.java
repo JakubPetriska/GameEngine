@@ -19,7 +19,7 @@ public class SceneSwitchingController extends Component {
 
     @Override
     public void update() {
-        getApplication().getMessenger().getMessages(mMessageList, String.class);
+        getApplication().getMessenger().getMessages(String.class, mMessageList);
         for(String message : mMessageList) {
             if(SWITCH_SCENES_MESSAGE.equals(message)) {
                 switchScenes();

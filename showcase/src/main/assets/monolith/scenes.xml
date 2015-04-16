@@ -25,4 +25,7 @@
     <scene
         name="collisions_scene"
         sceneFilePath="scenes/collisions_scene.xml"/>
+    <scene
+        name="performance_test_scene"
+        sceneFilePath="scenes/performance_test_scene.xml"/>
 </scenes>

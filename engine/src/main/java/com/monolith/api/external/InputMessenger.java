@@ -20,16 +20,16 @@ public interface InputMessenger {
      * @param messageClass Class object of the messages.
      * @param <T> Type of messages this receiver receives.
      */
-    <T> void registerMessageReceiver(MessageReceiver<T> messageReceiver, Class<T> messageClass);
+    <T> void registerMessageReceiver(Class<T> messageClass, MessageReceiver<T> messageReceiver);
 
     /**
      * Unregisters {@link com.monolith.api.external.InputMessenger.MessageReceiver} from receiving
      * incoming messages.
-     * @param messageReceiver Receiver to unregister.
      * @param messageClass Class object of the messages.
+     * @param messageReceiver Receiver to unregister.
      * @param <T> Type of messages this receiver receives.
      */
-    <T> void unregisterMessageReceiver(InputMessenger.MessageReceiver<T> messageReceiver, Class<T> messageClass);
+    <T> void unregisterMessageReceiver(Class<T> messageClass, InputMessenger.MessageReceiver<T> messageReceiver);
 
     /**
      * Allows receiving of incoming messages.

@@ -58,7 +58,7 @@ public class MessengerInternal implements Messenger, ISystem {
     }
 
     @Override
-    public <T> void getMessages(List<T> resultList, Class<T> messagesClass) {
+    public <T> void getMessages(Class<T> messagesClass, List<T> resultList) {
         String messageKey = getMessageKey(messagesClass);
         if (mCurrentMessagesMap.containsKey(messageKey)) {
             resultList.addAll((List<T>) mCurrentMessagesMap.get(messageKey));

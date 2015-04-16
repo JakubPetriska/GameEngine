@@ -86,7 +86,7 @@ public class InputMessengerInternal {
         }
 
         @Override
-        public <T> void registerMessageReceiver(MessageReceiver<T> messageReceiver, Class<T> messageClass) {
+        public <T> void registerMessageReceiver(Class<T> messageClass, MessageReceiver<T> messageReceiver) {
             String messageKey = getMessageKey(messageClass);
             Set<InputMessenger.MessageReceiver> messageClassReceivers;
             if(!mReceiversMap.containsKey(messageKey)) {
@@ -99,7 +99,7 @@ public class InputMessengerInternal {
         }
 
         @Override
-        public <T> void unregisterMessageReceiver(MessageReceiver<T> messageReceiver, Class<T> messageClass) {
+        public <T> void unregisterMessageReceiver(Class<T> messageClass, MessageReceiver<T> messageReceiver) {
             String messageKey = getMessageKey(messageClass);
             if(mReceiversMap.containsKey(messageKey)) {
                 mReceiversMap.get(messageKey).remove(messageReceiver);

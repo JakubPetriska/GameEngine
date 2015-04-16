@@ -48,13 +48,13 @@ public class SimpleMovementController extends Component {
 
     @Override
     public void update() {
-        getApplication().getMessenger().getMessages(verticalMovementsList, MovementVertical.class);
+        getApplication().getMessenger().getMessages(MovementVertical.class, verticalMovementsList);
         if(verticalMovementsList.size() > 0) {
             movementVertical = verticalMovementsList.get(verticalMovementsList.size() - 1);
             verticalMovementsList.clear();
         }
 
-        getApplication().getMessenger().getMessages(horizontalMovementsList, MovementHorizontal.class);
+        getApplication().getMessenger().getMessages(MovementHorizontal.class, horizontalMovementsList);
         if(horizontalMovementsList.size() > 0) {
             movementHorizontal = horizontalMovementsList.get(horizontalMovementsList.size() - 1);
             horizontalMovementsList.clear();
