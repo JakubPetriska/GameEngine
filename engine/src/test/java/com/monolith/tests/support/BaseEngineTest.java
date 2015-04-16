@@ -14,8 +14,8 @@ public abstract class BaseEngineTest {
     }
 
     protected void setupEngine(String filesFolder, String initialSceneName) {
-        mEngine = new Engine(initialSceneName,
-                new MockEnginePlatformObjects.MockPlatform(filesFolder),
+        mEngine = new Engine(initialSceneName);
+        mEngine.insertProvidedObjects(new MockEnginePlatformObjects.MockPlatform(filesFolder),
                 new MockEnginePlatformObjects.MockRenderer(),
                 new MockEnginePlatformObjects.MockTouchInput());
     }
@@ -27,7 +27,7 @@ public abstract class BaseEngineTest {
     protected void runEngine(String filesFolder, String sceneName, int loopCount) {
         setupEngine(filesFolder, sceneName);
         getEngine().onStart();
-        for(int i = 0; i < loopCount; ++i) {
+        for (int i = 0; i < loopCount; ++i) {
             getEngine().onUpdate();
         }
         getEngine().onFinish();
