@@ -61,6 +61,8 @@ public class MonolithActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mGlSurfaceView.getEngine().onFinish();
+        if(isFinishing()) {
+            mGlSurfaceView.getEngine().onFinish();
+        }
     }
 }

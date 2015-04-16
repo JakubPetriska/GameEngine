@@ -91,7 +91,9 @@ public class MonolithFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mGlSurfaceView.getEngine().onFinish();
+        if(isRemoving() || getActivity().isFinishing()) {
+            mGlSurfaceView.getEngine().onFinish();
+        }
     }
 
     /**
