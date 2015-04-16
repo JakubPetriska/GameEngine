@@ -16,16 +16,15 @@ public class CubesGenerator extends Component {
 
     @Override
     public void start() {
-        for(int layer = 0; layer < cubeLayerCount; ++layer) {
+        for (int layer = 0; layer < cubeLayerCount; ++layer) {
             float distance = (layer + 1) * CUBE_SPACE;
-            addCube(distance, distance, distance);
-            addCube(-distance, distance, distance);
-            addCube(distance, -distance, distance);
-            addCube(-distance, -distance, distance);
-            addCube(distance, distance, -distance);
-            addCube(-distance, distance, -distance);
-            addCube(distance, -distance, -distance);
-            addCube(-distance, -distance, -distance);
+            int halfLayerSizeFloor = 1 + layer;
+            for (int i = -halfLayerSizeFloor; i <= halfLayerSizeFloor; ++i) {
+                for (int j = -halfLayerSizeFloor; j <= halfLayerSizeFloor; ++j) {
+                    addCube(i * CUBE_SPACE, distance, j * CUBE_SPACE);
+                    addCube(i * CUBE_SPACE, -distance, j * CUBE_SPACE);
+                }
+            }
         }
     }
 
