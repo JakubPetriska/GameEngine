@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.monolith.android.AndroidPlatform;
 import com.monolith.android.Constants;
 import com.monolith.android.EngineObjectStore;
 import com.monolith.android.MyGLSurfaceView;
@@ -49,14 +48,19 @@ public class MonolithFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         if (savedInstanceState != null
                 && savedInstanceState.containsKey(Constants.KEY_ENGINE_OBJECT_STORE_KEY)) {
             mEngine = EngineObjectStore.retrieve(savedInstanceState.getString(Constants.KEY_ENGINE_OBJECT_STORE_KEY));
         }
-        if(mEngine == null) {
+        if (mEngine == null) {
             createEngine();
         }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mGlSurfaceView = new MyGLSurfaceView(getActivity(), mEngine);
         return mGlSurfaceView;
     }
