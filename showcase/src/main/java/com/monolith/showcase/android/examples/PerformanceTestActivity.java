@@ -1,6 +1,7 @@
 package com.monolith.showcase.android.examples;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.TextView;
 
 import com.monolith.api.android.MonolithFragment;
@@ -18,6 +19,7 @@ public class PerformanceTestActivity extends MovementControlsActivity {
     @InjectView(R.id.fps)
     TextView fpsDisplay;
 
+    private Handler mHandler = new Handler();
     private MonolithFragment mMonolithFragment;
 
     @Override
@@ -32,7 +34,7 @@ public class PerformanceTestActivity extends MovementControlsActivity {
         ButterKnife.inject(this);
 
         if (savedInstanceState == null) {
-            mMonolithFragment = MonolithFragment.newInstance("example_environment_scene");
+            mMonolithFragment = MonolithFragment.newInstance("performance_test_scene");
             getSupportFragmentManager().beginTransaction().add(R.id.engine_container, mMonolithFragment).commit();
         } else {
             mMonolithFragment = (MonolithFragment) getSupportFragmentManager().findFragmentById(R.id.engine_container);
@@ -41,9 +43,14 @@ public class PerformanceTestActivity extends MovementControlsActivity {
         mMonolithFragment.getInputMessenger().registerMessageReceiver(Float.class,
                 new InputMessenger.MessageReceiver<Float>() {
                     @Override
-                    public void onNewMessage(Float fps) {
+                    public void onNewMessage(final Float fps) {
                         // Expects only floats containing fps
-                        fpsDisplay.setText(fps + "");
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                fpsDisplay.setText(fps + "");
+                            }
+                        });
                     }
                 });
 

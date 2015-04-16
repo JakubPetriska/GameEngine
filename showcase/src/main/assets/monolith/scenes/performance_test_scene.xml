@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scene>
     <gameObjects>
+        <!-- FPS counter and reporter -->
+        <gameObject>
+            <components>
+                <component type="com.monolith.showcase.engine.FpsReporter"/>
+            </components>
+        </gameObject>
+
         <!--Floor  -->
         <gameObject>
             <transform>
