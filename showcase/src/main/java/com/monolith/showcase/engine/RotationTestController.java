@@ -12,17 +12,14 @@ public class RotationTestController extends Component {
 
     private static final float ROTATION_PER_SECOND = 15;
 
-    private List<String> messages = new ArrayList<>();
     private String currentRotationAxis = "x";
 
     @Override
     public void update() {
-        getApplication().getMessenger().getMessages(messages, String.class);
-        if(messages.size() > 0) {
-            String newRotationAxis = messages.get(0);
+        String axisMessage = getApplication().getMessenger().getLastMessage(String.class);
+        if(axisMessage != null) {
             getGameObject().transform.setRotation(0, 0, 0); // Reset rotation when axis changes
-            currentRotationAxis = newRotationAxis;
-            messages.clear();
+            currentRotationAxis = axisMessage;
         }
 
         float rotationDifference = getApplication().getTime().getTimeDelta() * ROTATION_PER_SECOND;
