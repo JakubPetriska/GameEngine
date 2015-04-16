@@ -11,6 +11,7 @@ import com.monolith.api.android.MonolithActivity;
 import com.monolith.showcase.R;
 import com.monolith.showcase.android.examples.EngineAsFragmentActivity;
 import com.monolith.showcase.android.examples.ExampleEnvironmentActivity;
+import com.monolith.showcase.android.examples.MenuTestActivity;
 import com.monolith.showcase.android.examples.PerformanceTestActivity;
 import com.monolith.showcase.android.examples.TransformationTestActivity;
 import com.monolith.showcase.android.examples.SceneSwitchingActivity;
@@ -34,7 +35,8 @@ public class MainActivity extends BaseActionBarActivity {
             R.string.example_camera_rotation,
             R.string.example_environment,
             R.string.example_collisions,
-            R.string.example_performance_test
+            R.string.example_performance_test,
+            R.string.example_menu
     };
 
     @Override
@@ -87,6 +89,9 @@ public class MainActivity extends BaseActionBarActivity {
                         break;
                     case R.string.example_performance_test:
                         intent = new Intent(MainActivity.this, PerformanceTestActivity.class);
+                        break;
+                    case R.string.example_menu:
+                        intent = new Intent(MainActivity.this, MenuTestActivity.class);
                         break;
                     default:
                         throw new IllegalStateException("Unknown option.");

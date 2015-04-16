@@ -22,5 +22,6 @@
         <activity
             android:name=".android.examples.PerformanceTestActivity"
             android:theme="@style/AppThemeLight" />
+        <activity android:name=".android.examples.MenuTestActivity" />
     </application>
 </manifest>

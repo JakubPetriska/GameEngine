@@ -10,6 +10,9 @@
     <string name="example_environment">Environment</string>
     <string name="example_collisions">Collisions</string>
     <string name="example_performance_test">Performance test</string>
+    <string name="example_menu">Menu example</string>
 
     <string name="transformation_test_description">Script rotates the cube in the positive rotation of selected axis. Also cube is translated into positive directions of all axes. Serves to check for bugs in object transformations.</string>
+
+    <string name="play">Play!</string>
 </resources>
