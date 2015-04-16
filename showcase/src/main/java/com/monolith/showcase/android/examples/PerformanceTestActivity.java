@@ -16,7 +16,7 @@ import butterknife.InjectView;
 public class PerformanceTestActivity extends MovementControlsActivity {
 
     @InjectView(R.id.fps)
-    TextView fps;
+    TextView fpsDisplay;
 
     private MonolithFragment mMonolithFragment;
 
@@ -38,11 +38,12 @@ public class PerformanceTestActivity extends MovementControlsActivity {
             mMonolithFragment = (MonolithFragment) getSupportFragmentManager().findFragmentById(R.id.engine_container);
         }
 
-        mMonolithFragment.getInputMessenger().registerMessageReceiver(String.class,
-                new InputMessenger.MessageReceiver<String>() {
+        mMonolithFragment.getInputMessenger().registerMessageReceiver(Float.class,
+                new InputMessenger.MessageReceiver<Float>() {
                     @Override
-                    public void onNewMessage(String message) {
-
+                    public void onNewMessage(Float fps) {
+                        // Expects only floats containing fps
+                        fpsDisplay.setText(fps + "");
                     }
                 });
 
