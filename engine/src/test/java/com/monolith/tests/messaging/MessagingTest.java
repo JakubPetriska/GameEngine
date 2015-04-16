@@ -38,7 +38,7 @@ public class MessagingTest extends BaseEngineTest implements InputMessenger.Mess
     public void basicFunctionTest() {
         getEngine().onStart();
 
-        getEngine().getInputMessenger().registerMessageReceiver(this, OutputMessage.class);
+        getEngine().getInputMessenger().registerMessageReceiver(OutputMessage.class, this);
 
         mMessageReceived = false;
         getEngine().getInputMessenger().sendMessage(new InputMessage());
@@ -66,7 +66,7 @@ public class MessagingTest extends BaseEngineTest implements InputMessenger.Mess
         }
 
         // Unregister receiver and see if we still get message
-        getEngine().getInputMessenger().unregisterMessageReceiver(this, OutputMessage.class);
+        getEngine().getInputMessenger().unregisterMessageReceiver(OutputMessage.class, this);
         getEngine().getInputMessenger().sendMessage(new InputMessage());
         getEngine().onUpdate();
 
