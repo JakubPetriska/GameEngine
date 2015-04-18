@@ -26,7 +26,7 @@
         <gameObject>
             <components>
                 <component type="com.monolith.showcase.engine.CubesGenerator">
-                    <param name="cubeLayerCount">4</param>
+                    <param name="cubeLayerCount">6</param>
                 </component>
             </components>
         </gameObject>
