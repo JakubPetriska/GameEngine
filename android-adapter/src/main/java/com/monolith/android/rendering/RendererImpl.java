@@ -88,7 +88,17 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
     private final Matrix44 mModelMatrixCopy = new Matrix44();
 
     private int mShaderProgramObject;
+    private int mObjectShaderPositionHandle;
+    private int mObjectShaderNormalHandle;
+    private int mObjectShaderColorHandle;
+    private int mObjectShaderLightHandle;
+    private int mObjectShaderMVPMatrixHandle;
+    private int mObjectShaderModelMatrixHandle;
+
     private int mShaderProgramLine;
+    private int mLineShaderPositionHandle;
+    private int mLineShaderColorHandle;
+    private int mLineShaderMVPMatrixHandle;
 
     private float mScreenRatio;
     private Camera mCamera;
@@ -135,6 +145,13 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         GLES20.glAttachShader(mShaderProgramObject, fragmentShader); // add the fragment shader to program
         GLES20.glLinkProgram(mShaderProgramObject);
 
+        mObjectShaderPositionHandle = GLES20.glGetAttribLocation(mShaderProgramObject, "vPosition");
+        mObjectShaderNormalHandle = GLES20.glGetAttribLocation(mShaderProgramObject, "vNormal");
+        mObjectShaderColorHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uColor");
+        mObjectShaderLightHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uLightDirection");
+        mObjectShaderMVPMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uMVPMatrix");
+        mObjectShaderModelMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uModelMatrix");
+
         if(mApplication.debugSettings.debug) {
             // Prepare shaders and OpenGL program for lines
             vertexShader = loadShader(
@@ -148,6 +165,10 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
             GLES20.glAttachShader(mShaderProgramLine, vertexShader);   // add the vertex shader to program
             GLES20.glAttachShader(mShaderProgramLine, fragmentShader); // add the fragment shader to program
             GLES20.glLinkProgram(mShaderProgramLine);
+
+            mLineShaderPositionHandle = GLES20.glGetAttribLocation(mShaderProgramLine, "vPosition");
+            mLineShaderColorHandle = GLES20.glGetUniformLocation(mShaderProgramLine, "vColor");
+            mLineShaderMVPMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramLine, "uMVPMatrix");
         }
 
         // Set our view matrix
@@ -389,44 +410,31 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         GLES20.glUseProgram(mShaderProgramObject);
 
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, meshData.objectDataBuffer);
-        int positionHandle = GLES20.glGetAttribLocation(mShaderProgramObject, "vPosition");
-        GLES20.glEnableVertexAttribArray(positionHandle);
+
+        GLES20.glEnableVertexAttribArray(mObjectShaderPositionHandle);
         GLES20.glVertexAttribPointer(
-                positionHandle, COORDS_PER_VERTEX_POSITION,
+                mObjectShaderPositionHandle, COORDS_PER_VERTEX_POSITION,
                 GLES20.GL_FLOAT, false,
                 VERTEX_STRIDE, 0);
 
-        int normalHandle = GLES20.glGetAttribLocation(mShaderProgramObject, "vNormal");
-        GLES20.glEnableVertexAttribArray(normalHandle);
+        GLES20.glEnableVertexAttribArray(mObjectShaderNormalHandle);
         GLES20.glVertexAttribPointer(
-                normalHandle, COORDS_PER_VERTEX_NORMAL,
+                mObjectShaderNormalHandle, COORDS_PER_VERTEX_NORMAL,
                 GLES20.GL_FLOAT, false,
                 VERTEX_STRIDE, COORDS_PER_VERTEX_POSITION * BYTES_PER_FLOAT);
 
         // Unbind from the buffer
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
-        // Get handle to fragment shader's vColor member
-        int colorHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uColor");
-
-        // Set color for drawing the triangle
-        GLES20.glUniform4fv(colorHandle, 1, color, 0);
-
-        // Set shader's lightDirection vector
-        int lightHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uLightDirection");
-        GLES20.glUniform4fv(lightHandle, 1, lightDirection, 0);
-
-        int mVPMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uMVPMatrix");
-        GLES20.glUniformMatrix4fv(mVPMatrixHandle, 1, false, mMVPMatrix, 0);
-
-        int modelMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uModelMatrix");
-        GLES20.glUniformMatrix4fv(modelMatrixHandle, 1, false, mModelMatrixCopy.getValues(), 0);
+        GLES20.glUniform4fv(mObjectShaderColorHandle, 1, color, 0);
+        GLES20.glUniform4fv(mObjectShaderLightHandle, 1, lightDirection, 0);
+        GLES20.glUniformMatrix4fv(mObjectShaderMVPMatrixHandle, 1, false, mMVPMatrix, 0);
+        GLES20.glUniformMatrix4fv(mObjectShaderModelMatrixHandle, 1, false, mModelMatrixCopy.getValues(), 0);
 
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, meshData.trianglesVertices.length);
 
-        // Disable vertex array
-        GLES20.glDisableVertexAttribArray(positionHandle);
-        GLES20.glDisableVertexAttribArray(normalHandle);
+        GLES20.glDisableVertexAttribArray(mObjectShaderPositionHandle);
+        GLES20.glDisableVertexAttribArray(mObjectShaderNormalHandle);
     }
 
     @Override
@@ -457,33 +465,28 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         GLES20.glUseProgram(mShaderProgramLine);
 
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, meshData.wireframeDataBuffer);
-        int positionHandle = GLES20.glGetAttribLocation(mShaderProgramLine, "vPosition");
-        GLES20.glEnableVertexAttribArray(positionHandle);
+        GLES20.glEnableVertexAttribArray(mLineShaderPositionHandle);
         GLES20.glVertexAttribPointer(
-                positionHandle, COORDS_PER_VERTEX_POSITION,
+                mLineShaderPositionHandle, COORDS_PER_VERTEX_POSITION,
                 GLES20.GL_FLOAT, false,
                 COORDS_PER_VERTEX_POSITION * BYTES_PER_FLOAT, 0);
 
         // Unbind from the buffer
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
-        // Get handle to fragment shader's vColor member
-        int colorHandle = GLES20.glGetUniformLocation(mShaderProgramLine, "vColor");
-
         // Set color for drawing the lines
         wireframeLineColor[0] = color.red;
         wireframeLineColor[1] = color.green;
         wireframeLineColor[2] = color.blue;
         wireframeLineColor[3] = color.alpha;
-        GLES20.glUniform4fv(colorHandle, 1, wireframeLineColor, 0);
+        GLES20.glUniform4fv(mLineShaderColorHandle, 1, wireframeLineColor, 0);
 
-        int mVPMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramLine, "uMVPMatrix");
-        GLES20.glUniformMatrix4fv(mVPMatrixHandle, 1, false, mMVPMatrix, 0);
+        GLES20.glUniformMatrix4fv(mLineShaderMVPMatrixHandle, 1, false, mMVPMatrix, 0);
 
         GLES20.glDrawArrays(GLES20.GL_LINES, 0, meshData.trianglesVertices.length * 2);
 
         // Disable vertex array
-        GLES20.glDisableVertexAttribArray(positionHandle);
+        GLES20.glDisableVertexAttribArray(mLineShaderPositionHandle);
     }
 
     /**
