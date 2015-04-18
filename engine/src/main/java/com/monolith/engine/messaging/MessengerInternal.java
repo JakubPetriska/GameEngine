@@ -84,6 +84,7 @@ public class MessengerInternal implements Messenger, ISystem {
         // Clear the map of current messages from previous frame and cache the empty sets
         HashMap<String, List<Object>> mapToClear = mCurrentMessagesMap;
         for (String key : mapToClear.keySet()) {
+            // TODO throws ConcurrentModificationException in performance test
             List<Object> messages = mapToClear.remove(key);
             messages.clear();
             mListCache.add(messages);
