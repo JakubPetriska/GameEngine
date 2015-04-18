@@ -136,7 +136,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         GLES20.glLinkProgram(mShaderProgramObject);
 
         if(mApplication.debugSettings.debug) {
-            // Prepare shaders and OpenGL program for debuggong lines
+            // Prepare shaders and OpenGL program for lines
             vertexShader = loadShader(
                     GLES20.GL_VERTEX_SHADER,
                     vertexShaderLine);
