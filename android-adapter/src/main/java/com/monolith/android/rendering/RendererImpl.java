@@ -32,9 +32,10 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
 
     private Application mApplication;
 
+    public static final int BYTES_PER_FLOAT = 4;
     public static final int COORDS_PER_VERTEX_POSITION = 3;
     public static final int COORDS_PER_VERTEX_NORMAL = 3;
-    public static final int VERTEX_STRIDE = (COORDS_PER_VERTEX_POSITION + COORDS_PER_VERTEX_NORMAL) * 4; // 4 bytes per vertex
+    public static final int VERTEX_STRIDE = (COORDS_PER_VERTEX_POSITION + COORDS_PER_VERTEX_NORMAL) * BYTES_PER_FLOAT;
 
     private static final String vertexShaderObject =
             "uniform mat4 uMVPMatrix;" +
@@ -243,7 +244,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
     /**
      * Creates packed buffer for MeshData object.
      */
-    private static FloatBuffer getBuffer(MeshData meshData) {
+    private static FloatBuffer createObjectBuffer(MeshData meshData) {
         int vertexCount = meshData.trianglesVertices.length;
 
         // Create a packed data buffer containing position and normal data for each vertex
@@ -261,9 +262,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
             System.arraycopy(meshData.normals, sourceNormalOffset, vertexData, vertexDataNormalOffset, RendererImpl.COORDS_PER_VERTEX_NORMAL);
         }
 
-        ByteBuffer vb = ByteBuffer.allocateDirect(
-                // (# of coordinate values * 4 bytes per float)
-                vertexData.length * 4);
+        ByteBuffer vb = ByteBuffer.allocateDirect(vertexData.length * BYTES_PER_FLOAT);
         vb.order(ByteOrder.nativeOrder());
         FloatBuffer resultBuffer = vb.asFloatBuffer();
         resultBuffer.put(vertexData);
@@ -276,7 +275,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
      *
      * Wireframe is drawn as GL_LINES.
      */
-    private static FloatBuffer getWireframeBuffer(MeshData meshData) {
+    private static FloatBuffer createWireframeBuffer(MeshData meshData) {
         int vertexCount = meshData.trianglesVertices.length;
 
         // Create a packed data buffer containing position data for each vertex
@@ -310,9 +309,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
             vertexDataPositionOffset += 3;
         }
 
-        ByteBuffer vb = ByteBuffer.allocateDirect(
-                // (# of coordinate values * 4 bytes per float)
-                vertexData.length * 4);
+        ByteBuffer vb = ByteBuffer.allocateDirect(vertexData.length * BYTES_PER_FLOAT);
         vb.order(ByteOrder.nativeOrder());
         FloatBuffer resultBuffer = vb.asFloatBuffer();
         resultBuffer.put(vertexData);
@@ -322,8 +319,8 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
 
     private static class AndroidMeshData extends MeshData {
 
-        FloatBuffer dataBuffer;
-        FloatBuffer wireframeDataBuffer;
+        int objectDataBuffer;
+        int wireframeDataBuffer;
 
         public AndroidMeshData(
                 float[] vertices, float[] normals,
@@ -335,8 +332,39 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
     @Override
     public MeshData createMeshData(float[] vertices, float[] normals, int[] trianglesVertices, int[] trianglesNormals) {
         AndroidMeshData meshData = new AndroidMeshData(vertices, normals, trianglesVertices, trianglesNormals);
-        meshData.dataBuffer = getBuffer(meshData);
+        FloatBuffer dataBuffer = createObjectBuffer(meshData);
+
+        int[] buffer = new int[1];
+        GLES20.glGenBuffers(1, buffer, 0);
+        meshData.objectDataBuffer = buffer[0];
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, meshData.objectDataBuffer);
+
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
+                dataBuffer.capacity() * BYTES_PER_FLOAT,
+                dataBuffer, GLES20.GL_STATIC_DRAW);
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+
+
+        dataBuffer.clear();
         return meshData;
+    }
+
+    private static void setupWireframeBuffer(AndroidMeshData meshData) {
+        FloatBuffer dataBuffer = createWireframeBuffer(meshData);
+
+        int[] buffer = new int[1];
+        GLES20.glGenBuffers(1, buffer, 0);
+        meshData.wireframeDataBuffer = buffer[0];
+
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, meshData.wireframeDataBuffer);
+
+        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER,
+                dataBuffer.capacity() * BYTES_PER_FLOAT,
+                dataBuffer, GLES20.GL_STATIC_DRAW);
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+
+        dataBuffer.clear();
     }
 
     @Override
@@ -360,22 +388,23 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
 
         GLES20.glUseProgram(mShaderProgramObject);
 
-        meshData.dataBuffer.position(0);
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, meshData.objectDataBuffer);
         int positionHandle = GLES20.glGetAttribLocation(mShaderProgramObject, "vPosition");
         GLES20.glEnableVertexAttribArray(positionHandle);
         GLES20.glVertexAttribPointer(
                 positionHandle, COORDS_PER_VERTEX_POSITION,
                 GLES20.GL_FLOAT, false,
-                VERTEX_STRIDE, meshData.dataBuffer);
+                VERTEX_STRIDE, 0);
 
-        meshData.dataBuffer.position(COORDS_PER_VERTEX_POSITION);
         int normalHandle = GLES20.glGetAttribLocation(mShaderProgramObject, "vNormal");
         GLES20.glEnableVertexAttribArray(normalHandle);
         GLES20.glVertexAttribPointer(
                 normalHandle, COORDS_PER_VERTEX_NORMAL,
                 GLES20.GL_FLOAT, false,
-                VERTEX_STRIDE, meshData.dataBuffer);
+                VERTEX_STRIDE, COORDS_PER_VERTEX_POSITION * BYTES_PER_FLOAT);
 
+        // Unbind from the buffer
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
         // Get handle to fragment shader's vColor member
         int colorHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uColor");
@@ -410,8 +439,8 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         }
 
         AndroidMeshData meshData = (AndroidMeshData) mesh;
-        if(meshData.wireframeDataBuffer == null) {
-            meshData.wireframeDataBuffer = getWireframeBuffer(meshData);
+        if(meshData.wireframeDataBuffer == 0) {
+            setupWireframeBuffer(meshData);
         }
 
         // Copy the transformation matrix
@@ -427,13 +456,16 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
 
         GLES20.glUseProgram(mShaderProgramLine);
 
-        meshData.wireframeDataBuffer.position(0);
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, meshData.wireframeDataBuffer);
         int positionHandle = GLES20.glGetAttribLocation(mShaderProgramLine, "vPosition");
         GLES20.glEnableVertexAttribArray(positionHandle);
         GLES20.glVertexAttribPointer(
                 positionHandle, COORDS_PER_VERTEX_POSITION,
                 GLES20.GL_FLOAT, false,
-                COORDS_PER_VERTEX_POSITION * 4, meshData.wireframeDataBuffer);
+                COORDS_PER_VERTEX_POSITION * BYTES_PER_FLOAT, 0);
+
+        // Unbind from the buffer
+        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
         // Get handle to fragment shader's vColor member
         int colorHandle = GLES20.glGetUniformLocation(mShaderProgramLine, "vColor");
