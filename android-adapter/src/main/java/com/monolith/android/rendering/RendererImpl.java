@@ -403,7 +403,6 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
 
         // Compose MVP matrix
         Matrix.multiplyMM(mMVPMatrix, 0, mCameraMatrix, 0, mModelMatrixCopy.getValues(), 0);
-
         Matrix.multiplyMM(mMVMatrix, 0, mViewMatrix, 0, mMVPMatrix, 0);
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVMatrix, 0);
 
