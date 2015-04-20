@@ -102,11 +102,14 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
 
     private float mScreenRatio;
     private Camera mCamera;
+    private float mLastCameraNear;
+    private float mLastCameraFar;
+    private float mLastCameraFov;
+    private boolean mFrustumSet = false;
 
     @Override
     public void setCamera(Camera camera) {
         mCamera = camera;
-        setupProjectionMatrixIfPossible();
     }
 
     @Override
@@ -152,7 +155,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         mObjectShaderMVPMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uMVPMatrix");
         mObjectShaderModelMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uModelMatrix");
 
-        if(mApplication.debugSettings.debug) {
+        if (mApplication.debugSettings.debug) {
             // Prepare shaders and OpenGL program for lines
             vertexShader = loadShader(
                     GLES20.GL_VERTEX_SHADER,
@@ -182,11 +185,12 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         GLES20.glViewport(0, 0, width, height);
 
         mScreenRatio = (float) width / height;
-        setupProjectionMatrixIfPossible();
     }
 
-    private void setupProjectionMatrixIfPossible() {
-        if (mCamera == null || mScreenRatio == 0) {
+    private void setupFrustumIfPossibleAndNeeded() {
+        if (mFrustumSet && mCamera.near == mLastCameraNear
+                && mCamera.far == mLastCameraFar
+                && mCamera.fieldOfView == mLastCameraFov) {
             return;
         }
 
@@ -198,6 +202,11 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
                 -halfHeight, // Bottom
                 halfHeight, // Top
                 mCamera.near, mCamera.far);
+
+        mLastCameraNear = mCamera.near;
+        mLastCameraFar = mCamera.far;
+        mLastCameraFov = mCamera.fieldOfView;
+        mFrustumSet = true;
     }
 
     @Override
@@ -217,8 +226,10 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         // Draw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-        // Set the camera position (View matrix)
+        // Set the camera matrices
         if (mCamera != null) {
+            setupFrustumIfPossibleAndNeeded();
+
             // Get the inverse camera transformation
             GameObject gameObject = mCamera.getGameObject();
             do {
@@ -293,7 +304,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
 
     /**
      * Creates packed buffer for MeshData wireframe object.
-     *
+     * <p/>
      * Wireframe is drawn as GL_LINES.
      */
     private static FloatBuffer createWireframeBuffer(MeshData meshData) {
@@ -441,12 +452,12 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         if (mCamera == null) {
             return;
         }
-        if(mShaderProgramLine == 0) {
+        if (mShaderProgramLine == 0) {
             throw new IllegalStateException("Wireframe rendering is only available during debug mode.");
         }
 
         AndroidMeshData meshData = (AndroidMeshData) mesh;
-        if(meshData.wireframeDataBuffer == 0) {
+        if (meshData.wireframeDataBuffer == 0) {
             setupWireframeBuffer(meshData);
         }
 
