@@ -12,7 +12,11 @@ public class Model extends Component {
      * Name of primitive mesh.
      */
     public String meshPath;
-    public MeshData meshData;
+    private MeshData meshData;
+
+    public MeshData getMeshData() {
+        return meshData;
+    }
 
     @Override
     public void start() {
