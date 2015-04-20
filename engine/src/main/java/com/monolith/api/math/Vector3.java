@@ -12,14 +12,6 @@ public class Vector3 {
         mValues = new float[3];
     }
 
-    // TODO add offset
-//    public Vector3(float[] values) {
-//        if (values.length < 3) {
-//            throw new IllegalStateException("Array backing a Vector3 must be at least 3 elements long.");
-//        }
-//        mValues = values;
-//    }
-
     public Vector3(float x, float y, float z) {
         this();
         this.mValues[0] = x;
@@ -191,5 +183,9 @@ public class Vector3 {
         } else {
             return false;
         }
+    }
+
+    public void copy(Vector3 into) {
+        System.arraycopy(mValues, 0, into.mValues, 0, 3);
     }
 }
