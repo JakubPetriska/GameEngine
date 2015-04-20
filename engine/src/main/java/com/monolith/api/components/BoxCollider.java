@@ -26,7 +26,7 @@ public class BoxCollider extends Component {
 
     private final Matrix44 mColliderAbsoluteTransformation = new Matrix44();
     private final Matrix44 sColliderLocalTransformation = new Matrix44(); // Used during calculations
-    private List<CollisionListener> mListeners = new ArrayList<>();
+    private final List<CollisionListener> mListeners = new ArrayList<>();
 
     private int mCollidingCollidersCount = 0;
 
