@@ -28,12 +28,13 @@ public class Matrix44 {
         mValues = new float[16];
     }
 
-    public Matrix44(float[] values) {
-        if (values.length < 16) {
-            throw new IllegalStateException("Array backing a Matrix44 must be at least 16 elements long.");
-        }
-        this.mValues = values;
-    }
+    // TODO add offset
+//    public Matrix44(float[] values) {
+//        if (values.length < 16) {
+//            throw new IllegalStateException("Array backing a Matrix44 must be at least 16 elements long.");
+//        }
+//        this.mValues = values;
+//    }
 
     public float[] getValues() {
         return mValues;

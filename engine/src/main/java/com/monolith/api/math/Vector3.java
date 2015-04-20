@@ -12,12 +12,13 @@ public class Vector3 {
         mValues = new float[3];
     }
 
-    public Vector3(float[] values) {
-        if (values.length < 3) {
-            throw new IllegalStateException("Array backing a Vector3 must be at least 3 elements long.");
-        }
-        mValues = values;
-    }
+    // TODO add offset
+//    public Vector3(float[] values) {
+//        if (values.length < 3) {
+//            throw new IllegalStateException("Array backing a Vector3 must be at least 3 elements long.");
+//        }
+//        mValues = values;
+//    }
 
     public Vector3(float x, float y, float z) {
         this();
@@ -132,6 +133,12 @@ public class Vector3 {
         this.mValues[2] *= scalar;
     }
 
+    public void multiply(Vector3 result, float scalar) {
+        result.mValues[0] = this.mValues[0] * scalar;
+        result.mValues[1] = this.mValues[1] * scalar;
+        result.mValues[2] = this.mValues[2] * scalar;
+    }
+
     /**
      * Divides this Vector with given scalar. Result is stored in this Vector.
      * @param scalar Scalar that this Vector is divided by.
@@ -142,8 +149,20 @@ public class Vector3 {
         this.mValues[2] /= scalar;
     }
 
-    public static float dot(Vector3 firstVector, Vector3 secondVector3) {
-        return firstVector.mValues[0] * secondVector3.mValues[0] + firstVector.mValues[1] * secondVector3.mValues[1] + firstVector.mValues[2] * secondVector3.mValues[2];
+    public void divide(Vector3 result, float scalar) {
+        result.mValues[0] = this.mValues[0] / scalar;
+        result.mValues[1] = this.mValues[1] / scalar;
+        result.mValues[2] = this.mValues[2] / scalar;
+    }
+
+    public static float dot(Vector3 firstVector, Vector3 secondVector) {
+        return firstVector.mValues[0] * secondVector.mValues[0] + firstVector.mValues[1] * secondVector.mValues[1] + firstVector.mValues[2] * secondVector.mValues[2];
+    }
+
+    public static void cross(Vector3 result, Vector3 left, Vector3 right) {
+        result.setX(left.mValues[1] * right.mValues[2] - left.mValues[2] * right.mValues[1]);
+        result.setX(left.mValues[2] * right.mValues[0] - left.mValues[0] * right.mValues[2]);
+        result.setX(left.mValues[0] * right.mValues[1] - left.mValues[1] * right.mValues[0]);
     }
 
     public float length() {
@@ -158,9 +177,7 @@ public class Vector3 {
      * Negates this Vector.
      */
     public void negate() {
-        this.mValues[0] *= -1;
-        this.mValues[1] *= -1;
-        this.mValues[2] *= -1;
+        multiply(-1);
     }
 
     @Override
