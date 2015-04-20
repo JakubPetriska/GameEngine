@@ -9,7 +9,7 @@ import com.monolith.api.MeshData;
 public class Model extends Component {
 
     /**
-     * Name of primitive mesh. Imported meshes are currently not supported.
+     * Name of primitive mesh.
      */
     public String meshPath;
     public MeshData meshData;
