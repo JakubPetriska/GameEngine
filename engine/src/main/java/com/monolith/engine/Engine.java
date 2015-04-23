@@ -277,8 +277,17 @@ public class Engine {
 
     private class ApplicationImpl extends Application {
 
+        private DebugUtility mDebugUtility;
+
         public ApplicationImpl(DebugSettings debugSettings) {
             super(debugSettings);
+
+            mDebugUtility = new DebugUtility() {
+                @Override
+                public void log(String message) {
+                    mPlatform.log(message);
+                }
+            };
         }
 
         @Override
@@ -311,18 +320,8 @@ public class Engine {
             return mTime;
         }
 
-        private DebugUtility mDebugUtility;
-
         @Override
         public DebugUtility getDebugUtility() {
-            if (mDebugUtility == null) {
-                mDebugUtility = new DebugUtility() {
-                    @Override
-                    public void log(String message) {
-                        mPlatform.log(message);
-                    }
-                };
-            }
             return mDebugUtility;
         }
 
