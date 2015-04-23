@@ -107,7 +107,7 @@ public class Transform extends Component {
     }
 
     public void setRotation(float x, float y, float z) {
-        mRotation.set(x, y ,z);
+        mRotation.set(x, y, z);
         invalidate();
     }
 
@@ -124,11 +124,13 @@ public class Transform extends Component {
     }
 
     private void invalidate() {
-        mTransformationMatrixValid = false;
+        if(mTransformationMatrixValid) {
+            mTransformationMatrixValid = false;
 
-        List<GameObject> children = getGameObject().children;
-        for(int i = 0; i < children.size(); ++i) {
-            children.get(i).transform.invalidate();
+            List<GameObject> children = getGameObject().children;
+            for(int i = 0; i < children.size(); ++i) {
+                children.get(i).transform.invalidate();
+            }
         }
     }
 
