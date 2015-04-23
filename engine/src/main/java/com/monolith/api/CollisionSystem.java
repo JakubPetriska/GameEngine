@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jakub on 12. 4. 2015.
+ * Detects collisions of colliders in the scene.
  */
 public class CollisionSystem implements ISystem {
 
@@ -51,6 +51,11 @@ public class CollisionSystem implements ISystem {
         }
     }
 
+    /**
+     * Register collider into the system. Collisions are only
+     * detected on registered colliders.
+     * @param collider Collider to register.
+     */
     public void registerCollider(BoxCollider collider) {
         if (!mColliders.contains(collider)) {
             mColliders.add(collider);
@@ -59,6 +64,10 @@ public class CollisionSystem implements ISystem {
         }
     }
 
+    /**
+     * Unregister collider from the system.
+     * @param collider Collider to unregister.
+     */
     public void unregisterCollider(BoxCollider collider) {
         int index = mColliders.indexOf(collider);
         if (index > -1) {

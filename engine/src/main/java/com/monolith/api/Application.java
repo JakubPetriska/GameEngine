@@ -5,10 +5,9 @@ import com.monolith.engine.MeshManager;
 /**
  * Provides important engine features. Instance of this class is passed everywhere around the
  * engine.
- * <p/>
- * Contains other more specific objects containing the specific data of functionality.
- * <p/>
- * Contains global application functionality, such as scene changing.
+ *
+ * Contains global application functionality, such as scene changing and
+ * other more specific objects containing the specific data or functionality.
  */
 public abstract class Application {
 
