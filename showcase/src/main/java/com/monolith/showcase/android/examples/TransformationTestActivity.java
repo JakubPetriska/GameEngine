@@ -9,9 +9,6 @@ import com.monolith.showcase.R;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by Jakub on 10. 4. 2015.
- */
 public class TransformationTestActivity extends FragmentActivity {
 
     private MonolithFragment mMonolithFragment;

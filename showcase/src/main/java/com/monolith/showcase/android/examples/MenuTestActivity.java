@@ -5,9 +5,6 @@ import android.support.v4.app.FragmentActivity;
 
 import com.monolith.showcase.R;
 
-/**
- * Created by Jakub on 17. 4. 2015.
- */
 public class MenuTestActivity extends FragmentActivity {
 
     @Override

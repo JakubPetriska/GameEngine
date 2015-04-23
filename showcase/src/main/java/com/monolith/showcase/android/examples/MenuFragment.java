@@ -12,9 +12,6 @@ import com.monolith.showcase.R;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by Jakub on 17. 4. 2015.
- */
 public class MenuFragment extends Fragment {
 
     @Override

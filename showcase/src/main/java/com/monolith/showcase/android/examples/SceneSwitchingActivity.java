@@ -11,9 +11,6 @@ import com.monolith.showcase.engine.SceneSwitchingController;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * Created by Jakub Petriska on 23. 2. 2015.
- */
 public class SceneSwitchingActivity extends ActionBarActivity {
 
     private MonolithFragment mEngineFragment;

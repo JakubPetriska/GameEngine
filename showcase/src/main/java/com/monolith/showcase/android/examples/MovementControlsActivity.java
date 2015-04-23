@@ -11,9 +11,6 @@ import com.monolith.showcase.engine.SimpleMovementController;
 
 import butterknife.InjectView;
 
-/**
- * Created by Jakub on 16. 4. 2015.
- */
 public abstract class MovementControlsActivity extends FragmentActivity {
 
     @InjectView(R.id.controls_left)

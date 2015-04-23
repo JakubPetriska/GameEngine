@@ -3,7 +3,10 @@ package com.monolith.showcase.engine;
 import com.monolith.api.Component;
 
 /**
- * TODO add commentary
+ * Rotates the {@link com.monolith.api.GameObject} in the positive direction of
+ * the axis given in the incoming message.
+ *
+ * This serves for visualizing that all rotation directions are done right.
  */
 public class TransformationTestRotationController extends Component {
 

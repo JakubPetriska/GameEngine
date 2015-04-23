@@ -4,7 +4,11 @@ import com.monolith.api.Component;
 import com.monolith.api.components.BoxCollider;
 
 /**
- * Created by Jakub on 13. 4. 2015.
+ * Simple {@link com.monolith.api.Component} listening for collisions occurring
+ * on the single {@link com.monolith.api.components.BoxCollider} attached to it's
+ * {@link com.monolith.api.GameObject}.
+ *
+ * Collision occurrence is logged using debug log.
  */
 public class CollisionsLogger extends Component {
 

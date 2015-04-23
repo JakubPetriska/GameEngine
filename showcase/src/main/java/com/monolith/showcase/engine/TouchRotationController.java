@@ -6,8 +6,8 @@ import com.monolith.api.Touch;
 import java.util.List;
 
 /**
- * This is simple behaviour script. It moves it's object according
- * to touch input.
+ * This is simple rotation controlling {@link com.monolith.api.Component}.
+ * It rotates it's {@link com.monolith.api.GameObject} according to touch input.
  */
 public class TouchRotationController extends Component {
 

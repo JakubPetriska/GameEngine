@@ -7,9 +7,6 @@ import com.monolith.showcase.R;
 
 import butterknife.ButterKnife;
 
-/**
- * Created by Jakub on 12. 4. 2015.
- */
 public class ExampleEnvironmentActivity extends MovementControlsActivity {
 
     private MonolithFragment mMonolithFragment;

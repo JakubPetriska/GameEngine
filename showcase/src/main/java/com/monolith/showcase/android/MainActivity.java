@@ -19,7 +19,7 @@ import com.monolith.showcase.android.examples.SceneSwitchingActivity;
 import butterknife.InjectView;
 
 /**
- * Created by Jakub Petriska on 13. 2. 2015.
+ * Main Activity containing list of examples.
  */
 public class MainActivity extends BaseActionBarActivity {
 

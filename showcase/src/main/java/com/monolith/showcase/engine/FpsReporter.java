@@ -3,7 +3,8 @@ package com.monolith.showcase.engine;
 import com.monolith.api.Component;
 
 /**
- * Created by Jakub on 16. 4. 2015.
+ * Simple {@link com.monolith.api.Component} computing FPS and sending float objects
+ * with FPS values as messages out of the engine.
  */
 public class FpsReporter extends Component {
 

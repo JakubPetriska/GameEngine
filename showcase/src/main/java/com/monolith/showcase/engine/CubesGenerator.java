@@ -6,7 +6,10 @@ import com.monolith.api.Primitives;
 import com.monolith.api.components.Model;
 
 /**
- * Created by Jakub on 16. 4. 2015.
+ * {@link com.monolith.api.Component} generating a lots of cubes as a children of it's
+ * {@link com.monolith.api.GameObject}.
+ *
+ * This is used in performance testing.
  */
 public class CubesGenerator extends Component {
 

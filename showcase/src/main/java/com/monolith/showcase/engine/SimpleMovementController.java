@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jakub on 12. 4. 2015.
+ * Allows controlling {@link com.monolith.api.Component}'s movement. Movement is controlled
+ * by messages that must be sent into the engine.
  */
 public class SimpleMovementController extends Component {
 

@@ -10,7 +10,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
- * Created by Jakub Petriska on 14. 2. 2015.
+ * Basic Activity class containing action bar.
  */
 public abstract class BaseActionBarActivity extends ActionBarActivity {
 

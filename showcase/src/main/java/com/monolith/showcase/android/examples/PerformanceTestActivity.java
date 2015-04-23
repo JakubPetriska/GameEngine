@@ -11,9 +11,6 @@ import com.monolith.showcase.R;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-/**
- * Created by Jakub on 16. 4. 2015.
- */
 public class PerformanceTestActivity extends MovementControlsActivity {
 
     @InjectView(R.id.fps)

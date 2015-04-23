@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jakub Petriska on 23. 2. 2015.
+ * {@link com.monolith.api.Component} switching between scenes as a reaction on the incoming message.
  */
 public class SceneSwitchingController extends Component {
 
