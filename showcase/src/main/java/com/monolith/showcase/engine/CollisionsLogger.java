@@ -6,7 +6,7 @@ import com.monolith.api.components.BoxCollider;
 /**
  * Created by Jakub on 13. 4. 2015.
  */
-public class CollisionsHandler extends Component {
+public class CollisionsLogger extends Component {
 
     public String name;
 
@@ -16,12 +16,12 @@ public class CollisionsHandler extends Component {
         collider.registerCollisionListener(new BoxCollider.CollisionListener() {
             @Override
             public void onCollisionDetected(BoxCollider collisionObject) {
-                getApplication().getDebugUtility().log(name + " colliding");
+                getApplication().getDebug().log(name + " colliding");
             }
 
             @Override
             public void onCollisionEnded(BoxCollider collisionObject) {
-                getApplication().getDebugUtility().log(name + " not colliding");
+                getApplication().getDebug().log(name + " not colliding");
             }
         });
     }

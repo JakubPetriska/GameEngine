@@ -3,8 +3,7 @@ package com.monolith.engine;
 import com.monolith.api.Application;
 import com.monolith.api.CollisionSystem;
 import com.monolith.api.Component;
-import com.monolith.api.DebugSettings;
-import com.monolith.api.DebugUtility;
+import com.monolith.api.Debug;
 import com.monolith.api.GameObject;
 import com.monolith.api.Messenger;
 import com.monolith.api.Renderer;
@@ -79,10 +78,10 @@ public class Engine {
         mInternalSystems.add(mCollisionSystem);
     }
 
-    private DebugSettings parseDebugSettingsFile() {
+    private DebugSettingsModel parseDebugSettingsFile() {
         InputStream debugFileInputStream = mPlatform.getAssetFileInputStream(Config.DEBUG_FILE);
         if (debugFileInputStream == null) {
-            return new DebugSettings();
+            return null;
         } else {
             Serializer serializer = new Persister();
             DebugSettingsModel parsedDebugSetings;
@@ -90,11 +89,12 @@ public class Engine {
                 parsedDebugSetings = serializer.read(DebugSettingsModel.class, debugFileInputStream);
                 if (parsedDebugSetings == null) {
                     throw new IllegalStateException();
+                } else {
+                    return parsedDebugSetings;
                 }
             } catch (Exception e) {
                 throw new IllegalStateException("Error during retrieval of debug config file.", e);
             }
-            return new DebugSettings(parsedDebugSetings);
         }
     }
 
@@ -102,8 +102,8 @@ public class Engine {
      * Inserts objects that are provided to Engine during it's creation.
      * These are platform specific objects created by platform specific code.
      *
-     * @param platform {@link com.monolith.platform.Platform} instance provided by the specific platform.
-     * @param renderer TODO add documentation
+     * @param platform   {@link com.monolith.platform.Platform} instance provided by the specific platform.
+     * @param renderer   TODO add documentation
      * @param touchInput {@link com.monolith.platform.TouchInputInternal} instance provided by the specific platform.
      */
     public void insertProvidedObjects(Platform platform, FullRenderer renderer, TouchInputInternal touchInput) {
@@ -116,8 +116,8 @@ public class Engine {
         mInternalSystems.add(touchInput);
         this.mTouchInput = touchInput;
 
-        if(mApplication == null) {
-            mApplication = new ApplicationImpl(parseDebugSettingsFile());
+        if (mApplication == null) {
+            mApplication = new ApplicationImpl();
         }
 
         mRenderer.setApplication(mApplication);
@@ -277,12 +277,13 @@ public class Engine {
 
     private class ApplicationImpl extends Application {
 
-        private DebugUtility mDebugUtility;
+        private Debug mDebug;
 
-        public ApplicationImpl(DebugSettings debugSettings) {
-            super(debugSettings);
-
-            mDebugUtility = new DebugUtility() {
+        public ApplicationImpl() {
+            DebugSettingsModel debugSettingsModel = parseDebugSettingsFile();
+            boolean debug = debugSettingsModel != null;
+            boolean drawColliders = debug && (debugSettingsModel.drawColliders == null || debugSettingsModel.drawColliders);
+            mDebug = new Debug(debug, drawColliders) {
                 @Override
                 public void log(String message) {
                     mPlatform.log(message);
@@ -321,8 +322,8 @@ public class Engine {
         }
 
         @Override
-        public DebugUtility getDebugUtility() {
-            return mDebugUtility;
+        public Debug getDebug() {
+            return mDebug;
         }
 
         @Override

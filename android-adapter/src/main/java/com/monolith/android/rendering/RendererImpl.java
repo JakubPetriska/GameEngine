@@ -155,7 +155,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         mObjectShaderMVPMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uMVPMatrix");
         mObjectShaderModelMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "uModelMatrix");
 
-        if (mApplication.debugSettings.debug) {
+        if (mApplication.getDebug().debug) {
             // Prepare shaders and OpenGL program for lines
             vertexShader = loadShader(
                     GLES20.GL_VERTEX_SHADER,

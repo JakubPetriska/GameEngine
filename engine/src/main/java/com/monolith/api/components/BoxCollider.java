@@ -50,7 +50,7 @@ public class BoxCollider extends Component {
 
     @Override
     public void start() {
-        if (getApplication().debugSettings.drawColliders) {
+        if (getApplication().getDebug().drawColliders) {
             this.meshData = getApplication().getModelManager().getMeshData(Primitives.CUBE);
         }
         getApplication().getCollisionSystem().registerCollider(this);
@@ -87,7 +87,7 @@ public class BoxCollider extends Component {
 
         Matrix44.multiply(mColliderAbsoluteTransformation, objectTransformation, sColliderLocalTransformation);
 
-        if (getApplication().debugSettings.drawColliders) {
+        if (getApplication().getDebug().drawColliders) {
             getApplication().getRenderer().renderWireframe(meshData,
                     mCollidingCollidersCount > 0 ? Color.RED : Color.GREEN,
                     mColliderAbsoluteTransformation);
