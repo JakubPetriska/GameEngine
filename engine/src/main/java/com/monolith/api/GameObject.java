@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// TODO Complete documentation
 /**
  * Represents an object. GameObject serves only as container for functionality.
  * GameObject itself will not be displayed in final rendered content in any way.
@@ -19,6 +18,9 @@ import java.util.List;
  */
 public class GameObject {
 
+    /**
+     * Tag of this object. Can be used to identify objects during collisions.
+     */
     public String tag;
 
     private Application mApplication;
@@ -51,11 +53,8 @@ public class GameObject {
     // None of them can be removed so make sure it is checked in removeComponent(Component) method
     public final Transform transform;
 
-    public GameObject(Application application, GameObject parent) {
-        this(application, parent, "");
-    }
+    // TODO make it possible to manipulate with and add top level objects
 
-    // TODO it should be possible to manipulate with and add top level objects, make it happen
     /**
      * Creates new GameObject.
      * <p/>
@@ -79,8 +78,16 @@ public class GameObject {
         addComponent(transform);
     }
 
-    public GameObject(GameObject parent) {
-        this(parent, "");
+    /**
+     * Creates new GameObject.
+     * <p/>
+     * This constructor is meant for constructing top level GameObjects.
+     * Creating top level object from scripts is currently not supported.
+     * if you pass null as parent appropriate lifecycle methods will not be
+     * called on this object.
+     */
+    public GameObject(Application application, GameObject parent) {
+        this(application, parent, "");
     }
 
     /**
@@ -102,6 +109,15 @@ public class GameObject {
 
         transform = new Transform();
         addComponent(transform);
+    }
+
+    /**
+     * Creates new GameObject. Use this in your scripts.
+     *
+     * @param parent GameObject's parent. Can never be null.
+     */
+    public GameObject(GameObject parent) {
+        this(parent, "");
     }
 
     /**
@@ -216,14 +232,14 @@ public class GameObject {
         }
         return null;
     }
-    
+
     /**
-     * Returns the {@link java.util.List} of all components of type T
+     * Obtains all components of type T
      * attached to this GameObject.
      *
      * @param componentsClass Class of the requested components.
+     * @param resultList List into which the requested components will be added.
      * @param <T>             Type of the components to be returned.
-     * @return List of the instances of T attached to this GameObject as components.
      */
     public <T extends Component> void getComponents(Class<T> componentsClass, List<T> resultList) {
         for (int i = 0; i < mComponents.size(); ++i) {
