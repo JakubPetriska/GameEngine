@@ -2,12 +2,19 @@ package com.monolith.api.components;
 
 import com.monolith.api.Component;
 
-// TODO add documentation
 /**
- * Created by Jakub on 29. 3. 2015.
+ * Represents a camera in the scene.
  */
 public class Camera extends Component {
+
+    /**
+     * Near plane distance.
+     */
     public float near = 0.5f;
+
+    /**
+     * Far plane distance.
+     */
     public float far = 500;
 
     /**
