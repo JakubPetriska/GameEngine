@@ -55,6 +55,7 @@ public class GameObject {
         this(application, parent, "");
     }
 
+    // TODO it should be possible to manipulate with and add top level objects, make it happen
     /**
      * Creates new GameObject.
      * <p/>
