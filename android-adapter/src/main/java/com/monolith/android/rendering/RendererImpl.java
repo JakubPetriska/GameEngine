@@ -242,8 +242,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
                 Transform transform = mCameraParents.get(i).transform;
 
                 Matrix.setIdentityM(mRelativeModelMatrix, 0);
-
-                // TODO floating point comparison using == - fix this!
+                
                 Matrix.scaleM(mRelativeModelMatrix, 0,
                         transform.getScaleX() == 0 ? 0 : 1 / transform.getScaleX(),
                         transform.getScaleY() == 0 ? 0 : 1 / transform.getScaleY(),
