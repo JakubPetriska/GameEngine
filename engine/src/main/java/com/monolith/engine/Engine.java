@@ -101,11 +101,11 @@ public class Engine {
     }
 
     /**
-     * Inserts objects that are provided to Engine during it's creation.
+     * Inserts or replaces objects that are provided to Engine during it's creation.
      * These are platform specific objects created by platform specific code.
      *
      * @param platform   {@link com.monolith.platform.Platform} instance provided by the specific platform.
-     * @param renderer   TODO add documentation
+     * @param renderer   {@link com.monolith.engine.FullRenderer} instance provided by the specific platform.
      * @param touchInput {@link com.monolith.platform.TouchInputInternal} instance provided by the specific platform.
      */
     public void insertProvidedObjects(Platform platform, FullRenderer renderer, TouchInputInternal touchInput) {
