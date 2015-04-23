@@ -19,7 +19,7 @@ import java.util.List;
  */
 public class GameObject {
 
-    public final String tag;
+    public String tag;
 
     private Application mApplication;
     private GameObject mParent;
