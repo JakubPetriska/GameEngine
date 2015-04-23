@@ -10,7 +10,7 @@ public interface Time {
      * the start of this engine instance in seconds.
      * @return Time of the start of this frame in seconds.
      */
-    float getTime();
+    float getTimeFromStart();
 
     /**
      * Returns time delta between the start of this frame and

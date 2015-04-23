@@ -38,7 +38,7 @@ public class TimeInternal implements Time, ISystem {
     }
 
     @Override
-    public float getTime() {
+    public float getTimeFromStart() {
         return frameStart;
     }
 

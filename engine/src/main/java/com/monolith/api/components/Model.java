@@ -12,6 +12,7 @@ public class Model extends Component {
      * Name of primitive mesh.
      */
     public String meshPath;
+    private String lastMeshPath;
     private MeshData meshData;
 
     public MeshData getMeshData() {
@@ -21,10 +22,15 @@ public class Model extends Component {
     @Override
     public void start() {
         this.meshData = getApplication().getModelManager().getMeshData(meshPath);
+        lastMeshPath = meshPath;
     }
 
     @Override
     public void postUpdate() {
+        if(meshPath != lastMeshPath) { // Comparing objects to reduce the test cost
+            this.meshData = getApplication().getModelManager().getMeshData(meshPath);
+            lastMeshPath = meshPath;
+        }
         getApplication().getRenderer().render(
                 meshData,
                 getGameObject().transform.getTransformationMatrix());

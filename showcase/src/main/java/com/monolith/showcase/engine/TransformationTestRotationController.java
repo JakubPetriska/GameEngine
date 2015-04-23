@@ -2,13 +2,10 @@ package com.monolith.showcase.engine;
 
 import com.monolith.api.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * TODO add commentary
  */
-public class RotationTestController extends Component {
+public class TransformationTestRotationController extends Component {
 
     private static final float ROTATION_PER_SECOND = 15;
 
@@ -17,7 +14,7 @@ public class RotationTestController extends Component {
     @Override
     public void update() {
         String axisMessage = getApplication().getMessenger().getLastMessage(String.class);
-        if(axisMessage != null) {
+        if (axisMessage != null) {
             getGameObject().transform.setRotation(0, 0, 0); // Reset rotation when axis changes
             currentRotationAxis = axisMessage;
         }

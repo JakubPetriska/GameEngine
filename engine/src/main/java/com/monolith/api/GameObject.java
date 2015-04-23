@@ -216,6 +216,7 @@ public class GameObject {
         return null;
     }
 
+    // TODO make the list the input to remove the object creation
     /**
      * Returns the {@link java.util.List} of all components of type T
      * attached to this GameObject.
