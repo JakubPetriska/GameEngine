@@ -225,14 +225,12 @@ public class GameObject {
      * @param <T>             Type of the components to be returned.
      * @return List of the instances of T attached to this GameObject as components.
      */
-    public <T extends Component> List<T> getComponents(Class<T> componentsClass) {
-        List<T> resultList = new ArrayList<>();
+    public <T extends Component> void getComponents(Class<T> componentsClass, List<T> resultList) {
         for (int i = 0; i < mComponents.size(); ++i) {
             Component component = mComponents.get(i);
             if (componentsClass.isInstance(component)) {
                 resultList.add((T) component);
             }
         }
-        return resultList;
     }
 }
