@@ -4,6 +4,7 @@ import com.monolith.api.Application;
 import com.monolith.api.CollisionSystem;
 import com.monolith.api.Component;
 import com.monolith.api.Debug;
+import com.monolith.api.Display;
 import com.monolith.api.GameObject;
 import com.monolith.api.Messenger;
 import com.monolith.api.Renderer;
@@ -46,6 +47,7 @@ public class Engine {
     private MessengerInternal mMessenger;
     private TimeInternal mTime;
     private CollisionSystem mCollisionSystem;
+    private Display mDisplay;
 
     private List<ISystem> mInternalSystems = new ArrayList<>();
 
@@ -115,6 +117,8 @@ public class Engine {
         mInternalSystems.remove(mTouchInput);
         mInternalSystems.add(touchInput);
         this.mTouchInput = touchInput;
+
+        mDisplay = mPlatform.createDisplay();
 
         if (mApplication == null) {
             mApplication = new ApplicationImpl();
@@ -324,6 +328,11 @@ public class Engine {
         @Override
         public Debug getDebug() {
             return mDebug;
+        }
+
+        @Override
+        public Display getDisplay() {
+            return mDisplay;
         }
 
         @Override

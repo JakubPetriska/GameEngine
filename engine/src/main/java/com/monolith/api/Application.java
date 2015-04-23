@@ -26,6 +26,8 @@ public abstract class Application {
 
     public abstract Debug getDebug();
 
+    public abstract Display getDisplay();
+
     public abstract void changeScene(String newSceneName);
 
     public abstract String getCurrentSceneName();

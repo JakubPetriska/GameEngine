@@ -1,8 +1,13 @@
 package com.monolith.android;
 
 import android.content.Context;
+import android.graphics.Point;
+import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.WindowManager;
 
+import com.monolith.api.Display;
 import com.monolith.platform.Platform;
 
 import java.io.IOException;
@@ -33,5 +38,26 @@ public class AndroidPlatform implements Platform {
     @Override
     public void log(String message) {
         Log.d(LOG_TAG, message);
+    }
+
+    @Override
+    public Display createDisplay() {
+        DisplayMetrics metrics = mContext.getResources().getDisplayMetrics();
+
+        WindowManager wm = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        android.view.Display display = wm.getDefaultDisplay();
+        int width;
+        int height;
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            Point size = new Point();
+            display.getSize(size);
+            width = size.x;
+            height = size.y;
+        } else {
+            width = display.getWidth();
+            height = display.getHeight();
+        }
+
+        return new Display(width, height, metrics.density);
     }
 }

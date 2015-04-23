@@ -1,5 +1,7 @@
 package com.monolith.platform;
 
+import com.monolith.api.Display;
+
 import java.io.InputStream;
 
 /**
@@ -23,4 +25,6 @@ public interface Platform {
      * @param message Message to log.
      */
     void log(String message);
+
+    Display createDisplay();
 }
