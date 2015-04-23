@@ -172,19 +172,6 @@ public class Vector3 {
         multiply(-1);
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if(obj instanceof Vector3) {
-            Vector3 other = (Vector3) obj;
-            // TODO floating point comparison using == - fix this!
-            return this.mValues[0] == other.mValues[0]
-                    && this.mValues[1] == other.mValues[1]
-                    && this.mValues[2] == other.mValues[2];
-        } else {
-            return false;
-        }
-    }
-
     public void copy(Vector3 into) {
         System.arraycopy(mValues, 0, into.mValues, 0, 3);
     }
