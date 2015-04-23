@@ -9,19 +9,42 @@ import com.monolith.api.math.Matrix44;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO add documentation
-
 /**
- * Created by Jakub on 9. 4. 2015.
+ * Represents collider in the shape of the box.
+ * <p/>
+ * Collider cannot be rotated on it's own but is rotated by transformations of it's
+ * {@link com.monolith.api.GameObject} and all parent {@link com.monolith.api.GameObject GameObjects}.
  */
 public class BoxCollider extends Component {
 
+    /**
+     * Size in the X axis.
+     */
     public float sizeX = 1;
+
+    /**
+     * Size in the Y axis.
+     */
     public float sizeY = 1;
+
+    /**
+     * Size in the Z axis.
+     */
     public float sizeZ = 1;
 
+    /**
+     * Position offset in the X axis.
+     */
     public float offsetX = 0;
+
+    /**
+     * Position offset in the Y axis.
+     */
     public float offsetY = 0;
+
+    /**
+     * Position offset in the Z axis.
+     */
     public float offsetZ = 0;
 
     private final Matrix44 mColliderAbsoluteTransformation = new Matrix44();
@@ -32,18 +55,43 @@ public class BoxCollider extends Component {
 
     private MeshData meshData;
 
+    /**
+     * Listener that allows listening for starts and ends of collisions involving this collider.
+     */
     public interface CollisionListener {
+        /**
+         * Called when collision of this collider with another collider starts.
+         *
+         * @param collisionObject Collider that this collider is colliding with.
+         */
         void onCollisionDetected(BoxCollider collisionObject);
 
+        /**
+         * Called when collision of this collider with another collider ends.
+         *
+         * @param collisionObject Collider that this collider was colliding with.
+         */
         void onCollisionEnded(BoxCollider collisionObject);
     }
 
+    /**
+     * Register {@link com.monolith.api.components.BoxCollider.CollisionListener} to listen for
+     * collision events. Any number of listeners can be registered.
+     *
+     * @param listener Listener to register.
+     */
     public void registerCollisionListener(CollisionListener listener) {
         if (!mListeners.contains(listener)) {
             mListeners.add(listener);
         }
     }
 
+    /**
+     * Unregister {@link com.monolith.api.components.BoxCollider.CollisionListener} from listening for
+     * collision events.
+     *
+     * @param listener Listener to unregister.
+     */
     public void unregisterCollisionListener(CollisionListener listener) {
         mListeners.remove(listener);
     }
@@ -61,6 +109,12 @@ public class BoxCollider extends Component {
         getApplication().getCollisionSystem().unregisterCollider(this);
     }
 
+    /**
+     * Called by the {@link com.monolith.api.CollisionSystem} when collision of this collider with
+     * another collider starts.
+     *
+     * @param collisionObject Collider that this collider is colliding with.
+     */
     public void onCollisionDetected(BoxCollider collisionObject) {
         ++mCollidingCollidersCount;
         for (int i = 0; i < mListeners.size(); ++i) {
@@ -68,6 +122,12 @@ public class BoxCollider extends Component {
         }
     }
 
+    /**
+     * Called by the {@link com.monolith.api.CollisionSystem} when collision of this collider with
+     * another collider ends.
+     *
+     * @param collisionObject Collider that this collider was colliding with.
+     */
     public void onCollisionEnded(BoxCollider collisionObject) {
         --mCollidingCollidersCount;
         for (int i = 0; i < mListeners.size(); ++i) {
@@ -94,6 +154,12 @@ public class BoxCollider extends Component {
         }
     }
 
+    /**
+     * Returns the absolute transformation matrix for this collider. Transformation contains
+     * it's relative offset and size.
+     *
+     * @return The absolute transformation matrix for this collider.
+     */
     public Matrix44 getTransformationMatrix() {
         return mColliderAbsoluteTransformation;
     }
