@@ -9,6 +9,7 @@ import com.monolith.utilities.ObjLoader;
 
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Creates instances of {@link com.monolith.api.MeshData} when they are needed
@@ -26,6 +27,10 @@ public class MeshManager {
     public MeshManager(Application application, Platform platform) {
         this.mApplication = application;
         this.mPlatform = platform;
+    }
+
+    public Set<String> getStoredMeshesPaths() {
+        return mNameToMeshMap.keySet();
     }
 
     /**

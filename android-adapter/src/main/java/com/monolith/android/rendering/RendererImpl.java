@@ -13,6 +13,7 @@ import com.monolith.api.components.Camera;
 import com.monolith.api.components.Transform;
 import com.monolith.api.math.Matrix44;
 import com.monolith.engine.FullRenderer;
+import com.monolith.engine.MeshManager;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -172,6 +173,15 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
             mLineShaderPositionHandle = GLES20.glGetAttribLocation(mShaderProgramLine, "vPosition");
             mLineShaderColorHandle = GLES20.glGetUniformLocation(mShaderProgramLine, "vColor");
             mLineShaderMVPMatrixHandle = GLES20.glGetUniformLocation(mShaderProgramLine, "uMVPMatrix");
+        }
+
+        // Upload mesh data of objects to the GPU, these are objects that were already uploaded
+        // Data are lost during screen rotation
+        MeshManager meshManager = mApplication.getMeshManager();
+        for(String meshPath : meshManager.getStoredMeshesPaths()) {
+            AndroidMeshData meshData = (AndroidMeshData) meshManager.getMeshData(meshPath);
+            meshData.wireframeDataBuffer = 0;
+            uploadObjectDataToGpuForMesh(meshData);
         }
 
         // Set our view matrix
@@ -350,8 +360,8 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
 
     private static class AndroidMeshData extends MeshData {
 
-        int objectDataBuffer;
-        int wireframeDataBuffer;
+        int objectDataBuffer = 0;
+        int wireframeDataBuffer = 0;
 
         public AndroidMeshData(
                 float[] vertices, float[] normals,
@@ -360,9 +370,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         }
     }
 
-    @Override
-    public MeshData createMeshData(float[] vertices, float[] normals, int[] trianglesVertices, int[] trianglesNormals) {
-        AndroidMeshData meshData = new AndroidMeshData(vertices, normals, trianglesVertices, trianglesNormals);
+    private void uploadObjectDataToGpuForMesh(AndroidMeshData meshData) {
         FloatBuffer dataBuffer = createObjectBuffer(meshData);
 
         int[] buffer = new int[1];
@@ -376,12 +384,17 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
                 dataBuffer, GLES20.GL_STATIC_DRAW);
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
-
         dataBuffer.clear();
+    }
+
+    @Override
+    public MeshData createMeshData(float[] vertices, float[] normals, int[] trianglesVertices, int[] trianglesNormals) {
+        AndroidMeshData meshData = new AndroidMeshData(vertices, normals, trianglesVertices, trianglesNormals);
+        uploadObjectDataToGpuForMesh(meshData);
         return meshData;
     }
 
-    private static void setupWireframeBuffer(AndroidMeshData meshData) {
+    private static void uploadWireframeDataToGpuForMesh(AndroidMeshData meshData) {
         FloatBuffer dataBuffer = createWireframeBuffer(meshData);
 
         int[] buffer = new int[1];
@@ -457,7 +470,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
 
         AndroidMeshData meshData = (AndroidMeshData) mesh;
         if (meshData.wireframeDataBuffer == 0) {
-            setupWireframeBuffer(meshData);
+            uploadWireframeDataToGpuForMesh(meshData);
         }
 
         // Copy the transformation matrix

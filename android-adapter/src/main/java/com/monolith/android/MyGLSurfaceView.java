@@ -37,8 +37,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
         @Override
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-            super.onSurfaceCreated(gl, config);
             mEngine.onStart();
+            super.onSurfaceCreated(gl, config);
         }
 
         @Override

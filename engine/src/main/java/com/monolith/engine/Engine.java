@@ -144,11 +144,9 @@ public class Engine {
         }
 
         loadScenesConfig();
-
         if (mCurrentSceneName == null) {
             mCurrentSceneName = mScenesConfig.defaultSceneName;
         }
-
         mApplication.changeScene(mCurrentSceneName);
 
         mInitialized = true;
@@ -306,7 +304,7 @@ public class Engine {
         }
 
         @Override
-        public MeshManager getModelManager() {
+        public MeshManager getMeshManager() {
             return mMeshManager;
         }
 

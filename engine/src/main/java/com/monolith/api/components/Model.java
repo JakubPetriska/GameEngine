@@ -21,14 +21,14 @@ public class Model extends Component {
 
     @Override
     public void start() {
-        this.meshData = getApplication().getModelManager().getMeshData(meshPath);
+        this.meshData = getApplication().getMeshManager().getMeshData(meshPath);
         lastMeshPath = meshPath;
     }
 
     @Override
     public void postUpdate() {
         if(meshPath != lastMeshPath) { // Comparing objects to reduce the test cost
-            this.meshData = getApplication().getModelManager().getMeshData(meshPath);
+            this.meshData = getApplication().getMeshManager().getMeshData(meshPath);
             lastMeshPath = meshPath;
         }
         getApplication().getRenderer().render(

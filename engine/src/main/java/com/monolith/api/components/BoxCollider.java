@@ -99,7 +99,7 @@ public class BoxCollider extends Component {
     @Override
     public void start() {
         if (getApplication().getDebug().drawColliders) {
-            this.meshData = getApplication().getModelManager().getMeshData(Primitives.CUBE);
+            this.meshData = getApplication().getMeshManager().getMeshData(Primitives.CUBE);
         }
         getApplication().getCollisionSystem().registerCollider(this);
     }

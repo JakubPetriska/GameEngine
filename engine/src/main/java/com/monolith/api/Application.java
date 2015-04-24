@@ -15,7 +15,7 @@ public abstract class Application {
 
     public abstract TouchInput getTouchInput();
 
-    public abstract MeshManager getModelManager();
+    public abstract MeshManager getMeshManager();
 
     public abstract Messenger getMessenger();
 
