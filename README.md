@@ -16,7 +16,7 @@
 	* Primitive cube size changed to 1.
 
 ## v0.1
-    * First version.
-    * Supports basic features.
-    * Objects can be only moved not rotated or scaled.
-    * Camera and lighting is immovable.
+* First version.
+* Supports basic features.
+* Objects can be only moved not rotated or scaled.
+* Camera and lighting is immovable.
