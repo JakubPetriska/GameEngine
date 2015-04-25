@@ -1,4 +1,5 @@
 # Monolith Game Engine
+Game engine for Android.
 
 ## v0.2
 * Rotation and scale added.
