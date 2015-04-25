@@ -1,7 +1,5 @@
 package com.monolith.api.math;
 
-// TODO comment this class
-
 /**
  * Represents 4x4 matrix of floats.
  * <p/>
@@ -24,14 +22,25 @@ public class Matrix44 {
 
     private final float[] mValues;
 
+    /**
+     * Create a new matrix. It's values are initialized to 0.
+     */
     public Matrix44() {
         mValues = new float[16];
     }
 
+    /**
+     * Returns the array backing this matrix.
+     * @return The array backing this matrix.
+     */
     public float[] getValues() {
         return mValues;
     }
 
+    /**
+     * Set values in this matrix from other matrix.
+     * @param source Matrix from which values are set into this matrix.
+     */
     public void set(Matrix44 source) {
         System.arraycopy(source.mValues, 0, this.mValues, 0, 16);
     }

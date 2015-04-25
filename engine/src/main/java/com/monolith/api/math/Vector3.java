@@ -4,7 +4,7 @@ package com.monolith.api.math;
  * Represents three dimensional vector.
  */
 public class Vector3 {
-    
+
     private final float[] mValues;
 
     /**
@@ -16,6 +16,7 @@ public class Vector3 {
 
     /**
      * Create a new vector from given values.
+     *
      * @param x X value of the new vector.
      * @param y Y value of the new vector.
      * @param z Z value of the new vector.
@@ -29,6 +30,7 @@ public class Vector3 {
 
     /**
      * Returns the array backing this vector.
+     *
      * @return The array backing this vector.
      */
     public float[] getValues() {
@@ -37,6 +39,7 @@ public class Vector3 {
 
     /**
      * Set values in this vector.
+     *
      * @param x Value to set as X.
      * @param y Value to set as Y.
      * @param z Value to set as Z.
@@ -49,6 +52,7 @@ public class Vector3 {
 
     /**
      * Set values in this vector from other vector.
+     *
      * @param source Vector from which values are set into this vector.
      */
     public void set(Vector3 source) {
@@ -57,6 +61,7 @@ public class Vector3 {
 
     /**
      * Return the X value of this vector.
+     *
      * @return X value of this vector.
      */
     public float getX() {
@@ -65,6 +70,7 @@ public class Vector3 {
 
     /**
      * Set the X value of this vector.
+     *
      * @param value Value to set.
      */
     public void setX(float value) {
@@ -73,6 +79,7 @@ public class Vector3 {
 
     /**
      * Return the Y value of this vector.
+     *
      * @return Y value of this vector.
      */
     public float getY() {
@@ -81,6 +88,7 @@ public class Vector3 {
 
     /**
      * Set the Y value of this vector.
+     *
      * @param value Value to set.
      */
     public void setY(float value) {
@@ -89,6 +97,7 @@ public class Vector3 {
 
     /**
      * Return the Z value of this vector.
+     *
      * @return Z value of this vector.
      */
     public float getZ() {
@@ -97,6 +106,7 @@ public class Vector3 {
 
     /**
      * Set the Z value of this vector.
+     *
      * @param value Value to set.
      */
     public void setZ(float value) {
@@ -105,6 +115,7 @@ public class Vector3 {
 
     /**
      * Adds vector to this vector. Result is stored in this Vector.
+     *
      * @param vector Vector that is added to this Vector.
      */
     public void add(Vector3 vector) {
@@ -115,6 +126,7 @@ public class Vector3 {
 
     /**
      * Add values to this vector. Result is stored in this Vector.
+     *
      * @param x Value to add to the X value of this vector.
      * @param y Value to add to the Y value of this vector.
      * @param z Value to add to the Z value of this vector.
@@ -127,9 +139,10 @@ public class Vector3 {
 
     /**
      * Add one vector to the other and store the result in result vector.
+     *
      * @param result Vector in which result is stored.
-     * @param left Vector to which the right Vector is added.
-     * @param right Vector that is added to the left Vector.
+     * @param left   Vector to which the right Vector is added.
+     * @param right  Vector that is added to the left Vector.
      */
     public static void add(Vector3 result, Vector3 left, Vector3 right) {
         result.mValues[0] = left.mValues[0] + right.mValues[0];
@@ -139,6 +152,7 @@ public class Vector3 {
 
     /**
      * Subtracts vector from this vector. Result is stored in this Vector.
+     *
      * @param vector Vector that is subtracted from this Vector.
      */
     public void subtract(Vector3 vector) {
@@ -149,6 +163,7 @@ public class Vector3 {
 
     /**
      * Subtract values from this vector. Result is stored in this Vector.
+     *
      * @param x Value to subtract from the X value of this vector.
      * @param y Value to subtract from the Y value of this vector.
      * @param z Value to subtract from the Z value of this vector.
@@ -161,9 +176,10 @@ public class Vector3 {
 
     /**
      * Subtract one vector from the other and store the result in result vector.
+     *
      * @param result Vector in which result is stored.
-     * @param left Vector from which the right vector is subtracted.
-     * @param right Vector that is subtracted from the left vector.
+     * @param left   Vector from which the right vector is subtracted.
+     * @param right  Vector that is subtracted from the left vector.
      */
     public static void subtract(Vector3 result, Vector3 left, Vector3 right) {
         result.mValues[0] = left.mValues[0] - right.mValues[0];
@@ -173,6 +189,7 @@ public class Vector3 {
 
     /**
      * Multiply this vector by given scalar and store the result in this vector.
+     *
      * @param scalar Scalar that this vector is multiplied by.
      */
     public void multiply(float scalar) {
@@ -183,6 +200,7 @@ public class Vector3 {
 
     /**
      * Multiply this vector by given scalar and store the result in the result vector.
+     *
      * @param result Vector in which the result is stored.
      * @param scalar Scalar that this vector is multiplied by.
      */
@@ -194,6 +212,7 @@ public class Vector3 {
 
     /**
      * Divide this vector by given scalar and store the result in this vector.
+     *
      * @param scalar Scalar that this vector is divided by.
      */
     public void divide(float scalar) {
@@ -204,6 +223,7 @@ public class Vector3 {
 
     /**
      * Divide this vector by given scalar and store the result in the result vector.
+     *
      * @param result Vector in which the result is stored.
      * @param scalar Scalar that this vector is divided by.
      */
@@ -215,7 +235,8 @@ public class Vector3 {
 
     /**
      * Calculate dot product of given vectors.
-     * @param first One of the vectors that the dot product is calculated from.
+     *
+     * @param first  One of the vectors that the dot product is calculated from.
      * @param second The other of the vectors that the dot product is calculated from.
      * @return Calculated dot product.
      */
@@ -225,9 +246,10 @@ public class Vector3 {
 
     /**
      * Calculate cross product of given vectors and store the result in the result vector.
+     *
      * @param result Vector in which the result is stored.
-     * @param left Left vector of the cross product calculation.
-     * @param right Right vector of the cross product calculation.
+     * @param left   Left vector of the cross product calculation.
+     * @param right  Right vector of the cross product calculation.
      */
     public static void cross(Vector3 result, Vector3 left, Vector3 right) {
         result.setX(left.mValues[1] * right.mValues[2] - left.mValues[2] * right.mValues[1]);
@@ -237,6 +259,7 @@ public class Vector3 {
 
     /**
      * Calculate the length of this vector.
+     *
      * @return Length of this vector.
      */
     public float length() {
