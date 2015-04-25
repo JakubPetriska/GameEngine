@@ -419,7 +419,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         AndroidMeshData meshData = (AndroidMeshData) mesh;
 
         // Copy the transformation matrix
-        transformation.copy(mModelMatrixCopy);
+        mModelMatrixCopy.set(transformation);
 
         // Scale matrix according to handedness change
         mModelMatrixCopy.scale(-1, 1, 1);
@@ -474,7 +474,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         }
 
         // Copy the transformation matrix
-        transformation.copy(mModelMatrixCopy);
+        mModelMatrixCopy.set(transformation);
 
         // Scale matrix according to handedness change
         mModelMatrixCopy.scale(-1, 1, 1);

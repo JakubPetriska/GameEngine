@@ -32,6 +32,10 @@ public class Matrix44 {
         return mValues;
     }
 
+    public void set(Matrix44 source) {
+        System.arraycopy(source.mValues, 0, this.mValues, 0, 16);
+    }
+
     /**
      * Return the value at given row and column.
      *
@@ -211,9 +215,5 @@ public class Matrix44 {
         float z = point.getX() * mValues[2] + point.getY() * mValues[6] + point.getZ() * mValues[10] + mValues[14];
 
         result.set(x, y, z);
-    }
-
-    public void copy(Matrix44 into) {
-        System.arraycopy(mValues, 0, into.mValues, 0, 16);
     }
 }
