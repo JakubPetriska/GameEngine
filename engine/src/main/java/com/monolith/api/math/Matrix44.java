@@ -31,6 +31,7 @@ public class Matrix44 {
 
     /**
      * Returns the array backing this matrix.
+     *
      * @return The array backing this matrix.
      */
     public float[] getValues() {
@@ -39,6 +40,7 @@ public class Matrix44 {
 
     /**
      * Set values in this matrix from other matrix.
+     *
      * @param source Matrix from which values are set into this matrix.
      */
     public void set(Matrix44 source) {
@@ -67,6 +69,9 @@ public class Matrix44 {
         mValues[row + column * 4] = value;
     }
 
+    /**
+     * Set this matrix to identity.
+     */
     public void setIdentity() {
         for (int i = 0; i < 16; ++i) {
             mValues[i] =
@@ -75,6 +80,11 @@ public class Matrix44 {
         }
     }
 
+    /**
+     * Translate this matrix.
+     *
+     * @param translation Vector containing the translation.
+     */
     public void translate(Vector3 translation) {
         translate(
                 translation.getX(),
@@ -82,6 +92,13 @@ public class Matrix44 {
                 translation.getZ());
     }
 
+    /**
+     * Translate this matrix.
+     *
+     * @param x Amount of translation in X axis direction.
+     * @param y Amount of translation in Y axis direction.
+     * @param z Amount of translation in Z axis direction.
+     */
     public void translate(float x, float y, float z) {
         mValues[12] += x;
         mValues[13] += y;
@@ -89,6 +106,8 @@ public class Matrix44 {
     }
 
     /**
+     * Rotate this matrix around X axis by given angle.
+     *
      * @param angle Angle to rotate in degrees.
      */
     public void rotateX(float angle) {
@@ -112,6 +131,8 @@ public class Matrix44 {
     }
 
     /**
+     * Rotate this matrix around Y axis by given angle.
+     *
      * @param angle Angle to rotate in degrees.
      */
     public void rotateY(float angle) {
@@ -135,6 +156,8 @@ public class Matrix44 {
     }
 
     /**
+     * Rotate this matrix around Z axis by given angle.
+     *
      * @param angle Angle to rotate in degrees.
      */
     public void rotateZ(float angle) {
@@ -157,10 +180,22 @@ public class Matrix44 {
         }
     }
 
+    /**
+     * Scale this matrix.
+     *
+     * @param scale Vector containing the scale by all axes.
+     */
     public void scale(Vector3 scale) {
         scale(scale.getX(), scale.getY(), scale.getZ());
     }
 
+    /**
+     * Scale this matrix.
+     *
+     * @param x Amount of scale in direction of X axis.
+     * @param y Amount of scale in direction of Y axis.
+     * @param z Amount of scale in direction of Z axis.
+     */
     public void scale(float x, float y, float z) {
         mValues[0] *= x;
         mValues[4] *= x;
@@ -176,6 +211,13 @@ public class Matrix44 {
         mValues[14] *= z;
     }
 
+    /**
+     * Multiply two matrices.
+     *
+     * @param result Matrix in which the result is stored.
+     * @param left   Matrix on the left side of multiplication.
+     * @param right  Matrix on the right side of multiplication.
+     */
     public static void multiply(Matrix44 result, Matrix44 left, Matrix44 right) {
         float[] res = result.getValues();
         float[] l = left.getValues();
@@ -202,10 +244,21 @@ public class Matrix44 {
         res[15] = l[3] * r[12] + l[7] * r[13] + l[11] * r[14] + l[15] * r[15];
     }
 
+    /**
+     * Transform vector by this matrix.
+     *
+     * @param vector Vector to transform.
+     */
     public void transformVector(Vector3 vector) {
         transformVector(vector, vector);
     }
 
+    /**
+     * Transform vector by this matrix and store the result in the result vector.
+     *
+     * @param result Vector in which the result is stored.
+     * @param vector Vector to transform.
+     */
     public void transformVector(Vector3 result, Vector3 vector) {
         float x = vector.getX() * mValues[0] + vector.getY() * mValues[4] + vector.getZ() * mValues[8];
         float y = vector.getX() * mValues[1] + vector.getY() * mValues[5] + vector.getZ() * mValues[9];
@@ -214,10 +267,21 @@ public class Matrix44 {
         result.set(x, y, z);
     }
 
+    /**
+     * Transform point by this matrix.
+     *
+     * @param point Point to transform.
+     */
     public void transformPoint(Vector3 point) {
         transformPoint(point, point);
     }
 
+    /**
+     * Transform point by this matrix and store the result in the result vector.
+     *
+     * @param result Vector in which the result is stored.
+     * @param point  Point to transform.
+     */
     public void transformPoint(Vector3 result, Vector3 point) {
         float x = point.getX() * mValues[0] + point.getY() * mValues[4] + point.getZ() * mValues[8] + mValues[12];
         float y = point.getX() * mValues[1] + point.getY() * mValues[5] + point.getZ() * mValues[9] + mValues[13];
