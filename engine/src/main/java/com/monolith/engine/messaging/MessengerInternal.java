@@ -66,8 +66,8 @@ public class MessengerInternal implements Messenger, ISystem {
     }
 
     @Override
-    public <T> T getLastMessage(Class<T> messagesClass) {
-        String messageKey = getMessageKey(messagesClass);
+    public <T> T getLastMessage(Class<T> messageClass) {
+        String messageKey = getMessageKey(messageClass);
         if (mCurrentMessagesMap.containsKey(messageKey)) {
             List<T> messages = (List<T>) mCurrentMessagesMap.get(messageKey);
             return messages.get(messages.size() - 1);

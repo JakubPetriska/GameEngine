@@ -27,9 +27,9 @@ public interface Messenger {
     /**
      * Get last message of the given type received during the previous frame.
      *
-     * @param messagesClass
-     * @param <T>
-     * @return
+     * @param messageClass Class of the requested message.
+     * @param <T> Type of requested message.
+     * @return The last received message of the desired type.
      */
-    <T> T getLastMessage(Class<T> messagesClass);
+    <T> T getLastMessage(Class<T> messageClass);
 }
