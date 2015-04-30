@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.Window;
 
-import com.monolith.android.AndroidPlatform;
 import com.monolith.android.Constants;
 import com.monolith.android.EngineObjectStore;
 import com.monolith.android.MyGLSurfaceView;
-import com.monolith.api.external.InputMessenger;
 import com.monolith.engine.Engine;
 
 /**
@@ -61,7 +59,7 @@ public class MonolithActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(isFinishing()) {
+        if (isFinishing()) {
             mGlSurfaceView.getEngine().onFinish();
         }
     }

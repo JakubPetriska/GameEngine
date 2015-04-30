@@ -83,7 +83,7 @@ public class SceneCreator {
         }
     }
 
-    private Component convertComponent(GameObject owner, ISComponent initialComponent) {
+    private void convertComponent(GameObject owner, ISComponent initialComponent) {
         Component component;
         switch(initialComponent.type) {
             case ComponentsConstants.COMPONENT_TYPE_CAMERA:
@@ -168,6 +168,5 @@ public class SceneCreator {
         }
 
         owner.addComponent(component);
-        return component;
     }
 }

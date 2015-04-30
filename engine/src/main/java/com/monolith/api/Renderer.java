@@ -1,7 +1,6 @@
 package com.monolith.api;
 
 import com.monolith.api.components.Camera;
-import com.monolith.api.components.Model;
 import com.monolith.api.math.Matrix44;
 
 /**
@@ -11,7 +10,7 @@ public interface Renderer {
 
     /**
      * Gets called by the engine before the rendering of a frame starts (calls to render(Model)).
-     *
+     * <p/>
      * This ensures that all updates to game objects are applied for given frame.
      */
     void onStartRenderingFrame();
@@ -19,7 +18,7 @@ public interface Renderer {
     /**
      * Renders model.
      *
-     * @param mesh Mesh to render.
+     * @param mesh           Mesh to render.
      * @param transformation Transformation of the rendered object.
      */
     void render(MeshData mesh, Matrix44 transformation);
@@ -27,8 +26,8 @@ public interface Renderer {
     /**
      * Renders wireframe of the given mesh. Use
      *
-     * @param mesh Mesh to render.
-     * @param color Color of the rendered wireframe.
+     * @param mesh           Mesh to render.
+     * @param color          Color of the rendered wireframe.
      * @param transformation Transformation of the rendered object.
      */
     void renderWireframe(MeshData mesh, Color color, Matrix44 transformation);
