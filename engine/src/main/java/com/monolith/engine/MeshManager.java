@@ -7,6 +7,7 @@ import com.monolith.engine.primitives.Cube;
 import com.monolith.platform.Platform;
 import com.monolith.utilities.ObjLoader;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Set;
@@ -56,9 +57,13 @@ public class MeshManager {
             } else {
                 InputStream meshInputStream = mPlatform.getAssetFileInputStream(meshPath);
                 if(meshInputStream == null) {
-                    throw new IllegalStateException("Unavailable mesh requested");
+                    throw new IllegalStateException("Unavailable mesh " + meshPath + " requested");
                 }
-                result = ObjLoader.loadMeshAsset(meshInputStream, mApplication.getRenderer());
+                try {
+                    result = ObjLoader.loadMeshAsset(meshInputStream, mApplication.getRenderer());
+                } catch (IOException e) {
+                    throw new IllegalStateException("Obj model asset on path " + meshPath + " could not be loaded", e);
+                }
             }
             mNameToMeshMap.put(meshPath, result);
         }

@@ -182,7 +182,7 @@ public class Engine {
         mDummyScene.name = sceneName;
         int sceneIndex = Collections.binarySearch(mScenesConfig.scenes, mDummyScene);
         if (sceneIndex < 0) {
-            throw new IllegalStateException("Scene that was requested could not be found.");
+            throw new IllegalStateException("Scene " + sceneName + " that was requested could not be found.");
         }
         String configFilePath = mScenesConfig.scenes.get(sceneIndex).sceneFilePath;
 

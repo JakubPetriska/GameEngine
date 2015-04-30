@@ -23,15 +23,7 @@ public class ObjLoader {
      * @param renderer    Needed to create the {@link com.monolith.api.MeshData} object.
      * @return Loaded {@link com.monolith.api.MeshData} object.
      */
-    public static MeshData loadMeshAsset(InputStream assetStream, Renderer renderer) {
-        try {
-            return loadMeshAssetInternal(assetStream, renderer);
-        } catch (IOException e) {
-            throw new IllegalStateException("Obj model asset could not be loaded", e);
-        }
-    }
-
-    private static MeshData loadMeshAssetInternal(InputStream assetStream, Renderer renderer) throws IOException {
+    public static MeshData loadMeshAsset(InputStream assetStream, Renderer renderer) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(assetStream));
         String line;
 

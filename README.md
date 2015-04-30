@@ -1,6 +1,9 @@
 # Monolith Game Engine
 Game engine for Android.
 
+## v0.3 - IN PROGRESS
+* Better explanation of problem when engine throws an exception.
+
 ## v0.2.1
 * Static and dynamic collider groups added
 * Support extended to Android 2.2

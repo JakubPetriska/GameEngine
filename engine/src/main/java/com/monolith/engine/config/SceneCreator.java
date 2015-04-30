@@ -105,17 +105,17 @@ public class SceneCreator {
                     Class<Component> scriptClass = (Class<Component>) Class.forName(initialComponent.type);
                     component = scriptClass.getConstructor().newInstance();
                 } catch (ClassCastException e) {
-                    throw new IllegalStateException("Script must inherit from Component class.");
+                    throw new IllegalStateException("Script " + initialComponent.type + " must inherit from Component class.");
                 } catch (ClassNotFoundException e) {
                     throw new IllegalStateException("Unknown component type " + initialComponent.type + ".");
                 } catch (NoSuchMethodException e) {
-                    throw new IllegalStateException("Script must have constructor with no parameters and it must be public.");
+                    throw new IllegalStateException("Script " + initialComponent.type + " must have constructor with no parameters and it must be public.");
                 } catch (IllegalAccessException e) {
-                    throw new IllegalStateException("Script's constructor must be public.");
+                    throw new IllegalStateException(initialComponent.type + " must have a public constructor to be used as component.");
                 } catch (InstantiationException e) {
-                    throw new IllegalStateException("Script could not be instantiated.");
+                    throw new IllegalStateException("Script " + initialComponent.type + " could not be instantiated.");
                 } catch (InvocationTargetException e) {
-                    throw new IllegalStateException("Unknown error during script retrieval.");
+                    throw new IllegalStateException("Unknown error during retrieval " + initialComponent.type + " script.");
                 }
         }
         Class componentClass = component.getClass();
@@ -126,7 +126,7 @@ public class SceneCreator {
                 try {
                     field = componentClass.getField(paramName);
                 } catch (NoSuchFieldException e) {
-                    throw new IllegalStateException("Unknown component parameter.");
+                    throw new IllegalStateException("Unknown component parameter " + paramName + ".");
                 }
                 String value = initialComponent.params.get(paramName);
                 Object parsedValue;
@@ -151,7 +151,7 @@ public class SceneCreator {
                         parsedValue = Double.valueOf(value);
                     } else {
                         throw new IllegalStateException(
-                                "Component parameter with type " + fieldClass.getSimpleName()
+                                "Component parameter " + paramName + " with type " + fieldClass.getSimpleName()
                                         + " cannot be set from scene definition file.");
                     }
                 } catch (NumberFormatException e) {
