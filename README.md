@@ -2,6 +2,7 @@
 Game engine for Android.
 
 ## v0.3
+* Static and dynamic collider groups added
 * Support extended to Android 2.2
 * Missing Messenger documentation added
 
