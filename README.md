@@ -1,6 +1,10 @@
 # Monolith Game Engine
 Game engine for Android.
 
+## v0.3
+* Support extended to Android 2.2
+* Missing Messenger documentation added
+
 ## v0.2
 * Rotation and scale added.
 * Support of custom models in obj format.
