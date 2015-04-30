@@ -1,0 +1,8 @@
+Use custom scope with following pattern:
+src[engine]:com.monolith.api..*||src[android-adapter]:com.monolith.api.android..*
+
+Put this into Other command line arguments:
+-encoding utf-8 -bootclasspath /path/to/sdk/platforms/android-##/android.jar
+
+on Windows this can look like this:
+-encoding utf-8 -bootclasspath C:\Users\Jakub\Android\sdk\platforms\android-22\android.jar
