@@ -1,7 +1,7 @@
 # Monolith Game Engine
 Game engine for Android.
 
-## v0.3
+## v0.2.1
 * Static and dynamic collider groups added
 * Support extended to Android 2.2
 * Missing Messenger documentation added
