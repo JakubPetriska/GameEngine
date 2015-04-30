@@ -107,7 +107,7 @@ public class SceneCreator {
                 } catch (ClassCastException e) {
                     throw new IllegalStateException("Script must inherit from Component class.");
                 } catch (ClassNotFoundException e) {
-                    throw new IllegalStateException("Unknown component type.");
+                    throw new IllegalStateException("Unknown component type " + initialComponent.type + ".");
                 } catch (NoSuchMethodException e) {
                     throw new IllegalStateException("Script must have constructor with no parameters and it must be public.");
                 } catch (IllegalAccessException e) {
