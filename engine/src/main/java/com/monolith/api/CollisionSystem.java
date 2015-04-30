@@ -54,6 +54,7 @@ public class CollisionSystem implements ISystem {
     /**
      * Register collider into the system. Collisions are only
      * detected on registered colliders.
+     *
      * @param collider Collider to register.
      */
     public void registerCollider(BoxCollider collider) {
@@ -66,6 +67,7 @@ public class CollisionSystem implements ISystem {
 
     /**
      * Unregister collider from the system.
+     *
      * @param collider Collider to unregister.
      */
     public void unregisterCollider(BoxCollider collider) {
@@ -105,7 +107,12 @@ public class CollisionSystem implements ISystem {
                     transformObb(secondCollider, secondObb);
                 }
 
-                boolean colliding = testCollision(firstObb, secondObb);
+                boolean colliding;
+                if (firstCollider.isStatic && secondCollider.isStatic) {
+                    colliding = false;
+                } else {
+                    colliding = testCollision(firstObb, secondObb);
+                }
                 // TODO optimize this search
                 List<BoxCollider> collidingColliders = mCollidingColliders.get(i);
                 int index = collidingColliders.indexOf(secondCollider);
