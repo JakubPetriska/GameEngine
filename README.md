@@ -7,9 +7,9 @@ Game engine for Android.
 * Better explanation of problem when engine throws an exception.
 
 ## v0.2.1
-* Static and dynamic collider groups added
-* Support extended to Android 2.2
-* Missing Messenger documentation added
+* Static and dynamic collider groups added.
+* Support extended to Android 2.2.
+* Missing Messenger documentation added.
 
 ## v0.2
 * Rotation and scale added.
