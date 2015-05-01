@@ -2,7 +2,8 @@
 Game engine for Android.
 
 ## v0.3 - IN PROGRESS
-* TouchInput fixed
+* TouchInput fixed.
+* Documentation edits.
 * Better explanation of problem when engine throws an exception.
 
 ## v0.2.1
