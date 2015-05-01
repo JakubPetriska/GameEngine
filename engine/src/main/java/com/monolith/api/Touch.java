@@ -14,36 +14,54 @@ public class Touch {
     private int mState;
     private float mX;
     private float mY;
+    private float mStartX;
+    private float mStartY;
 
     public int getId() {
         return mId;
-    }
-
-    public int getState() {
-        return mState;
-    }
-
-    public float getX() {
-        return mX;
-    }
-
-    public float getY() {
-        return mY;
     }
 
     public void setId(int id) {
         this.mId = id;
     }
 
+    public int getState() {
+        return mState;
+    }
+
     public void setState(int state) {
         this.mState = state;
+    }
+
+    public float getX() {
+        return mX;
     }
 
     public void setX(float x) {
         this.mX = x;
     }
 
+    public float getY() {
+        return mY;
+    }
+
     public void setY(float y) {
         this.mY = y;
+    }
+
+    public float getStartX() {
+        return mStartX;
+    }
+
+    public void setStartX(float mStartX) {
+        this.mStartX = mStartX;
+    }
+
+    public float getStartY() {
+        return mStartY;
+    }
+
+    public void setStartY(float mStartY) {
+        this.mStartY = mStartY;
     }
 }

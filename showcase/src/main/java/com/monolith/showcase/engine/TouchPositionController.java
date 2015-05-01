@@ -13,6 +13,7 @@ public class TouchPositionController extends Component {
 
     private static final float FACTOR = 0.005f;
 
+    private int mLastTouchId = -1;
     private float mLastTouchX;
     private float mLastTouchY;
 
@@ -20,24 +21,40 @@ public class TouchPositionController extends Component {
     public void update() {
         List<Touch> touches = getApplication().getTouchInput().getTouches();
         if (touches.size() > 0) {
-            Touch touch = touches.get(0);
+            Touch touch = null;
+            if(mLastTouchId != -1) {
+                // Try to retrieve the Touch we tracked last time
+                for(int i = 0; i < touches.size(); ++i) {
+                    Touch ithTouch = touches.get(i);
+                    if(ithTouch.getId() == mLastTouchId) {
+                        touch = ithTouch;
+                        break;
+                    }
+                }
+            }
+            if(touch == null) {
+                touch = touches.get(0);
+            }
+
             float currentTouchX = touch.getX();
             float currentTouchY = touch.getY();
 
-            if (touch.getState() != Touch.STATE_BEGAN) {
+            if (touch.getState() != Touch.STATE_BEGAN && touch.getId() == mLastTouchId) {
+                // Factor needs to be scaled according to screen pixel density
+                // since touch coordinates are in screen pixels
+                float countedFactor = FACTOR / getApplication().getDisplay().densityScaleFactor;
                 getGameObject().transform.translateBy(
-                        (currentTouchX - mLastTouchX) * FACTOR,
-                        -(currentTouchY - mLastTouchY) * FACTOR,
+                        (currentTouchX - mLastTouchX) * countedFactor,
+                        -(currentTouchY - mLastTouchY) * countedFactor,
                         0);
             }
-
-            if (touch.getState() == Touch.STATE_ENDED) {
-                mLastTouchX = 0;
-                mLastTouchY = 0;
+            if(touch.getState() == Touch.STATE_ENDED) {
+                mLastTouchId = -1;
             } else {
-                mLastTouchX = currentTouchX;
-                mLastTouchY = currentTouchY;
+                mLastTouchId = touch.getId();
             }
+            mLastTouchX = currentTouchX;
+            mLastTouchY = currentTouchY;
         }
     }
 }
