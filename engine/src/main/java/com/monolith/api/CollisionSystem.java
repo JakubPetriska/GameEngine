@@ -4,6 +4,7 @@ import com.monolith.api.components.BoxCollider;
 import com.monolith.api.math.Matrix44;
 import com.monolith.api.math.Vector3;
 import com.monolith.engine.ISystem;
+import com.monolith.utilities.StringUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -108,7 +109,9 @@ public class CollisionSystem implements ISystem {
                 }
 
                 boolean colliding;
-                if (firstCollider.isStatic && secondCollider.isStatic) {
+                if (!StringUtil.isEmpty(firstCollider.group)
+                        && !StringUtil.isEmpty(secondCollider.group)
+                        && firstCollider.group.equals(secondCollider.group)) {
                     colliding = false;
                 } else {
                     colliding = testCollision(firstObb, secondObb);

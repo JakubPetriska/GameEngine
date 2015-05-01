@@ -18,12 +18,14 @@ import java.util.List;
 public class BoxCollider extends Component {
 
     /**
-     * Colliders are divided into two groups, static and dynamic, by setting of this flag.
-     * Static group is meant for colliders that are not moving relative to each other.
-     * <p/>
-     * This means that collision detection can omit checking for collisions between them.
+     * Group into which this collider belongs.
+     *
+     * Colliders in the same group are not checked for collisions.
+     *
+     * Colliders that have no group set are not considered to be part of any group
+     * and are checked for collision with all colliders.
      */
-    public boolean isStatic = false;
+    public String group;
 
     /**
      * Size in the X axis.

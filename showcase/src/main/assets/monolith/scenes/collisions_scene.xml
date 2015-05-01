@@ -4,32 +4,34 @@
         <!-- Camera -->
         <gameObject>
             <components>
-                <component type="camera" />
+                <component type="camera"/>
             </components>
         </gameObject>
 
         <!-- Objects -->
         <gameObject>
             <transform>
-                <position x="0" y="0" z="8" />
+                <position x="0" y="0" z="8"/>
             </transform>
             <children>
                 <!-- Controlled cubes -->
                 <gameObject tag="parent">
                     <components>
-                        <component type="com.monolith.showcase.engine.TouchPositionController" />
+                        <component type="com.monolith.showcase.engine.TouchPositionController"/>
                     </components>
                     <children>
                         <gameObject tag="topChild">
                             <transform>
-                                <position x="0" y="1" z="0" />
-                                <scale x="1.5" y="1.5" z="1.5" />
+                                <position x="0" y="1" z="0"/>
+                                <scale x="1.5" y="1.5" z="1.5"/>
                             </transform>
                             <components>
                                 <component type="model">
                                     <param name="meshPath">cube</param>
                                 </component>
                                 <component type="boxCollider">
+                                    <param name="group">dynamic</param>
+
                                     <param name="sizeX">1</param>
                                     <param name="sizeY">1</param>
                                     <param name="sizeZ">1</param>
@@ -45,14 +47,16 @@
                         </gameObject>
                         <gameObject tag="bottomChild">
                             <transform>
-                                <position x="0" y="-1" z="0" />
-                                <rotation x="0" y="45" z="0" />
+                                <position x="0" y="-1" z="0"/>
+                                <rotation x="0" y="45" z="0"/>
                             </transform>
                             <components>
                                 <component type="model">
                                     <param name="meshPath">cube</param>
                                 </component>
-                                <component type="boxCollider" />
+                                <component type="boxCollider">
+                                    <param name="group">dynamic</param>
+                                </component>
                                 <component type="com.monolith.showcase.engine.CollisionsLogger">
                                     <param name="name">Collider 1</param>
                                 </component>
@@ -64,25 +68,29 @@
                 <!-- Static cubes -->
                 <gameObject>
                     <transform>
-                        <position x="2" y="0" z="0" />
-                        <rotation x="0" y="0" z="45" />
+                        <position x="2" y="0" z="0"/>
+                        <rotation x="0" y="0" z="45"/>
                     </transform>
                     <components>
                         <component type="model">
                             <param name="meshPath">cube</param>
                         </component>
-                        <component type="boxCollider" />
+                        <component type="boxCollider">
+                            <param name="group">static</param>
+                        </component>
                     </components>
                 </gameObject>
                 <gameObject>
                     <transform>
-                        <position x="-2" y="0" z="0" />
+                        <position x="-2" y="0" z="0"/>
                     </transform>
                     <components>
                         <component type="model">
                             <param name="meshPath">cube</param>
                         </component>
-                        <component type="boxCollider" />
+                        <component type="boxCollider">
+                            <param name="group">static</param>
+                        </component>
                     </components>
                 </gameObject>
             </children>

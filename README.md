@@ -2,6 +2,7 @@
 Game engine for Android.
 
 ## v0.3 - IN PROGRESS
+* Collider group is now a string name of the group so there can be any number of collider groups.
 * TouchInput fixed.
 * Documentation edits.
 * Better explanation of problem when engine throws an exception.
