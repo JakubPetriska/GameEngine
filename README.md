@@ -5,6 +5,7 @@ Game engine for Android.
 * Collider group is now a string name of the group so there can be any number of collider groups.
 * TouchInput fixed.
 * Documentation edits.
+* InputMessenger renamed to ExternalMessenger.
 * Better explanation of problem when engine throws an exception.
 
 ## v0.2.1

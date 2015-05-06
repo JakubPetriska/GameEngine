@@ -111,7 +111,7 @@ public abstract class MovementControlsActivity extends FragmentActivity {
         } else {
             movement = SimpleMovementController.MovementVertical.BACKWARD;
         }
-        getMonolithFragment().getInputMessenger().sendMessage(movement);
+        getMonolithFragment().getMessenger().sendMessage(movement);
     }
 
     private void onHorizontalMovementChanged() {
@@ -124,6 +124,6 @@ public abstract class MovementControlsActivity extends FragmentActivity {
         } else {
             movement = SimpleMovementController.MovementHorizontal.RIGHT;
         }
-        getMonolithFragment().getInputMessenger().sendMessage(movement);
+        getMonolithFragment().getMessenger().sendMessage(movement);
     }
 }

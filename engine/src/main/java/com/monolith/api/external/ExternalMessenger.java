@@ -5,7 +5,7 @@ package com.monolith.api.external;
  *
  * Instance of this class is passed outside of the engine to allow this functionality.
  */
-public interface InputMessenger {
+public interface ExternalMessenger {
 
     /**
      * Sends message into the engine.
@@ -14,7 +14,7 @@ public interface InputMessenger {
     void sendMessage(Object message);
 
     /**
-     * Registers {@link com.monolith.api.external.InputMessenger.MessageReceiver} for receiving
+     * Registers {@link ExternalMessenger.MessageReceiver} for receiving
      * incoming messages. Receiver will receive only messages of class T.
      * @param messageReceiver Receiver to register.
      * @param messageClass Class object of the messages.
@@ -23,13 +23,13 @@ public interface InputMessenger {
     <T> void registerMessageReceiver(Class<T> messageClass, MessageReceiver<T> messageReceiver);
 
     /**
-     * Unregisters {@link com.monolith.api.external.InputMessenger.MessageReceiver} from receiving
+     * Unregisters {@link ExternalMessenger.MessageReceiver} from receiving
      * incoming messages.
      * @param messageClass Class object of the messages.
      * @param messageReceiver Receiver to unregister.
      * @param <T> Type of messages this receiver receives.
      */
-    <T> void unregisterMessageReceiver(Class<T> messageClass, InputMessenger.MessageReceiver<T> messageReceiver);
+    <T> void unregisterMessageReceiver(Class<T> messageClass, ExternalMessenger.MessageReceiver<T> messageReceiver);
 
     /**
      * Allows receiving of incoming messages.

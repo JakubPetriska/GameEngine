@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class MessengerInternal implements Messenger, ISystem {
 
-    private final InputMessengerInternal mInputMessengerInternal;
+    private final ExternalMessengerInternal mExternalMessengerInternal;
 
     /**
      * This List caches empty {@link java.util.Set} objects to prevent creating new ones
@@ -30,9 +30,9 @@ public class MessengerInternal implements Messenger, ISystem {
      */
     private HashMap<String, List<Object>> mCachingMessagesMap = new HashMap<>();
 
-    public MessengerInternal(InputMessengerInternal inputMessengerInternal) {
-        this.mInputMessengerInternal = inputMessengerInternal;
-        mInputMessengerInternal.setMessageReceiver(new InputMessengerInternal.MessageReceiver() {
+    public MessengerInternal(ExternalMessengerInternal externalMessengerInternal) {
+        this.mExternalMessengerInternal = externalMessengerInternal;
+        mExternalMessengerInternal.setMessageReceiver(new ExternalMessengerInternal.MessageReceiver() {
             @Override
             public void onNewMessage(Object message) {
                 String messageKey = getMessageKey(message);
@@ -54,7 +54,7 @@ public class MessengerInternal implements Messenger, ISystem {
 
     @Override
     public void sendMessage(Object message) {
-        mInputMessengerInternal.sendMessage(message);
+        mExternalMessengerInternal.sendMessage(message);
     }
 
     @Override

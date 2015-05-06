@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.widget.TextView;
 
 import com.monolith.api.android.MonolithFragment;
-import com.monolith.api.external.InputMessenger;
+import com.monolith.api.external.ExternalMessenger;
 import com.monolith.showcase.R;
 
 import butterknife.ButterKnife;
@@ -37,8 +37,8 @@ public class PerformanceTestActivity extends MovementControlsActivity {
             mMonolithFragment = (MonolithFragment) getSupportFragmentManager().findFragmentById(R.id.engine_container);
         }
 
-        mMonolithFragment.getInputMessenger().registerMessageReceiver(Float.class,
-                new InputMessenger.MessageReceiver<Float>() {
+        mMonolithFragment.getMessenger().registerMessageReceiver(Float.class,
+                new ExternalMessenger.MessageReceiver<Float>() {
                     @Override
                     public void onNewMessage(final Float fps) {
                         // Expects only floats containing fps

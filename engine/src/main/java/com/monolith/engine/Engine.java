@@ -11,13 +11,13 @@ import com.monolith.api.Renderer;
 import com.monolith.api.Time;
 import com.monolith.api.TouchInput;
 import com.monolith.api.components.Camera;
-import com.monolith.api.external.InputMessenger;
+import com.monolith.api.external.ExternalMessenger;
 import com.monolith.engine.config.SceneCreator;
 import com.monolith.engine.config.model.debug.DebugSettingsModel;
 import com.monolith.engine.config.model.initial_scene_state.ISScene;
 import com.monolith.engine.config.model.scenes_config.SCScene;
 import com.monolith.engine.config.model.scenes_config.SCScenes;
-import com.monolith.engine.messaging.InputMessengerInternal;
+import com.monolith.engine.messaging.ExternalMessengerInternal;
 import com.monolith.engine.messaging.MessengerInternal;
 import com.monolith.platform.Platform;
 import com.monolith.platform.TouchInputInternal;
@@ -38,7 +38,7 @@ public class Engine {
     private Platform mPlatform;
     private Application mApplication;
 
-    private InputMessengerInternal mInputMessengerInternal;
+    private ExternalMessengerInternal mExternalMessengerInternal;
 
     // Application objects
     private FullRenderer mRenderer;
@@ -69,8 +69,8 @@ public class Engine {
     public Engine(String startSceneName) {
         mCurrentSceneName = startSceneName;
 
-        mInputMessengerInternal = new InputMessengerInternal();
-        mMessenger = new MessengerInternal(mInputMessengerInternal);
+        mExternalMessengerInternal = new ExternalMessengerInternal();
+        mMessenger = new MessengerInternal(mExternalMessengerInternal);
 
         mTime = new TimeInternal();
         mCollisionSystem = new CollisionSystem();
@@ -273,8 +273,8 @@ public class Engine {
         }
     }
 
-    public InputMessenger getInputMessenger() {
-        return mInputMessengerInternal.getInputMessenger();
+    public ExternalMessenger getExternalMessenger() {
+        return mExternalMessengerInternal.getExternalMessenger();
     }
 
     private class ApplicationImpl extends Application {

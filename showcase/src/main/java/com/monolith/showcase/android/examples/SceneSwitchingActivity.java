@@ -35,7 +35,7 @@ public class SceneSwitchingActivity extends ActionBarActivity {
 
     @OnClick(R.id.switch_scene)
     public void switchScene() {
-        mEngineFragment.getInputMessenger()
+        mEngineFragment.getMessenger()
                 .sendMessage(SceneSwitchingController.SWITCH_SCENES_MESSAGE);
     }
 }

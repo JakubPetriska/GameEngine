@@ -29,16 +29,16 @@ public class TransformationTestActivity extends FragmentActivity {
 
     @OnClick(R.id.rotation_button_x)
     public void selectX() {
-        mMonolithFragment.getInputMessenger().sendMessage("x");
+        mMonolithFragment.getMessenger().sendMessage("x");
     }
 
     @OnClick(R.id.rotation_button_y)
     public void selectY() {
-        mMonolithFragment.getInputMessenger().sendMessage("y");
+        mMonolithFragment.getMessenger().sendMessage("y");
     }
 
     @OnClick(R.id.rotation_button_z)
     public void selectZ() {
-        mMonolithFragment.getInputMessenger().sendMessage("z");
+        mMonolithFragment.getMessenger().sendMessage("z");
     }
 }

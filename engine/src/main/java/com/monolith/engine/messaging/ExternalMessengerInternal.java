@@ -1,23 +1,23 @@
 package com.monolith.engine.messaging;
 
-import com.monolith.api.external.InputMessenger;
+import com.monolith.api.external.ExternalMessenger;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Internal implementation of {@link com.monolith.api.external.InputMessenger}.
+ * Internal implementation of {@link ExternalMessenger}.
  */
-public class InputMessengerInternal {
+public class ExternalMessengerInternal {
 
     /**
      * Map that stores message receivers.
      * Keys are full class names.
      */
-    private HashMap<String, Set<InputMessenger.MessageReceiver>> mReceiversMap = new HashMap<>();
+    private HashMap<String, Set<ExternalMessenger.MessageReceiver>> mReceiversMap = new HashMap<>();
 
-    public InputMessengerInternal() {
+    public ExternalMessengerInternal() {
     }
 
     private MessageReceiver mMessageReceiver;
@@ -47,7 +47,7 @@ public class InputMessengerInternal {
     public void sendMessage(Object message) {
         String messageKey = getMessageKey(message);
         if(mReceiversMap.containsKey(messageKey)) {
-            for(InputMessenger.MessageReceiver receiver : mReceiversMap.get(messageKey)) {
+            for(ExternalMessenger.MessageReceiver receiver : mReceiversMap.get(messageKey)) {
                 receiver.onNewMessage(message);
             }
         }
@@ -61,23 +61,23 @@ public class InputMessengerInternal {
         return messageClass.getName();
     }
 
-    private InputMessenger mInputMessenger;
+    private ExternalMessenger mExternalMessenger;
 
-    public InputMessenger getInputMessenger() {
-        if(mInputMessenger == null) {
-            mInputMessenger = new InputMessengerImpl();
+    public ExternalMessenger getExternalMessenger() {
+        if(mExternalMessenger == null) {
+            mExternalMessenger = new ExternalMessengerImpl();
         }
-        return mInputMessenger;
+        return mExternalMessenger;
     }
 
     /**
-     * InputMessenger is an object passed outside of the engine to allow
+     * ExternalMessenger is an object passed outside of the engine to allow
      * users to send messages in it.
      *
-     * This class is implemented here to forbid casting InputMessenger
-     * to InputMessengerInternal by engine users.
+     * This class is implemented here to forbid casting ExternalMessenger
+     * to ExternalMessengerInternal by engine users.
      */
-    private class InputMessengerImpl implements InputMessenger {
+    private class ExternalMessengerImpl implements ExternalMessenger {
         @Override
         public void sendMessage(Object message) {
             if(mMessageReceiver != null) {
@@ -88,7 +88,7 @@ public class InputMessengerInternal {
         @Override
         public <T> void registerMessageReceiver(Class<T> messageClass, MessageReceiver<T> messageReceiver) {
             String messageKey = getMessageKey(messageClass);
-            Set<InputMessenger.MessageReceiver> messageClassReceivers;
+            Set<ExternalMessenger.MessageReceiver> messageClassReceivers;
             if(!mReceiversMap.containsKey(messageKey)) {
                 messageClassReceivers = new HashSet<>();
                 mReceiversMap.put(messageKey, messageClassReceivers);

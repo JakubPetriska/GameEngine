@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import com.monolith.android.Constants;
 import com.monolith.android.EngineObjectStore;
 import com.monolith.android.MyGLSurfaceView;
-import com.monolith.api.external.InputMessenger;
+import com.monolith.api.external.ExternalMessenger;
 import com.monolith.engine.Engine;
 
 /**
@@ -97,11 +97,11 @@ public class MonolithFragment extends Fragment {
     }
 
     /**
-     * Returns the {@link com.monolith.api.external.InputMessenger} instance.
+     * Returns the {@link ExternalMessenger} instance.
      *
-     * @return The {@link com.monolith.api.external.InputMessenger} instance.
+     * @return The {@link ExternalMessenger} instance.
      */
-    public InputMessenger getInputMessenger() {
-        return mEngine.getInputMessenger();
+    public ExternalMessenger getMessenger() {
+        return mEngine.getExternalMessenger();
     }
 }

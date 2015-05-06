@@ -1,6 +1,6 @@
 package com.monolith.tests.messaging;
 
-import com.monolith.api.external.InputMessenger;
+import com.monolith.api.external.ExternalMessenger;
 import com.monolith.tests.support.BaseEngineTest;
 
 import org.junit.Before;
@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 /**
  * Created by Jakub Petriska on 23. 2. 2015.
  */
-public class MessagingTest extends BaseEngineTest implements InputMessenger.MessageReceiver<MessagingTest.OutputMessage> {
+public class MessagingTest extends BaseEngineTest implements ExternalMessenger.MessageReceiver<MessagingTest.OutputMessage> {
 
     private static final String FILES_FOLDER = "messaging_test";
 
@@ -38,10 +38,10 @@ public class MessagingTest extends BaseEngineTest implements InputMessenger.Mess
     public void basicFunctionTest() {
         getEngine().onStart();
 
-        getEngine().getInputMessenger().registerMessageReceiver(OutputMessage.class, this);
+        getEngine().getExternalMessenger().registerMessageReceiver(OutputMessage.class, this);
 
         mMessageReceived = false;
-        getEngine().getInputMessenger().sendMessage(new InputMessage());
+        getEngine().getExternalMessenger().sendMessage(new InputMessage());
         getEngine().onUpdate();
 
         // Message should have been received by now
@@ -53,7 +53,7 @@ public class MessagingTest extends BaseEngineTest implements InputMessenger.Mess
             assertFalse("Message was received, but it was not supposed to be", mMessageReceived);
         }
 
-        getEngine().getInputMessenger().sendMessage(new InputMessage());
+        getEngine().getExternalMessenger().sendMessage(new InputMessage());
         getEngine().onUpdate();
 
         // Message should have been received by now
@@ -66,8 +66,8 @@ public class MessagingTest extends BaseEngineTest implements InputMessenger.Mess
         }
 
         // Unregister receiver and see if we still get message
-        getEngine().getInputMessenger().unregisterMessageReceiver(OutputMessage.class, this);
-        getEngine().getInputMessenger().sendMessage(new InputMessage());
+        getEngine().getExternalMessenger().unregisterMessageReceiver(OutputMessage.class, this);
+        getEngine().getExternalMessenger().sendMessage(new InputMessage());
         getEngine().onUpdate();
 
         assertFalse("Message was received, but receiver was unregistered", mMessageReceived);
