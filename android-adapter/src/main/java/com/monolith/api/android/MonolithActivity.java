@@ -8,6 +8,7 @@ import android.view.Window;
 import com.monolith.android.Constants;
 import com.monolith.android.EngineObjectStore;
 import com.monolith.android.MyGLSurfaceView;
+import com.monolith.api.external.ExternalMessenger;
 import com.monolith.engine.Engine;
 
 /**
@@ -20,20 +21,21 @@ public class MonolithActivity extends Activity {
      */
     public static final String EXTRA_DEFAULT_SCENE_NAME = "DEFAULT_SCENE_NAME";
 
+    private Engine mEngine;
     private MyGLSurfaceView mGlSurfaceView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        Engine engine;
         if (savedInstanceState != null
                 && savedInstanceState.containsKey(Constants.KEY_ENGINE_OBJECT_STORE_KEY)) {
-            engine = EngineObjectStore.retrieve(savedInstanceState.getString(Constants.KEY_ENGINE_OBJECT_STORE_KEY));
-        } else {
-            engine = new Engine(getIntent().getStringExtra(EXTRA_DEFAULT_SCENE_NAME));
+            mEngine = EngineObjectStore.retrieve(savedInstanceState.getString(Constants.KEY_ENGINE_OBJECT_STORE_KEY));
         }
-        mGlSurfaceView = new MyGLSurfaceView(this, engine);
+        if (mEngine == null) {
+            mEngine= new Engine(getIntent().getStringExtra(EXTRA_DEFAULT_SCENE_NAME));
+        }
+        mGlSurfaceView = new MyGLSurfaceView(this, mEngine);
         setContentView(mGlSurfaceView);
     }
 
@@ -62,5 +64,14 @@ public class MonolithActivity extends Activity {
         if (isFinishing()) {
             mGlSurfaceView.getEngine().onFinish();
         }
+    }
+
+    /**
+     * Returns the {@link ExternalMessenger} instance.
+     *
+     * @return The {@link ExternalMessenger} instance.
+     */
+    protected ExternalMessenger getMessenger() {
+        return mEngine.getExternalMessenger();
     }
 }
