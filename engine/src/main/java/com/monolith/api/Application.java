@@ -19,7 +19,7 @@ public abstract class Application {
 
     public abstract Messenger getMessenger();
 
-    public abstract CollisionSystem getCollisionSystem();
+    public abstract CollisionsSystem getCollisionsSystem();
 
     public abstract Time getTime();
 

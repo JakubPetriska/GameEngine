@@ -1,5 +1,6 @@
 package com.monolith.api.components;
 
+import com.monolith.api.CollisionsSystem;
 import com.monolith.api.Color;
 import com.monolith.api.Component;
 import com.monolith.api.MeshData;
@@ -111,16 +112,16 @@ public class BoxCollider extends Component {
         if (getApplication().getDebug().drawColliders) {
             this.meshData = getApplication().getMeshManager().getMeshData(Primitives.CUBE);
         }
-        getApplication().getCollisionSystem().registerCollider(this);
+        getApplication().getCollisionsSystem().registerCollider(this);
     }
 
     @Override
     public void finish() {
-        getApplication().getCollisionSystem().unregisterCollider(this);
+        getApplication().getCollisionsSystem().unregisterCollider(this);
     }
 
     /**
-     * Called by the {@link com.monolith.api.CollisionSystem} when collision of this collider with
+     * Called by the {@link CollisionsSystem} when collision of this collider with
      * another collider starts.
      *
      * @param collisionObject Collider that this collider is colliding with.
@@ -133,7 +134,7 @@ public class BoxCollider extends Component {
     }
 
     /**
-     * Called by the {@link com.monolith.api.CollisionSystem} when collision of this collider with
+     * Called by the {@link CollisionsSystem} when collision of this collider with
      * another collider ends.
      *
      * @param collisionObject Collider that this collider was colliding with.
@@ -148,7 +149,7 @@ public class BoxCollider extends Component {
     @Override
     public void postUpdate() {
         // Transformation matrix for this collider needs to be recalculated here
-        // It is later used by CollisionSystem
+        // It is later used by CollisionsSystem
         Matrix44 objectTransformation = getGameObject().transform.getTransformationMatrix();
 
         sColliderLocalTransformation.setIdentity();

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Detects collisions of colliders in the scene.
  */
-public class CollisionSystem implements ISystem {
+public class CollisionsSystem implements ISystem {
 
     private List<BoxCollider> mColliders = new ArrayList<>();
     private List<List<BoxCollider>> mCollidingColliders = new ArrayList<>();
@@ -23,7 +23,7 @@ public class CollisionSystem implements ISystem {
     private final Matrix44 mAbsRotation = new Matrix44();
     private final Vector3 mTranslation = new Vector3();
 
-    public CollisionSystem() {
+    public CollisionsSystem() {
         mRotation.setIdentity();
         mAbsRotation.setIdentity();
     }

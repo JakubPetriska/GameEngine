@@ -1,7 +1,7 @@
 package com.monolith.engine;
 
 import com.monolith.api.Application;
-import com.monolith.api.CollisionSystem;
+import com.monolith.api.CollisionsSystem;
 import com.monolith.api.Component;
 import com.monolith.api.Debug;
 import com.monolith.api.Display;
@@ -46,7 +46,7 @@ public class Engine {
     private MeshManager mMeshManager;
     private MessengerInternal mMessenger;
     private TimeInternal mTime;
-    private CollisionSystem mCollisionSystem;
+    private CollisionsSystem mCollisionsSystem;
     private Display mDisplay;
 
     private List<ISystem> mInternalSystems = new ArrayList<>();
@@ -73,11 +73,11 @@ public class Engine {
         mMessenger = new MessengerInternal(mExternalMessengerInternal);
 
         mTime = new TimeInternal();
-        mCollisionSystem = new CollisionSystem();
+        mCollisionsSystem = new CollisionsSystem();
 
         mInternalSystems.add(mTime);
         mInternalSystems.add(mMessenger);
-        mInternalSystems.add(mCollisionSystem);
+        mInternalSystems.add(mCollisionsSystem);
     }
 
     private DebugSettingsModel parseDebugSettingsFile() {
@@ -314,8 +314,8 @@ public class Engine {
         }
 
         @Override
-        public CollisionSystem getCollisionSystem() {
-            return mCollisionSystem;
+        public CollisionsSystem getCollisionsSystem() {
+            return mCollisionsSystem;
         }
 
         @Override
