@@ -8,7 +8,7 @@ android {
         minSdkVersion 8
         targetSdkVersion 22
         versionCode 3
-        versionName "0.2.1"
+        versionName version
     }
     buildTypes {
         debug {
