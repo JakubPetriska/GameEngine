@@ -73,11 +73,9 @@ public class Engine {
         mMessenger = new MessengerInternal(mExternalMessengerInternal);
 
         mTime = new TimeInternal();
-        mCollisionsSystem = new CollisionsSystem();
 
         mInternalSystems.add(mTime);
         mInternalSystems.add(mMessenger);
-        mInternalSystems.add(mCollisionsSystem);
     }
 
     private DebugSettingsModel parseDebugSettingsFile() {
@@ -122,6 +120,9 @@ public class Engine {
 
         if (mApplication == null) {
             mApplication = new ApplicationImpl();
+
+            mCollisionsSystem = new CollisionsSystem(mApplication);
+            mInternalSystems.add(mCollisionsSystem);
         }
 
         mRenderer.setApplication(mApplication);

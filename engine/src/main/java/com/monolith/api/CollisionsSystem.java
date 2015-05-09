@@ -14,6 +14,8 @@ import java.util.List;
  */
 public class CollisionsSystem implements ISystem {
 
+    private Application mApplication;
+
     private List<BoxCollider> mColliders = new ArrayList<>();
     private List<List<BoxCollider>> mCollidingColliders = new ArrayList<>();
     private List<Obb> mObbs = new ArrayList<>();
@@ -23,7 +25,8 @@ public class CollisionsSystem implements ISystem {
     private final Matrix44 mAbsRotation = new Matrix44();
     private final Vector3 mTranslation = new Vector3();
 
-    public CollisionsSystem() {
+    public CollisionsSystem(Application application) {
+        mApplication = application;
         mRotation.setIdentity();
         mAbsRotation.setIdentity();
     }
@@ -57,12 +60,18 @@ public class CollisionsSystem implements ISystem {
      * detected on registered colliders.
      *
      * @param collider Collider to register.
+     * @return True if collider was successfully registerd, false if it already registered
+     * and thus was not registered again.
      */
-    public void registerCollider(BoxCollider collider) {
+    public boolean registerCollider(BoxCollider collider) {
         if (!mColliders.contains(collider)) {
             mColliders.add(collider);
             mObbs.add(new Obb());
             mCollidingColliders.add(new ArrayList<BoxCollider>());
+
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -70,8 +79,9 @@ public class CollisionsSystem implements ISystem {
      * Unregister collider from the system.
      *
      * @param collider Collider to unregister.
+     * @return True if collider was succesfully unregistered, false otherwise.
      */
-    public void unregisterCollider(BoxCollider collider) {
+    public boolean unregisterCollider(BoxCollider collider) {
         int index = mColliders.indexOf(collider);
         if (index > -1) {
             mColliders.remove(index);
@@ -83,6 +93,15 @@ public class CollisionsSystem implements ISystem {
                 collider.onCollisionEnded(collidingCollider);
                 collidingCollider.onCollisionEnded(collider);
             }
+
+            // Remove this collider from colliding colliders list of other colliders
+            for (int i = 0; i < index; ++i) {
+                List<BoxCollider> otherCollidingColliders = mCollidingColliders.get(i);
+                otherCollidingColliders.remove(collider);
+            }
+            return true;
+        } else {
+            return false;
         }
     }
 

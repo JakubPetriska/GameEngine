@@ -2,6 +2,7 @@ package com.monolith.tests.support;
 
 import com.monolith.api.Application;
 import com.monolith.api.Color;
+import com.monolith.api.Display;
 import com.monolith.api.MeshData;
 import com.monolith.api.Touch;
 import com.monolith.api.components.Camera;
@@ -100,6 +101,11 @@ public class MockEnginePlatformObjects {
         @Override
         public void log(String message) {
             // empty
+        }
+
+        @Override
+        public Display createDisplay() {
+            return new Display(1920, 1080, 3);
         }
     }
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+    <gameObjects>
+        <gameObject>
+            <components>
+                <component type="com.monolith.tests.collisions_system.CollisionsSystemTestComponent"/>
+            </components>
+        </gameObject>
+    </gameObjects>
+</scene>
