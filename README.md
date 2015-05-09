@@ -2,6 +2,7 @@
 Game engine for Android.
 
 ## v0.3 - IN PROGRESS
+* Major bug in game object removing fixed.
 * Collider group is now a string name of the group so there can be any number of collider groups.
 * TouchInput fixed.
 * Documentation edits.

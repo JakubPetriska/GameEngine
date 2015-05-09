@@ -161,11 +161,11 @@ public class GameObject {
     public void removeChild(GameObject childObject) {
         if (mChildren.contains(childObject)) {
             // Remove all components from this object
-            for (int i = childObject.mComponents.size() - 1; i > 0; --i) {
+            for (int i = childObject.mComponents.size() - 1; i >= 0; --i) {
                 childObject.removeComponentInternal(childObject.mComponents.get(i));
             }
             // Remove all child objects from removed object
-            for (int i = childObject.mChildren.size() - 1; i > 0; --i) {
+            for (int i = childObject.mChildren.size() - 1; i >= 0; --i) {
                 childObject.removeChild(childObject.mChildren.get(i));
             }
             mChildren.remove(childObject);
