@@ -20,6 +20,9 @@ public class CollisionsSystem implements ISystem {
     private List<List<BoxCollider>> mCollidingColliders = new ArrayList<>();
     private List<Obb> mObbs = new ArrayList<>();
 
+    private boolean mColliderUnregisteringBlocked = false;
+    private List<BoxCollider> mCollidersToUnregister = new ArrayList<>();
+
     // These represent coordinates of second OBB represented in coordinate space of the first OBB.
     private final Matrix44 mRotation = new Matrix44();
     private final Matrix44 mAbsRotation = new Matrix44();
@@ -55,6 +58,20 @@ public class CollisionsSystem implements ISystem {
         }
     }
 
+    private void blockColliderUnregistering() {
+        mColliderUnregisteringBlocked = true;
+    }
+
+    /**
+     * Also unregisters the colliders that were attempted to be unregsitered during the block.
+     */
+    private void unblockColliderUnregistering() {
+        mColliderUnregisteringBlocked = false;
+        while (mCollidersToUnregister.size() > 0) {
+            unregisterCollider(mCollidersToUnregister.remove(0));
+        }
+    }
+
     /**
      * Register collider into the system. Collisions are only
      * detected on registered colliders.
@@ -83,26 +100,34 @@ public class CollisionsSystem implements ISystem {
      */
     public boolean unregisterCollider(BoxCollider collider) {
         int index = mColliders.indexOf(collider);
-        if (index > -1) {
-            mColliders.remove(index);
-            // TODO maybe keep the OBB and List<BoxCollider> objects in cache for a while to avoid too much garbage collection
-            mObbs.remove(index);
-            List<BoxCollider> collidingColliders = mCollidingColliders.remove(index);
-            while (collidingColliders.size() > 0) {
-                BoxCollider collidingCollider = collidingColliders.remove(0);
+        if (index < 0) {
+            return false;
+        }
+        if (mColliderUnregisteringBlocked) {
+            mCollidersToUnregister.add(collider);
+            return true;
+        }
+
+        mColliders.remove(index);
+        // TODO maybe keep the OBB and List<BoxCollider> objects in cache for a while to avoid too much garbage collection
+        mObbs.remove(index);
+        List<BoxCollider> collidingColliders = mCollidingColliders.remove(index);
+        while (collidingColliders.size() > 0) {
+            BoxCollider collidingCollider = collidingColliders.remove(0);
+            collider.onCollisionEnded(collidingCollider);
+            collidingCollider.onCollisionEnded(collider);
+        }
+
+        // Remove this collider from colliding colliders list of other colliders
+        for (int i = 0; i < index; ++i) {
+            List<BoxCollider> otherCollidingColliders = mCollidingColliders.get(i);
+            if (otherCollidingColliders.remove(collider)) {
+                BoxCollider collidingCollider = mColliders.get(i);
                 collider.onCollisionEnded(collidingCollider);
                 collidingCollider.onCollisionEnded(collider);
             }
-
-            // Remove this collider from colliding colliders list of other colliders
-            for (int i = 0; i < index; ++i) {
-                List<BoxCollider> otherCollidingColliders = mCollidingColliders.get(i);
-                otherCollidingColliders.remove(collider);
-            }
-            return true;
-        } else {
-            return false;
         }
+        return true;
     }
 
     @Override
@@ -139,6 +164,7 @@ public class CollisionsSystem implements ISystem {
                 List<BoxCollider> collidingColliders = mCollidingColliders.get(i);
                 int index = collidingColliders.indexOf(secondCollider);
                 boolean wereCollidingBefore = index > -1;
+                blockColliderUnregistering();
                 if (colliding && !wereCollidingBefore) {
                     firstCollider.onCollisionDetected(secondCollider);
                     secondCollider.onCollisionDetected(firstCollider);
@@ -148,6 +174,7 @@ public class CollisionsSystem implements ISystem {
                     secondCollider.onCollisionEnded(firstCollider);
                     collidingColliders.remove(index);
                 }
+                unblockColliderUnregistering();
             }
         }
     }
