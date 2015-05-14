@@ -2,6 +2,7 @@
 Game engine for Android.
 
 ## v0.3 - IN PROGRESS
+* Minimal SDK version raised to Android 2.3.
 * Bug in collider unregistering and onCollisionEnd calling fixed.
 * Bug in game object removing fixed.
 * Collider group is now a string name of the group so there can be any number of collider groups.
