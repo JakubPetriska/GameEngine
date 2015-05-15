@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Test;
 
 /**
- * Component asserting correctness of it's own lifecycle.
+ * Component lifecycle test.
  */
 public class ComponentLifecycleTest extends BaseEngineTest {
 
@@ -14,7 +14,7 @@ public class ComponentLifecycleTest extends BaseEngineTest {
 
     /**
      * Basic test of component lifecycle.
-     *
+     * <p/>
      * Uses LifecycleAssertingComponent in the scene with 3 objects.
      * The two objects are children of the first object. All objects only
      * have a single component a LifecycleAssertingComponent component.

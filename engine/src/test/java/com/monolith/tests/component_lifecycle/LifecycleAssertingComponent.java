@@ -8,7 +8,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 /**
- * Created by Jakub Petriska on 20. 2. 2015.
+ * Component asserting correctness of it's own lifecycle.
  */
 public class LifecycleAssertingComponent extends Component {
 
