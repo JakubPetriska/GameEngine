@@ -6,7 +6,7 @@ import org.junit.After;
 import org.junit.Test;
 
 /**
- * Created by Jakub Petriska on 19. 2. 2015.
+ * Component asserting correctness of it's own lifecycle.
  */
 public class ComponentLifecycleTest extends BaseEngineTest {
 
