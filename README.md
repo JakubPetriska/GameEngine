@@ -1,7 +1,7 @@
 # Monolith Game Engine
 Game engine for Android.
 
-## v0.3 - IN PROGRESS
+## v0.3
 * Minimal SDK version raised to Android 2.3.
 * Bug in collider unregistering and onCollisionEnd calling fixed.
 * Bug in game object removing fixed.
