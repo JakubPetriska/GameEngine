@@ -202,6 +202,16 @@ public class CollisionsSystem implements ISystem {
         );
     }
 
+    /**
+     * Tests collision of two oriented bounding boxes separating axis theorem.
+     *
+     * The algorithm implementation is taken
+     * from Christer Ericson. Real-Time Collision Detection. CRC Press, 2004.
+     *
+     * @param a First oriented bounding box of which collisions are tested.
+     * @param b Second oriented bounding box of which collisions are tested.
+     * @return Returns true if given oriented bounding boxes collide, false otherwise.
+     */
     private boolean testCollision(Obb a, Obb b) {
         Vector3.subtract(mTranslation, b.center, a.center);
         float translationX = Vector3.dot(mTranslation, a.axes[0]);
