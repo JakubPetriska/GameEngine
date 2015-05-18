@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.monolith.android.Constants;
 import com.monolith.android.EngineObjectStore;
-import com.monolith.android.MyGLSurfaceView;
+import com.monolith.android.MonolithGLSurfaceView;
 import com.monolith.api.external.ExternalMessenger;
 import com.monolith.engine.Engine;
 
@@ -21,7 +21,7 @@ public class MonolithFragment extends Fragment {
 
     private Engine mEngine;
     private String mDefaultSceneName = null;
-    private MyGLSurfaceView mGlSurfaceView;
+    private MonolithGLSurfaceView mGlSurfaceView;
 
     /**
      * Creates new instance of this fragment. Default scene will be displayed.
@@ -61,7 +61,7 @@ public class MonolithFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mGlSurfaceView = new MyGLSurfaceView(getActivity(), mEngine);
+        mGlSurfaceView = new MonolithGLSurfaceView(getActivity(), mEngine);
         return mGlSurfaceView;
     }
 

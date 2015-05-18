@@ -11,12 +11,12 @@ import com.monolith.engine.Engine;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class MyGLSurfaceView extends GLSurfaceView {
+public class MonolithGLSurfaceView extends GLSurfaceView {
 
     private Engine mEngine;
     private TouchInputImpl mTouchInput;
 
-    public MyGLSurfaceView(Context context, Engine engine) {
+    public MonolithGLSurfaceView(Context context, Engine engine) {
         super(context);
         mEngine = engine;
 

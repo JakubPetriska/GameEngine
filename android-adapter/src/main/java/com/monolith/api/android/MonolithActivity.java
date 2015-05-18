@@ -7,7 +7,7 @@ import android.view.Window;
 
 import com.monolith.android.Constants;
 import com.monolith.android.EngineObjectStore;
-import com.monolith.android.MyGLSurfaceView;
+import com.monolith.android.MonolithGLSurfaceView;
 import com.monolith.api.external.ExternalMessenger;
 import com.monolith.engine.Engine;
 
@@ -22,7 +22,7 @@ public class MonolithActivity extends Activity {
     public static final String EXTRA_DEFAULT_SCENE_NAME = "DEFAULT_SCENE_NAME";
 
     private Engine mEngine;
-    private MyGLSurfaceView mGlSurfaceView;
+    private MonolithGLSurfaceView mGlSurfaceView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class MonolithActivity extends Activity {
         if (mEngine == null) {
             mEngine= new Engine(getIntent().getStringExtra(EXTRA_DEFAULT_SCENE_NAME));
         }
-        mGlSurfaceView = new MyGLSurfaceView(this, mEngine);
+        mGlSurfaceView = new MonolithGLSurfaceView(this, mEngine);
         setContentView(mGlSurfaceView);
     }
 
