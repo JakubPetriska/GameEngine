@@ -12,6 +12,7 @@ public class Model extends Component {
      * Name of primitive mesh.
      */
     public String meshPath;
+    
     private String lastMeshPath;
     private MeshData meshData;
 
