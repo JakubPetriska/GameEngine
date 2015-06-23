@@ -412,7 +412,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
     }
 
     @Override
-    public void render(MeshData mesh, Matrix44 transformation) {
+    public void render(MeshData mesh, float[] color, Matrix44 transformation) {
         if (mCamera == null) {
             return;
         }
