@@ -20,6 +20,8 @@ public class MessengerInternal implements Messenger, ISystem {
      */
     private List<List<Object>> mListCache = new ArrayList<>();
 
+    private final Integer mCachingMapSynchronizationToken = 0;
+
     /**
      * Map of messages by their types that holds messages valid for current frame.
      */
@@ -35,19 +37,21 @@ public class MessengerInternal implements Messenger, ISystem {
         mExternalMessengerInternal.setMessageReceiver(new ExternalMessengerInternal.MessageReceiver() {
             @Override
             public void onNewMessage(Object message) {
-                String messageKey = getMessageKey(message);
-                List<Object> messageList;
-                if (mCachingMessagesMap.containsKey(messageKey)) {
-                    messageList = mCachingMessagesMap.get(messageKey);
-                } else {
-                    if (mListCache.size() > 0) {
-                        messageList = mListCache.remove(0);
+                synchronized (mCachingMapSynchronizationToken) {
+                    String messageKey = getMessageKey(message);
+                    List<Object> messageList;
+                    if (mCachingMessagesMap.containsKey(messageKey)) {
+                        messageList = mCachingMessagesMap.get(messageKey);
                     } else {
-                        messageList = new ArrayList<>();
+                        if (mListCache.size() > 0) {
+                            messageList = mListCache.remove(0);
+                        } else {
+                            messageList = new ArrayList<>();
+                        }
+                        mCachingMessagesMap.put(messageKey, messageList);
                     }
-                    mCachingMessagesMap.put(messageKey, messageList);
+                    messageList.add(message);
                 }
-                messageList.add(message);
             }
         });
     }
@@ -76,22 +80,27 @@ public class MessengerInternal implements Messenger, ISystem {
         }
     }
 
+    // Temporary List to store map keys while deleting it
+    private List<String> mTmpKeySet = new ArrayList<>();
+
     /**
      * This must be called by {@link com.monolith.engine.Engine}.
      */
     @Override
     public void update() {
-        // Clear the map of current messages from previous frame and cache the empty sets
-        HashMap<String, List<Object>> mapToClear = mCurrentMessagesMap;
-        for (String key : mapToClear.keySet()) {
-            // TODO throws ConcurrentModificationException in performance test
-            List<Object> messages = mapToClear.remove(key);
-            messages.clear();
-            mListCache.add(messages);
-        }
+        synchronized (mCachingMapSynchronizationToken) {
+            // Clear the map of current messages from previous frame and cache the empty sets
+            HashMap<String, List<Object>> mapToClear = mCurrentMessagesMap;
+            mCurrentMessagesMap = mCachingMessagesMap;
+            mCachingMessagesMap = mapToClear;
 
-        mCurrentMessagesMap = mCachingMessagesMap;
-        mCachingMessagesMap = mapToClear;
+            for (String key : mapToClear.keySet()) {
+                List<Object> messages = mapToClear.get(key);
+                messages.clear();
+                mListCache.add(messages);
+            }
+            mapToClear.clear();
+        }
     }
 
     @Override
