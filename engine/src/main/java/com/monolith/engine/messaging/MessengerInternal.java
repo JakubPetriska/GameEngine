@@ -80,9 +80,6 @@ public class MessengerInternal implements Messenger, ISystem {
         }
     }
 
-    // Temporary List to store map keys while deleting it
-    private List<String> mTmpKeySet = new ArrayList<>();
-
     /**
      * This must be called by {@link com.monolith.engine.Engine}.
      */
