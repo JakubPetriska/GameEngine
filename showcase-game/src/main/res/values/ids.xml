@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="loader_save_score" type="id"/>
+    <item name="loader_scores" type="id"/>
+</resources>

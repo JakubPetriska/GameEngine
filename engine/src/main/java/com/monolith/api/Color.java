@@ -15,6 +15,13 @@ public class Color {
     public float blue;
     public float alpha;
 
+    public Color(int red, int green, int blue, int alpha) {
+        this.red = red / 255f;
+        this.green = green / 255f;
+        this.blue = blue / 255f;
+        this.alpha = alpha / 255f;
+    }
+
     public Color(float red, float green, float blue, float alpha) {
         this.red = red;
         this.green = green;
