@@ -3,7 +3,7 @@ package com.jakubpetriska.gameengine.tests.support;
 import com.jakubpetriska.gameengine.engine.Engine;
 
 /**
- * Created by Jakub Petriska on 20. 2. 2015.
+ * Base class for an engine test.
  */
 public abstract class BaseEngineTest {
 

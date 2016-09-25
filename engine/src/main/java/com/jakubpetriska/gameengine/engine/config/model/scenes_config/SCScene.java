@@ -4,7 +4,7 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Root;
 
 /**
- * Created by Jakub Petriska on 3. 1. 2015.
+ * Scenes file scene element model.
  */
 @Root(name = "scene")
 public class SCScene implements Comparable<SCScene> {

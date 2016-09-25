@@ -7,7 +7,7 @@ import org.simpleframework.xml.Root;
 import java.util.List;
 
 /**
- * Created by Jakub Petriska on 3. 1. 2015.
+ * Scenes file root element model.
  */
 @Root
 public class SCScenes {

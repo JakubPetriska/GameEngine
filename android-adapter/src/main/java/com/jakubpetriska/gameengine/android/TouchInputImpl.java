@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Jakub Petriska on 8. 1. 2015.
+ * Implementation of engine's touch input provider.
  */
 public class TouchInputImpl implements TouchInputInternal {
 

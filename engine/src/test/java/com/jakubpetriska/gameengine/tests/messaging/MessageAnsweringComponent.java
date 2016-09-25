@@ -5,9 +5,7 @@ import com.jakubpetriska.gameengine.api.Component;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Jakub Petriska on 23. 2. 2015.
- */
+
 public class MessageAnsweringComponent extends Component {
 
     @Override

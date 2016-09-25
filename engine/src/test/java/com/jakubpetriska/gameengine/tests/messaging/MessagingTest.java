@@ -7,9 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- * Created by Jakub Petriska on 23. 2. 2015.
- */
+
 public class MessagingTest extends BaseEngineTest implements ExternalMessenger.MessageReceiver<MessagingTest.OutputMessage> {
 
     private static final String FILES_FOLDER = "messaging_test";

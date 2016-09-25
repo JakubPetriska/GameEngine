@@ -14,7 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Created by Jakub Petriska on 3. 1. 2015.
+ * Implementation of underlying platform for Android.
  */
 public class AndroidPlatform implements Platform {
 

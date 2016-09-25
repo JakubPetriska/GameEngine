@@ -25,7 +25,7 @@ import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
 /**
- * Created by Jakub Petriska on 3. 1. 2015.
+ * Implementation of engine's renderer.
  */
 public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRenderer {
 

@@ -5,9 +5,7 @@ import com.jakubpetriska.gameengine.utilities.TimeBasedUniqueKeyGenerator;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- * Created by Jakub Petriska on 19. 2. 2015.
- */
+
 public class TimeBasedUniqueKeyGeneratorTest {
 
     @Test

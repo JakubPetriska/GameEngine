@@ -4,8 +4,6 @@ import com.jakubpetriska.gameengine.api.Component;
 import com.jakubpetriska.gameengine.api.GameObject;
 
 /**
- * Created by Jakub Petriska on 26. 2. 2015.
- * <p/>
  * This class tests adding of GameObjects and Components.
  */
 public class ComponentGameObjectManipulationTestComponent extends Component {

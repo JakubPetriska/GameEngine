@@ -1,8 +1,6 @@
 package com.jakubpetriska.gameengine.android;
 
-/**
- * Created by Jakub Petriska on 16. 2. 2015.
- */
+
 public class Constants {
     /**
      * Name of the folder in application's assets containing

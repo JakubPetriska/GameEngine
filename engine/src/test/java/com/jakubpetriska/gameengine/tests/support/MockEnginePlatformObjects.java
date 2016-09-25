@@ -18,9 +18,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Jakub Petriska on 19. 2. 2015.
- */
+
 public class MockEnginePlatformObjects {
 
     public static class MockRenderer implements FullRenderer {
