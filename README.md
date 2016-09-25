@@ -1,6 +1,10 @@
 # Monolith Game Engine
 Game engine for Android.
 
+## v0.4
+* Updated gradle and Android tools versions.
+* Colors of objects added
+
 ## v0.3.1
 * Bug fixes
 

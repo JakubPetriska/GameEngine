@@ -31,7 +31,7 @@ public class MockEnginePlatformObjects {
         }
 
         @Override
-        public void render(MeshData mesh, Matrix44 transformation) {
+        public void render(MeshData mesh, Color color, Matrix44 transformation) {
             // Do nothing
         }
 

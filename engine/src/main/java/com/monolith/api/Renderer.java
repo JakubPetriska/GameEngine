@@ -21,7 +21,7 @@ public interface Renderer {
      * @param mesh           Mesh to render.
      * @param transformation Transformation of the rendered object.
      */
-    void render(MeshData mesh, float[] color, Matrix44 transformation);
+    void render(MeshData mesh, Color color, Matrix44 transformation);
 
     /**
      * Renders wireframe of the given mesh. Use

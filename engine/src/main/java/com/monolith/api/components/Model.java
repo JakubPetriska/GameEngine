@@ -1,5 +1,6 @@
 package com.monolith.api.components;
 
+import com.monolith.api.Color;
 import com.monolith.api.Component;
 import com.monolith.api.MeshData;
 
@@ -12,18 +13,21 @@ public class Model extends Component {
      * Name of primitive mesh.
      */
     public String meshPath;
-    public float[] color = new float[]{0.2f, 0.709803922f, 0.898039216f, 1.0f};
+
+    /**
+     * Color of the rendered object.
+     */
+    public Color color;
 
     private String lastMeshPath;
     private MeshData meshData;
 
-    public MeshData getMeshData() {
-        return meshData;
-    }
-
     @Override
     public void start() {
         this.meshData = getApplication().getMeshManager().getMeshData(meshPath);
+        if(color == null) {
+            color = Color.LIGHT_GRAY;
+        }
         lastMeshPath = meshPath;
     }
 

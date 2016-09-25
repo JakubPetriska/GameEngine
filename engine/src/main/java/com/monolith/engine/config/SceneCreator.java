@@ -1,6 +1,7 @@
 package com.monolith.engine.config;
 
 import com.monolith.api.Application;
+import com.monolith.api.Color;
 import com.monolith.api.Component;
 import com.monolith.api.GameObject;
 import com.monolith.api.components.BoxCollider;
@@ -49,7 +50,7 @@ public class SceneCreator {
 
     private GameObject convertGameObject(GameObject parent, ISGameObject initialGameObject) {
         GameObject gameObject;
-        if(initialGameObject.tag == null) {
+        if (initialGameObject.tag == null) {
             gameObject = new GameObject(mApplication, parent);
         } else {
             gameObject = new GameObject(mApplication, parent, initialGameObject.tag);
@@ -69,7 +70,7 @@ public class SceneCreator {
     }
 
     private void convertTransform(ISGameObject.Transform what, Transform into) {
-        if(what == null) {
+        if (what == null) {
             return;
         }
         if (what.position != null) {
@@ -78,16 +79,16 @@ public class SceneCreator {
         if (what.rotation != null) {
             into.rotateBy(what.rotation.x, what.rotation.y, what.rotation.z);
         }
-        if(what.scale != null) {
+        if (what.scale != null) {
             into.setScale(what.scale.x, what.scale.y, what.scale.z);
         }
     }
 
     private void convertComponent(GameObject owner, ISComponent initialComponent) {
         Component component;
-        switch(initialComponent.type) {
+        switch (initialComponent.type) {
             case ComponentsConstants.COMPONENT_TYPE_CAMERA:
-                if(camera == null) {
+                if (camera == null) {
                     camera = new Camera();
                     component = camera;
                 } else {
@@ -149,6 +150,15 @@ public class SceneCreator {
                     } else if (fieldClass.equals(Double.class)
                             || fieldClass.equals(double.class)) { // Double
                         parsedValue = Double.valueOf(value);
+                    } else if (fieldClass.equals(Color.class)) {
+                        try {
+                            parsedValue = new Color(value);
+                        } catch (IllegalArgumentException e) {
+                            throw new IllegalArgumentException(
+                                    "Color not in proper format for param "
+                                            + paramName
+                                            + " for the object with tag " + owner.tag + ".", e);
+                        }
                     } else {
                         throw new IllegalStateException(
                                 "Component parameter " + paramName + " with type " + fieldClass.getSimpleName()

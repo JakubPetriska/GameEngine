@@ -76,7 +76,6 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
                     "}";
 
     private static final float[] lightDirection = new float[]{-0.75f, 1, -0.5f, 0};
-    private static final float[] color = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
 
     private static final float[] wireframeLineColor = {0, 0, 0, 0};
 
@@ -87,6 +86,8 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
     private final float[] mMVMatrix = new float[16]; // Model View transformation matrix
     private final float[] mMVPMatrix = new float[16];
     private final Matrix44 mModelMatrixCopy = new Matrix44();
+
+    private final float[] mColorArray = new float[4];
 
     private int mShaderProgramObject;
     private int mObjectShaderPositionHandle;
@@ -178,7 +179,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         // Upload mesh data of objects to the GPU, these are objects that were already uploaded
         // Data are lost during screen rotation
         MeshManager meshManager = mApplication.getMeshManager();
-        for(String meshPath : meshManager.getStoredMeshesPaths()) {
+        for (String meshPath : meshManager.getStoredMeshesPaths()) {
             AndroidMeshData meshData = (AndroidMeshData) meshManager.getMeshData(meshPath);
             meshData.wireframeDataBuffer = 0;
             uploadObjectDataToGpuForMesh(meshData);
@@ -313,7 +314,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
 
     /**
      * Creates packed buffer for MeshData wireframe object.
-     * <p/>
+     * <p>
      * Wireframe is drawn as GL_LINES.
      */
     private static FloatBuffer createWireframeBuffer(MeshData meshData) {
@@ -412,7 +413,7 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
     }
 
     @Override
-    public void render(MeshData mesh, float[] color, Matrix44 transformation) {
+    public void render(MeshData mesh, Color color, Matrix44 transformation) {
         if (mCamera == null) {
             return;
         }
@@ -448,7 +449,11 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
         // Unbind from the buffer
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
-        GLES20.glUniform4fv(mObjectShaderColorHandle, 1, color, 0);
+        mColorArray[0] = color.red;
+        mColorArray[1] = color.green;
+        mColorArray[2] = color.blue;
+        mColorArray[3] = color.alpha;
+        GLES20.glUniform4fv(mObjectShaderColorHandle, 1, mColorArray, 0);
         GLES20.glUniform4fv(mObjectShaderLightHandle, 1, lightDirection, 0);
         GLES20.glUniformMatrix4fv(mObjectShaderMVPMatrixHandle, 1, false, mMVPMatrix, 0);
         GLES20.glUniformMatrix4fv(mObjectShaderModelMatrixHandle, 1, false, mModelMatrixCopy.getValues(), 0);
@@ -537,11 +542,11 @@ public abstract class RendererImpl implements GLSurfaceView.Renderer, FullRender
     /**
      * Utility method for debugging OpenGL calls. Provide the name of the call
      * just after making it:
-     * <p/>
+     * <p>
      * <pre>
      * mColorHandle = GLES20.glGetUniformLocation(mShaderProgramObject, "vColor");
      * MyGLRenderer.checkGlError("glGetUniformLocation");</pre>
-     *
+     * <p>
      * If the operation is not successful, the check throws an error.
      *
      * @param glOperation - Name of the OpenGL call to check.

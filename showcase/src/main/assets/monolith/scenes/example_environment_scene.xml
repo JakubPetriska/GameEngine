@@ -62,6 +62,7 @@
                     <components>
                         <component type="model">
                             <param name="meshPath">cube</param>
+                            <param name="color">#E91E63</param>
                         </component>
                     </components>
                 </gameObject>
