@@ -1,6 +1,10 @@
 # Monolith Game Engine
 Game engine for Android.
 
+## v0.4.1
+* Showcase game added to the engine.
+* Project migrated to GitHub with all the documentation.
+
 ## v0.4
 * Updated gradle and Android tools versions.
 * Colors of objects added
