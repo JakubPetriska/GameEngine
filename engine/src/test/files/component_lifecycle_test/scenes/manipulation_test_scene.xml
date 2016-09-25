@@ -6,7 +6,7 @@
                 <position x="0" y="0" z="0" />
             </transform>
             <components>
-                <component type="com.gameengine.tests.component_lifecycle.ComponentGameObjectManipulationTestComponent"/>
+                <component type="com.jakubpetriska.gameengine.tests.component_lifecycle.ComponentGameObjectManipulationTestComponent"/>
             </components>
         </gameObject>
     </gameObjects>
