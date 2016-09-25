@@ -1,1 +1,1 @@
-include ':sample', ':engine', ':android-adapter', ':showcase-game'
+include ':sample', ':engine', ':android-adapter', ':showcase'

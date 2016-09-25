@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+    <gameObjects>
+        <!-- Camera -->
+        <gameObject>
+            <components>
+                <component type="camera"/>
+            </components>
+        </gameObject>
+
+        <!-- Objects -->
+        <gameObject>
+            <transform>
+                <position x="0" y="0" z="8"/>
+            </transform>
+            <children>
+                <!-- Controlled cubes -->
+                <gameObject tag="parent">
+                    <components>
+                        <component type="com.jakubpetriska.gameengine.sample.engine.TouchPositionController"/>
+                    </components>
+                    <children>
+                        <gameObject tag="topChild">
+                            <transform>
+                                <position x="0" y="1" z="0"/>
+                                <scale x="1.5" y="1.5" z="1.5"/>
+                            </transform>
+                            <components>
+                                <component type="model">
+                                    <param name="meshPath">cube</param>
+                                </component>
+                                <component type="boxCollider">
+                                    <param name="group">dynamic</param>
+
+                                    <param name="sizeX">1</param>
+                                    <param name="sizeY">1</param>
+                                    <param name="sizeZ">1</param>
+
+                                    <param name="offsetX">0</param>
+                                    <param name="offsetY">0</param>
+                                    <param name="offsetZ">0</param>
+                                </component>
+                                <component type="com.jakubpetriska.gameengine.sample.engine.CollisionsLogger">
+                                    <param name="name">Collider 2</param>
+                                </component>
+                            </components>
+                        </gameObject>
+                        <gameObject tag="bottomChild">
+                            <transform>
+                                <position x="0" y="-1" z="0"/>
+                                <rotation x="0" y="45" z="0"/>
+                            </transform>
+                            <components>
+                                <component type="model">
+                                    <param name="meshPath">cube</param>
+                                </component>
+                                <component type="boxCollider">
+                                    <param name="group">dynamic</param>
+                                </component>
+                                <component type="com.jakubpetriska.gameengine.sample.engine.CollisionsLogger">
+                                    <param name="name">Collider 1</param>
+                                </component>
+                            </components>
+                        </gameObject>
+                    </children>
+                </gameObject>
+
+                <!-- Static cubes -->
+                <gameObject>
+                    <transform>
+                        <position x="2" y="0" z="0"/>
+                        <rotation x="0" y="0" z="45"/>
+                    </transform>
+                    <components>
+                        <component type="model">
+                            <param name="meshPath">cube</param>
+                        </component>
+                        <component type="boxCollider">
+                            <param name="group">static</param>
+                        </component>
+                    </components>
+                </gameObject>
+                <gameObject>
+                    <transform>
+                        <position x="-2" y="0" z="0"/>
+                    </transform>
+                    <components>
+                        <component type="model">
+                            <param name="meshPath">cube</param>
+                        </component>
+                        <component type="boxCollider">
+                            <param name="group">static</param>
+                        </component>
+                    </components>
+                </gameObject>
+            </children>
+        </gameObject>
+    </gameObjects>
+</scene>

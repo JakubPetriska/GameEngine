@@ -1,5 +1,5 @@
 Use custom scope with following pattern:
-src[engine]:com.monolith.api..*||src[android-adapter]:com.monolith.api.android..*
+src[engine]:com.jakubpetriska.gameengine.api..*||src[android-adapter]:com.jakubpetriska.gameengine.api.android..*
 
 Put this into Other command line arguments:
 -encoding utf-8 -bootclasspath /path/to/sdk/platforms/android-##/android.jar

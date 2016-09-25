@@ -1,9 +1,9 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.monolith">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.jakubpetriska.gameengine">
 
     <uses-feature android:glEsVersion="0x00020000" android:required="true" />
 
     <application>
-        <activity android:name=".api.android.MonolithActivity"
+        <activity android:name="com.jakubpetriska.gameengine.api.android.GameEngineActivity"
             android:theme="@android:style/Theme.NoTitleBar"/>
     </application>
 

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Game Engine showcase</string>
+
+    <string name="play">Play!</string>
+    <string name="zero_score" translatable="false">0</string>
+    <string name="new_high_score">You reached a new highscore!</string>
+    <string name="your_score">Your score is:</string>
+    <string name="play_again">Play again</string>
+    <string name="highscores">Highscores</string>
+    <string name="best_high_scores">Best highscores</string>
+</resources>

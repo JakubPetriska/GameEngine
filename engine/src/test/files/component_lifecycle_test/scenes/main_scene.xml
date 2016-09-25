@@ -6,7 +6,7 @@
                 <position x="0" y="0" z="10" />
             </transform>
             <components>
-                <component type="com.monolith.tests.component_lifecycle.LifecycleAssertingComponent"/>
+                <component type="com.gameengine.tests.component_lifecycle.LifecycleAssertingComponent"/>
             </components>
             <children>
                 <gameObject>
@@ -14,7 +14,7 @@
                         <position x="1" y="1" z="1" />
                     </transform>
                     <components>
-                        <component type="com.monolith.tests.component_lifecycle.LifecycleAssertingComponent"/>
+                        <component type="com.gameengine.tests.component_lifecycle.LifecycleAssertingComponent"/>
                     </components>
                 </gameObject>
                 <gameObject>
@@ -22,7 +22,7 @@
                         <position x="1" y="1" z="1" />
                     </transform>
                     <components>
-                        <component type="com.monolith.tests.component_lifecycle.LifecycleAssertingComponent"/>
+                        <component type="com.gameengine.tests.component_lifecycle.LifecycleAssertingComponent"/>
                     </components>
                 </gameObject>
             </children>
