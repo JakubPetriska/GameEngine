@@ -3,7 +3,7 @@
     <gameObjects>
         <gameObject>
             <components>
-                <component type="com.monolith.tests.collisions_system.CollisionsSystemTestComponent"/>
+                <component type="com.jakubpetriska.gameengine.tests.collisions_system.CollisionsSystemTestComponent"/>
             </components>
         </gameObject>
     </gameObjects>

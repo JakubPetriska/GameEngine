@@ -1,45 +1,26 @@
-# Monolith Game Engine
-Game engine for Android.
+# Game Engine
+Simple game engine for Android written in Java.
 
-## v0.4
-* Updated gradle and Android tools versions.
-* Colors of objects added
+Created as a bachelor's thesis at CTU in Prague.
 
-## v0.3.1
-* Bug fixes
+For more information visit project's [website][1].
 
-## v0.3
-* Minimal SDK version raised to Android 2.3.
-* Bug in collider unregistering and onCollisionEnd calling fixed.
-* Bug in game object removing fixed.
-* Collider group is now a string name of the group so there can be any number of collider groups.
-* TouchInput fixed.
-* Documentation edits.
-* InputMessenger renamed to ExternalMessenger.
-* Better explanation of problem when engine throws an exception.
+# License
 
-## v0.2.1
-* Static and dynamic collider groups added.
-* Support extended to Android 2.2.
-* Missing Messenger documentation added.
+    Copyright 2016 Jakub Petriska
 
-## v0.2
-* Rotation and scale added.
-* Support of custom models in obj format.
-* Collisions added. Currently supports only box collider.
-* GameObject now has tag. This allows recognizing the object for example during collision.
-* Camera component added. Has near and far parameters that can be set through code or xml.
-* Mesh component renamed to Model.
-* Transform element and it's parts are no longer mandatory in scene definition xml file.
-* Coordinate system changed to left handed with z pointing forward, y up and x to the right.
-* LWJGL util library removed. Engine uses it's own vector and matrix class.
-* Param removed from scene definition xm files. Params are listed directly in component tag.
-* Allowed script parameter types are now boolean, int, long, float, double or their respective wrapper classes.
-* API for retrieval of device's display parameters added.
-* Primitive cube size changed to 1.
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
 
-## v0.1
-* First version.
-* Supports basic features.
-* Objects can be only moved not rotated or scaled.
-* Camera and lighting is immovable.
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+
+
+
+[1]: http://jakubpetriska.github.io/GameEngine/

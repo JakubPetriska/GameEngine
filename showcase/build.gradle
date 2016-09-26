@@ -5,20 +5,23 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
+        applicationId "com.jakubpetriska.gameengine.showcase"
         minSdkVersion 9
         targetSdkVersion 22
-        versionCode 3
-        versionName version
+        versionCode 1
+        versionName "1.0"
     }
     buildTypes {
         debug {
-
+            applicationIdSuffix '.dev'
         }
         debugClean {
+            applicationIdSuffix '.dev'
             signingConfig signingConfigs.debug
             debuggable true
         }
         release {
+            signingConfig signingConfigs.debug
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

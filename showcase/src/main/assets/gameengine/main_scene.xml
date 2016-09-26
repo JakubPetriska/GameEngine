@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+    <gameObjects>
+        <!-- Camera -->
+        <gameObject>
+            <transform>
+                <position x="0" y="2.5" z="-3.5"/>
+                <rotation x="10" y="0" z="0"/>
+            </transform>
+            <components>
+                <component type="camera"/>
+                <component type="com.jakubpetriska.gameengine.showcase.engine.support.FpsReporter"/>
+            </components>
+        </gameObject>
+
+        <!-- Environment -->
+        <gameObject>
+            <children>
+                <!-- Track -->
+                <gameObject tag="track_container">
+                    <components>
+                        <component type="com.jakubpetriska.gameengine.showcase.engine.TrackGenerator"/>
+                    </components>
+                </gameObject>
+
+                <!-- Spaceship -->
+                <gameObject tag="spaceship">
+                    <transform>
+                        <position x="0" y="1" z="0"/>
+                        <rotation x="5" y="0" z="0"/>
+                    </transform>
+                    <components>
+                        <component type="com.jakubpetriska.gameengine.showcase.engine.PlayerController"/>
+                    </components>
+                    <children>
+                        <!-- Spaceship model -->
+                        <gameObject>
+                            <transform>
+                                <scale x="0.15" y="0.15" z="0.15"/>
+                            </transform>
+                            <components>
+                                <component type="model">
+                                    <param name="meshPath">models/spaceship.obj</param>
+                                    <param name="color">#e91e63</param>
+                                </component>
+                            </components>
+                        </gameObject>
+
+                        <!-- Main body collider -->
+                        <gameObject tag="spaceship_collider">
+                            <components>
+                                <component type="boxCollider">
+                                    <param name="group">spaceship</param>
+                                    <param name="offsetZ">0.5</param>
+                                    <param name="sizeX">0.3</param>
+                                    <param name="sizeY">0.25</param>
+                                    <param name="sizeZ">1.5</param>
+                                </component>
+                            </components>
+                        </gameObject>
+
+                        <!-- Wings collider -->
+                        <gameObject tag="spaceship_collider">
+                            <components>
+                                <component type="boxCollider">
+                                    <param name="group">spaceship</param>
+                                    <param name="offsetY">-0.08</param>
+                                    <param name="sizeX">1.5</param>
+                                    <param name="sizeY">0.1</param>
+                                    <param name="sizeZ">0.45</param>
+                                </component>
+                            </components>
+                        </gameObject>
+                    </children>
+                </gameObject>
+            </children>
+        </gameObject>
+    </gameObjects>
+</scene>

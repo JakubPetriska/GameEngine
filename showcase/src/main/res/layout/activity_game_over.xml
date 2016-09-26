@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/score_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/screen_padding"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/new_high_score"
+            style="@style/Black.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/new_high_score"
+            android:paddingTop="40dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/new_score"
+            style="@style/Black.Big"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_centerInParent="true"
+            tools:text="10000"/>
+
+        <TextView
+            style="@style/Black.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/your_score"
+            android:layout_above="@id/new_score"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/play_again"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/play_again"
+            android:padding="@dimen/button_padding"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+</RelativeLayout>

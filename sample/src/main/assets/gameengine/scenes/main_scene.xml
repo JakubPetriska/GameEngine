@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scene>
+    <gameObjects>
+        <gameObject>
+            <components>
+                <component type="camera"/>
+            </components>
+        </gameObject>
+        <gameObject>
+            <transform>
+                <position x="0" y="0" z="3" />
+            </transform>
+            <components>
+                <component type="model">
+                    <param name="meshPath">cube</param>
+                    <param name="color">#E91E63</param>
+                </component>
+                <component type="com.jakubpetriska.gameengine.sample.engine.TouchPositionController" />
+            </components>
+            <children>
+                <gameObject>
+                    <transform>
+                        <position x="1" y="1" z="1" />
+                    </transform>
+                    <components>
+                        <component type="model">
+                            <param name="meshPath">cube</param>
+                            <param name="color">#2196F3</param>
+                        </component>
+                    </components>
+                </gameObject>
+            </children>
+        </gameObject>
+    </gameObjects>
+</scene>

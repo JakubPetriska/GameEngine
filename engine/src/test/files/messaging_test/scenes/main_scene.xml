@@ -6,7 +6,7 @@
                 <position x="0" y="0" z="0" />
             </transform>
             <components>
-                <component type="com.monolith.tests.messaging.MessageAnsweringComponent"/>
+                <component type="com.jakubpetriska.gameengine.tests.messaging.MessageAnsweringComponent"/>
             </components>
         </gameObject>
     </gameObjects>
