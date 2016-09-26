@@ -5,9 +5,9 @@ package com.jakubpetriska.gameengine.api;
  */
 public class Color {
 
-    public static final Color RED = new Color(1, 0, 0, 1);
-    public static final Color GREEN = new Color(0, 1, 0, 1);
-    public static final Color BLUE = new Color(0, 0, 1, 1);
+    public static final Color RED = new Color(1f, 0f, 0f, 1f);
+    public static final Color GREEN = new Color(0f, 1f, 0f, 1f);
+    public static final Color BLUE = new Color(0f, 0f, 1f, 1f);
     public static final Color LIGHT_GRAY = new Color(0.97f, 0.97f, 0.97f, 1);
 
     public float red;
