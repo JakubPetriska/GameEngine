@@ -3,6 +3,8 @@ Simple game engine for Android written in Java.
 
 Created as a bachelor's thesis at CTU in Prague.
 
+For more information visit project's [website][1].
+
 # License
 
     Copyright 2016 Jakub Petriska
@@ -18,3 +20,7 @@ Created as a bachelor's thesis at CTU in Prague.
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
+
+
+[1]: http://jakubpetriska.github.io/GameEngine/
