@@ -48,11 +48,11 @@ Supports Android 2.3 (API level 9) and up.</p>
 <h3>
 <a id="project-setup" class="anchor" href="#project-setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Project setup</h3>
 
-<p>Create new Android Studio project and either add the whole <em>engine</em> and <em>android-adapter</em> modules into your project, upon which module with your application will be dependent or build the engine's aar file and add it to your project.</p>
+<p>Create new Android Studio project and either add the whole <em>engine</em> and <em>android-adapter</em> modules into your project, upon which module with your application will be dependent or build the engine as an AAR file and add it to your project.</p>
 
-<p>Now you must add the engine activity to the AndroidManifest.xml. In this tutorial you will add the activity as main application activity, however it does not have to be the main activity.</p>
+<p>Now you must add the engine activity to the <em>AndroidManifest.xml</em>. In this tutorial you will add the activity as main application activity, however it does not have to be the main activity.</p>
 
-<p>To add this activity, place the following code into  tag of your AndroidManifest.xml.</p>
+<p>To add this activity, place the following code into <em></em> tag of your <em>AndroidManifest.xml</em>.</p>
 
 <div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">activity</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>com.jakubpetriska.gameengine.api.android.GameEngineActivity<span class="pl-pds">"</span></span>&gt;
     &lt;<span class="pl-ent">intent-filter</span>&gt;
