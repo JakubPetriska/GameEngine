@@ -104,18 +104,18 @@ Supports Android 2.3 (API level 9) and up.</p>
     &lt;/<span class="pl-ent">gameObjects</span>&gt;
 &lt;/<span class="pl-ent">scene</span>&gt;</pre></div>
 
-<p>You can see that <em></em> tag contains <em></em> tag which contains all top level objects of this scene. In our scene there is only one object specified by <em></em> tag in our game objects collection. Our game object contains two other tags. These are <em></em>, containing initial position of the object and <em></em> which contains all object's components. We specify component's type and in the parameters we specify primitive that we want to render.</p>
+<p>You can see that <em></em> tag contains <code>&lt;gameObjects&gt;</code> tag which contains all top level objects of this scene. In our scene there is only one object specified by <code>&lt;gameObject&gt;</code> tag in our game objects collection. Our game object contains two other tags. These are <code>&lt;transform&gt;</code>, containing initial position of the object and <code>&lt;components&gt;</code> which contains all object's components. We specify component's type and in the parameters we specify primitive that we want to render.</p>
 
 <p>Project can now be built so please go ahead and test it.</p>
 
 <h3>
 <a id="control-the-cube" class="anchor" href="#control-the-cube" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Control the cube</h3>
 
-<p>Application will use the touch input to move the cube. First we need to add new component that will control the cube and attach it to the cube's object. Create new java class and extend the <em>Component</em> class from engine's API. Now head to your <em>main_scene.xml</em> and add new component into the <em></em> tag. Add a <em>type</em> attribute to the new component and put in the full class name, with package, of your new component. In our example project this line looks like this:</p>
+<p>Application will use the touch input to move the cube. First we need to add new component that will control the cube and attach it to the cube's object. Create new java class and extend the <em>Component</em> class from engine's API. Now head to your <em>main_scene.xml</em> and add new component into the <code>&lt;components&gt;</code> tag. Add a <em>type</em> attribute to the new component and put in the full class name, with package, of your new component. In our example project this line looks like this:</p>
 
 <div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">component</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>com.jakubpetriska.gameengine.samples.basic.CubeController<span class="pl-pds">"</span></span>/&gt;</pre></div>
 
-<p>In order to access touch input in our component we need to use the <em>Application</em> class from engine's API. This class acts as a container for objects that provide all the important functionality. Reference to the instance of <em>Application</em> is stored in every <em>Component</em> and it can be obtained with calling the <em>getApplication()</em> method of <em>Component</em>. This is the <em>Component</em> that we'll use for controlling our cube:</p>
+<p>In order to access touch input in our component we need to use the <em>Application</em> class from engine's API. This class acts as a container for objects that provide all the important functionality. Reference to the instance of <code>Application</code> is stored in every <code>Component</code> and it can be obtained with calling the <code>getApplication()</code> method of <code>Component</code>. This is the <code>Component</code> that we'll use for controlling our cube:</p>
 
 <div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span class="pl-smi">com.jakubpetriska.gameengine.api.Component</span>;
 <span class="pl-k">import</span> <span class="pl-smi">com.jakubpetriska.gameengine.api.Time</span>;
@@ -162,16 +162,16 @@ Supports Android 2.3 (API level 9) and up.</p>
     }
 }</pre></div>
 
-<p>Every <em>Component</em> has a set of life cycle methods that can be overridden to provide component's functionality. In our <em>CubeController</em> we override the <em>update()</em> method. This method is called during every frame of the application's life. Please refer to engine's API documentation for complete list of all methods in <em>Component</em> class.</p>
+<p>Every <em>Component</em> has a set of life cycle methods that can be overridden to provide component's functionality. In our <code>CubeController</code> we override the <code>update()</code> method. This method is called during every frame of the application's life. Please refer to engine's API documentation for complete list of all methods in <code>Component</code> class.</p>
 
-<p>To respond to touch events and move the cube we use two objects from <em>Application</em>. These are the <em>Time</em> object, providing time information and the <em>TouchInput</em> object, which provides information about currently running touch events.</p>
+<p>To respond to touch events and move the cube we use two objects from <code>Application</code>. These are the <em>Time</em> object, providing time information and the <code>TouchInput</code> object, which provides information about currently running touch events.</p>
 
 <h3>
 <a id="adding-another-cube" class="anchor" href="#adding-another-cube" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Adding another cube</h3>
 
 <p>To make our game little more interesting we will put a second cube into the game to move along the first one. To do this easily we'll just add the second cube as a child object of the first cube.</p>
 
-<p>In our <em>main_scene.xml</em> add new <em></em> tag into our <em></em> tag of our first cube. Now add the following object into the <em></em> tag:</p>
+<p>In our <em>main_scene.xml</em> add new <code>&lt;children&gt;&lt;/children&gt;</code> tag into our <code>&lt;gameObject&gt;</code> tag of our first cube. Now add the following object into the <code>&lt;children&gt;</code> tag:</p>
 
 <div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">gameObject</span>&gt;
     &lt;<span class="pl-ent">transform</span>&gt;
@@ -186,7 +186,7 @@ Supports Android 2.3 (API level 9) and up.</p>
     &lt;/<span class="pl-ent">components</span>&gt;
 &lt;/<span class="pl-ent">gameObject</span>&gt;</pre></div>
 
-<p>We do not need to add another instance of the <em>CubeController</em> component to this object because it is automatically moved by it's parent. It's transformation is only relative to it's parent's transformation.</p>
+<p>We do not need to add another instance of the <code>CubeController</code> component to this object because it is automatically moved by it's parent. It's transformation is only relative to it's parent's transformation.</p>
 
 <p>Build and run the project. Your first application is now complete, congratulations!</p>
 
