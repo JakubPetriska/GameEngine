@@ -62,6 +62,133 @@ Engine currently supports Android 2.3 (API level 9) and up.</p>
 &lt;/activity&gt;
 </code></pre>
 
+<h3>
+<a id="add-scene" class="anchor" href="#add-scene" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Add scene</h3>
+
+<p>To be able to run the application a few configuration files are needed. All engine configuration files are located in the application's assets folder, specifically in <em>assets/gameengine</em>.</p>
+
+<p>First configuration file that needs to be created is <em>scenes.xml</em> file that needs to be located on <em>assets/gameenigine/scenes.xml</em>. This file defines what scenes engine can display and which scene is default. In our application default scene will always be displayed as first.</p>
+
+<p>Create this file with following content:
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    
+        
+    </p>
+
+<p>Content of this file says that our engine has a single scene named <em>main_scene</em> and it is a default scene. Now there is one more thing. Every scene needs to have it's definition file. This file defines what is in the scene when it is loaded. It can be placed anywhere in the <em>assets/gameengine</em> folder and it's path needs to be specified in the <em>scenes.xml</em> file for every scene using the <em>sceneFilePath</em> attribute of <em></em> tag. Create the <em>assets/gameengine/scenes/main_scene.xml</em> now.</p>
+
+<p>Game engine's scene consists of objects with components. Objects hold things such as transformation while components add functionality such as rendering a 3D object. Scripts are also components.</p>
+
+<p>In our scene there will be a cube that user will be able to move with his finger. We will create an object on the initial position of our cube that will contain two components. First component will be Mesh component, responsible for rendering the cube and second component will be the script controlling it's movement. Let's start with the cube.</p>
+
+<p>Copy the following code into your <em>main_scene.xml</em>:
+    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+    
+        
+            
+                
+                    
+                
+                
+                    
+                        
+                            cube
+                        
+                    
+                
+            
+        
+    </p>
+
+<p>You can see that <em></em> tag contains <em></em> tag which contains all top level objects of this scene. In our scene there is only one object specified by <em></em> tag in our game objects collection. Our game object contains two other tags. These are <em></em>, containing initial position of the object and <em></em> which contains all object's components. We specify component's type and in the parameters we specify primitive that we want to render.</p>
+
+<p>Project can now be built so please go ahead and test it.</p>
+
+<h3>
+<a id="control-the-cube" class="anchor" href="#control-the-cube" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Control the cube</h3>
+
+<p>Application will use the touch input to move the cube. First we need to add new component that will control the cube and attach it to the cube's object. Create new java class and extend the <em>Component</em> class from engine's API. Now head to your <em>main_scene.xml</em> and add new component into the <em></em> tag. Add a <em>type</em> attribute to the new component and put in the full class name, with package, of your new component. In our example project this line looks like this:</p>
+
+<pre><code>&lt;component type="com.jakubpetriska.gameengine.samples.basic.CubeController"/&gt;
+</code></pre>
+
+<p>In order to access touch input in our component we need to use the <em>Application</em> class from engine's API. This class acts as a container for objects that provide all the important functionality. Reference to the instance of <em>Application</em> is stored in every <em>Component</em> and it can be obtained with calling the <em>getApplication()</em> method of <em>Component</em>. This is the <em>Component</em> that we'll use for controlling our cube:</p>
+
+<pre><code>import com.monolith.api.Component;
+import com.monolith.api.Time;
+import com.monolith.api.Touch;
+import java.util.List;
+
+public class CubeController extends Component {
+
+    private static final float MOVEMENT_CONSTANT = 0.2f;
+
+    // Save the last touch position to calculate position deltas
+    private float mLastTouchX = -1;
+    private float mLastTouchY = -1;
+
+    @Override
+    public void update() {
+        Time time = getApplication().getTime();
+        List&lt;Touch&gt; touches = getApplication().getTouchInput().getTouches();
+        if (touches.size() &gt; 0) {
+            // For simplicity we will always use the first running gesture
+            Touch touch = touches.get(0);
+
+            // Deltas need to be negated to move into the direction of touch
+            float touchXDelta = -(touch.getX() - mLastTouchX);
+            float touchYDelta = -(touch.getY() - mLastTouchY);
+
+            if (mLastTouchX != -1 &amp;&amp; mLastTouchY != -1) {
+                getGameObject().transform.moveBy(
+                        touchXDelta * time.getTimeDelta() * MOVEMENT_CONSTANT,
+                        touchYDelta * time.getTimeDelta() * MOVEMENT_CONSTANT,
+                        0);
+            }
+
+            if (touch.getState() == Touch.STATE_ENDED) {
+                // Reset our positions when touch ends
+                mLastTouchX = -1;
+                mLastTouchY = -1;
+            } else {
+                // Save our new positions
+                mLastTouchX = touch.getX();
+                mLastTouchY = touch.getY();
+            }
+        }
+    }
+}
+</code></pre>
+
+<p>Every <em>Component</em> has a set of life cycle methods that can be overridden to provide component's functionality. In our <em>CubeController</em> we override the <em>update()</em> method. This method is called during every frame of the application's life. Please refer to engine's API documentation for complete list of all methods in <em>Component</em> class.</p>
+
+<p>To respond to touch events and move the cube we use two objects from <em>Application</em>. These are the <em>Time</em> object, providing time information and the <em>TouchInput</em> object, which provides information about currently running touch events.</p>
+
+<h3>
+<a id="adding-another-cube" class="anchor" href="#adding-another-cube" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Adding another cube</h3>
+
+<p>To make our game little more interesting we will put a second cube into the game to move along the first one. To do this easily we'll just add the second cube as a child object of the first cube.</p>
+
+<p>In our <em>main_scene.xml</em> add new <em></em> tag into our <em></em> tag of our first cube. Now add the following object into the <em></em> tag:</p>
+
+<pre><code>&lt;gameObject&gt;
+    &lt;transform&gt;
+        &lt;position x="1" y="1" z="1" /&gt;
+    &lt;/transform&gt;
+    &lt;components&gt;
+        &lt;component type="mesh"&gt;
+            &lt;params&gt;
+                &lt;param name="meshPath"&gt;cube&lt;/param&gt;
+            &lt;/params&gt;
+        &lt;/component&gt;
+    &lt;/components&gt;
+&lt;/gameObject&gt;
+</code></pre>
+
+<p>We do not need to add another instance of the <em>CubeController</em> component to this object because it is automatically moved by it's parent. It's transformation is only relative to it's parent's transformation.</p>
+
+<p>Build and run the project. Your first application is now complete, congratulations!</p>
+
 <h2>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
 
