@@ -19,10 +19,7 @@
     </section>
 
     <section class="main-content">
-      <h1>
-<a id="game-engine" class="anchor" href="#game-engine" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Game Engine</h1>
-
-<p>Simple game engine for Android written in Java.
+      <p>Simple game engine for Android written in Java.
 Engine currently supports Android 2.3 (API level 9) and up.</p>
 
 <p><img src="https://jakubpetriska.github.io/GameEngine/images/showcase.png" alt=""></p>
@@ -40,6 +37,29 @@ Engine currently supports Android 2.3 (API level 9) and up.</p>
 <a id="coordinate-system" class="anchor" href="#coordinate-system" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Coordinate system</h2>
 
 <p>Left-handed coordinate system with <em>z</em> axis pointing forward, <em>y</em> pointing up and <em>x</em> to the right.</p>
+
+<h2>
+<a id="tutorial" class="anchor" href="#tutorial" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Tutorial</h2>
+
+<p>In this tutorial you will create a simple application showing only the engine content. Engine will display an object that player will be able to move using his finger.</p>
+
+<p>For more examples and samples of working projects using the engine check out the <em>sample</em> and <em>showcase</em> project modules. These contain the sample and showcase applications respectively.</p>
+
+<h3>
+<a id="project-setup" class="anchor" href="#project-setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Project setup</h3>
+
+<p>Create new Android Studio project and either add the whole <em>engine</em> and <em>android-adapter</em> modules into your project, upon which module with your application will be dependent or build the engine's aar file and add it to your project.</p>
+
+<p>Now you must add the engine activity to the AndroidManifest.xml. In this tutorial you will add the activity as main application activity, however it does not have to be the main activity.</p>
+
+<p>To add this activity, place the following code into  tag of your AndroidManifest.xml.</p>
+
+<p><code>&lt;activity android:name="com.jakubpetriska.gameengine.api.android.GameEngineActivity"&gt;
+    &lt;intent-filter&gt;
+        &lt;action android:name="android.intent.action.MAIN" /&gt;
+        &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
+    &lt;/intent-filter&gt;
+&lt;/activity&gt;</code></p>
 
 <h2>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
