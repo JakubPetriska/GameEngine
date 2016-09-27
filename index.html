@@ -54,7 +54,7 @@ Engine currently supports Android 2.3 (API level 9) and up.</p>
 
 <p>To add this activity, place the following code into  tag of your AndroidManifest.xml.</p>
 
-<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">activity</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>com.monolith.api.android.MonolithActivity<span class="pl-pds">"</span></span>&gt;
+<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">activity</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>com.jakubpetriska.gameengine.api.android.GameEngineActivity<span class="pl-pds">"</span></span>&gt;
     &lt;<span class="pl-ent">intent-filter</span>&gt;
         &lt;<span class="pl-ent">action</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>android.intent.action.MAIN<span class="pl-pds">"</span></span> /&gt;
         &lt;<span class="pl-ent">category</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>android.intent.category.LAUNCHER<span class="pl-pds">"</span></span> /&gt;
@@ -117,9 +117,9 @@ Engine currently supports Android 2.3 (API level 9) and up.</p>
 
 <p>In order to access touch input in our component we need to use the <em>Application</em> class from engine's API. This class acts as a container for objects that provide all the important functionality. Reference to the instance of <em>Application</em> is stored in every <em>Component</em> and it can be obtained with calling the <em>getApplication()</em> method of <em>Component</em>. This is the <em>Component</em> that we'll use for controlling our cube:</p>
 
-<div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span class="pl-smi">com.monolith.api.Component</span>;
-<span class="pl-k">import</span> <span class="pl-smi">com.monolith.api.Time</span>;
-<span class="pl-k">import</span> <span class="pl-smi">com.monolith.api.Touch</span>;
+<div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span class="pl-smi">com.jakubpetriska.gameengine.api.Component</span>;
+<span class="pl-k">import</span> <span class="pl-smi">com.jakubpetriska.gameengine.api.Time</span>;
+<span class="pl-k">import</span> <span class="pl-smi">com.jakubpetriska.gameengine.api.Touch</span>;
 <span class="pl-k">import</span> <span class="pl-smi">java.util.List</span>;
 
 <span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">CubeController</span> <span class="pl-k">extends</span> <span class="pl-e">Component</span> {
