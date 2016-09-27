@@ -54,13 +54,12 @@ Engine currently supports Android 2.3 (API level 9) and up.</p>
 
 <p>To add this activity, place the following code into  tag of your AndroidManifest.xml.</p>
 
-<pre><code>&lt;activity android:name="com.jakubpetriska.gameengine.api.android.GameEngineActivity"&gt;
-    &lt;intent-filter&gt;
-        &lt;action android:name="android.intent.action.MAIN" /&gt;
-        &lt;category android:name="android.intent.category.LAUNCHER" /&gt;
-    &lt;/intent-filter&gt;
-&lt;/activity&gt;
-</code></pre>
+<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">activity</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>com.monolith.api.android.MonolithActivity<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">intent-filter</span>&gt;
+        &lt;<span class="pl-ent">action</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>android.intent.action.MAIN<span class="pl-pds">"</span></span> /&gt;
+        &lt;<span class="pl-ent">category</span> <span class="pl-e">android</span><span class="pl-e">:</span><span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>android.intent.category.LAUNCHER<span class="pl-pds">"</span></span> /&gt;
+    &lt;/<span class="pl-ent">intent-filter</span>&gt;
+&lt;/<span class="pl-ent">activity</span>&gt;</pre></div>
 
 <h3>
 <a id="add-scene" class="anchor" href="#add-scene" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Add scene</h3>
@@ -69,11 +68,15 @@ Engine currently supports Android 2.3 (API level 9) and up.</p>
 
 <p>First configuration file that needs to be created is <em>scenes.xml</em> file that needs to be located on <em>assets/gameenigine/scenes.xml</em>. This file defines what scenes engine can display and which scene is default. In our application default scene will always be displayed as first.</p>
 
-<p>Create this file with following content:
-    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-    
-        
-    </p>
+<p>Create this file with following content:</p>
+
+<div class="highlight highlight-text-xml"><pre>&lt;?<span class="pl-ent">xml</span><span class="pl-e"> version</span>=<span class="pl-s"><span class="pl-pds">"</span>1.0<span class="pl-pds">"</span></span><span class="pl-e"> encoding</span>=<span class="pl-s"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>?&gt;
+&lt;<span class="pl-ent">scenes</span>
+    <span class="pl-e">defaultSceneName</span>=<span class="pl-s"><span class="pl-pds">"</span>main_scene<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">scene</span>
+        <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>main_scene<span class="pl-pds">"</span></span>
+        <span class="pl-e">sceneFilePath</span>=<span class="pl-s"><span class="pl-pds">"</span>scenes/main_scene.xml<span class="pl-pds">"</span></span>/&gt;
+&lt;/<span class="pl-ent">scenes</span>&gt;</pre></div>
 
 <p>Content of this file says that our engine has a single scene named <em>main_scene</em> and it is a default scene. Now there is one more thing. Every scene needs to have it's definition file. This file defines what is in the scene when it is loaded. It can be placed anywhere in the <em>assets/gameengine</em> folder and it's path needs to be specified in the <em>scenes.xml</em> file for every scene using the <em>sceneFilePath</em> attribute of <em></em> tag. Create the <em>assets/gameengine/scenes/main_scene.xml</em> now.</p>
 
@@ -81,24 +84,25 @@ Engine currently supports Android 2.3 (API level 9) and up.</p>
 
 <p>In our scene there will be a cube that user will be able to move with his finger. We will create an object on the initial position of our cube that will contain two components. First component will be Mesh component, responsible for rendering the cube and second component will be the script controlling it's movement. Let's start with the cube.</p>
 
-<p>Copy the following code into your <em>main_scene.xml</em>:
-    &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-    
-        
-            
-                
-                    
-                
-                
-                    
-                        
-                            cube
-                        
-                    
-                
-            
-        
-    </p>
+<p>Copy the following code into your <em>main_scene.xml</em>:</p>
+
+<div class="highlight highlight-text-xml"><pre>&lt;?<span class="pl-ent">xml</span><span class="pl-e"> version</span>=<span class="pl-s"><span class="pl-pds">"</span>1.0<span class="pl-pds">"</span></span><span class="pl-e"> encoding</span>=<span class="pl-s"><span class="pl-pds">"</span>UTF-8<span class="pl-pds">"</span></span>?&gt;
+&lt;<span class="pl-ent">scene</span>&gt;
+    &lt;<span class="pl-ent">gameObjects</span>&gt;
+        &lt;<span class="pl-ent">gameObject</span>&gt;
+            &lt;<span class="pl-ent">transform</span>&gt;
+                &lt;<span class="pl-ent">position</span> <span class="pl-e">x</span>=<span class="pl-s"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span> <span class="pl-e">y</span>=<span class="pl-s"><span class="pl-pds">"</span>0<span class="pl-pds">"</span></span> <span class="pl-e">z</span>=<span class="pl-s"><span class="pl-pds">"</span>10<span class="pl-pds">"</span></span> /&gt;
+            &lt;/<span class="pl-ent">transform</span>&gt;
+            &lt;<span class="pl-ent">components</span>&gt;
+                &lt;<span class="pl-ent">component</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>mesh<span class="pl-pds">"</span></span>&gt;
+                    &lt;<span class="pl-ent">params</span>&gt;
+                        &lt;<span class="pl-ent">param</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>meshPath<span class="pl-pds">"</span></span>&gt;cube&lt;/<span class="pl-ent">param</span>&gt;
+                    &lt;/<span class="pl-ent">params</span>&gt;
+                &lt;/<span class="pl-ent">component</span>&gt;
+            &lt;/<span class="pl-ent">components</span>&gt;
+        &lt;/<span class="pl-ent">gameObject</span>&gt;
+    &lt;/<span class="pl-ent">gameObjects</span>&gt;
+&lt;/<span class="pl-ent">scene</span>&gt;</pre></div>
 
 <p>You can see that <em></em> tag contains <em></em> tag which contains all top level objects of this scene. In our scene there is only one object specified by <em></em> tag in our game objects collection. Our game object contains two other tags. These are <em></em>, containing initial position of the object and <em></em> which contains all object's components. We specify component's type and in the parameters we specify primitive that we want to render.</p>
 
@@ -109,56 +113,54 @@ Engine currently supports Android 2.3 (API level 9) and up.</p>
 
 <p>Application will use the touch input to move the cube. First we need to add new component that will control the cube and attach it to the cube's object. Create new java class and extend the <em>Component</em> class from engine's API. Now head to your <em>main_scene.xml</em> and add new component into the <em></em> tag. Add a <em>type</em> attribute to the new component and put in the full class name, with package, of your new component. In our example project this line looks like this:</p>
 
-<pre><code>&lt;component type="com.jakubpetriska.gameengine.samples.basic.CubeController"/&gt;
-</code></pre>
+<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">component</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>com.jakubpetriska.gameengine.samples.basic.CubeController<span class="pl-pds">"</span></span>/&gt;</pre></div>
 
 <p>In order to access touch input in our component we need to use the <em>Application</em> class from engine's API. This class acts as a container for objects that provide all the important functionality. Reference to the instance of <em>Application</em> is stored in every <em>Component</em> and it can be obtained with calling the <em>getApplication()</em> method of <em>Component</em>. This is the <em>Component</em> that we'll use for controlling our cube:</p>
 
-<pre><code>import com.monolith.api.Component;
-import com.monolith.api.Time;
-import com.monolith.api.Touch;
-import java.util.List;
+<div class="highlight highlight-source-java"><pre><span class="pl-k">import</span> <span class="pl-smi">com.monolith.api.Component</span>;
+<span class="pl-k">import</span> <span class="pl-smi">com.monolith.api.Time</span>;
+<span class="pl-k">import</span> <span class="pl-smi">com.monolith.api.Touch</span>;
+<span class="pl-k">import</span> <span class="pl-smi">java.util.List</span>;
 
-public class CubeController extends Component {
+<span class="pl-k">public</span> <span class="pl-k">class</span> <span class="pl-en">CubeController</span> <span class="pl-k">extends</span> <span class="pl-e">Component</span> {
 
-    private static final float MOVEMENT_CONSTANT = 0.2f;
+    <span class="pl-k">private</span> <span class="pl-k">static</span> <span class="pl-k">final</span> <span class="pl-k">float</span> <span class="pl-c1">MOVEMENT_CONSTANT</span> <span class="pl-k">=</span> <span class="pl-c1">0.2f</span>;
 
-    // Save the last touch position to calculate position deltas
-    private float mLastTouchX = -1;
-    private float mLastTouchY = -1;
+    <span class="pl-c">// Save the last touch position to calculate position deltas</span>
+    <span class="pl-k">private</span> <span class="pl-k">float</span> mLastTouchX <span class="pl-k">=</span> <span class="pl-k">-</span><span class="pl-c1">1</span>;
+    <span class="pl-k">private</span> <span class="pl-k">float</span> mLastTouchY <span class="pl-k">=</span> <span class="pl-k">-</span><span class="pl-c1">1</span>;
 
-    @Override
-    public void update() {
-        Time time = getApplication().getTime();
-        List&lt;Touch&gt; touches = getApplication().getTouchInput().getTouches();
-        if (touches.size() &gt; 0) {
-            // For simplicity we will always use the first running gesture
-            Touch touch = touches.get(0);
+    <span class="pl-k">@Override</span>
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">update</span>() {
+        <span class="pl-smi">Time</span> time <span class="pl-k">=</span> getApplication()<span class="pl-k">.</span>getTime();
+        <span class="pl-k">List&lt;<span class="pl-smi">Touch</span>&gt;</span> touches <span class="pl-k">=</span> getApplication()<span class="pl-k">.</span>getTouchInput()<span class="pl-k">.</span>getTouches();
+        <span class="pl-k">if</span> (touches<span class="pl-k">.</span>size() <span class="pl-k">&gt;</span> <span class="pl-c1">0</span>) {
+            <span class="pl-c">// For simplicity we will always use the first running gesture</span>
+            <span class="pl-smi">Touch</span> touch <span class="pl-k">=</span> touches<span class="pl-k">.</span>get(<span class="pl-c1">0</span>);
 
-            // Deltas need to be negated to move into the direction of touch
-            float touchXDelta = -(touch.getX() - mLastTouchX);
-            float touchYDelta = -(touch.getY() - mLastTouchY);
+            <span class="pl-c">// Deltas need to be negated to move into the direction of touch</span>
+            <span class="pl-k">float</span> touchXDelta <span class="pl-k">=</span> <span class="pl-k">-</span>(touch<span class="pl-k">.</span>getX() <span class="pl-k">-</span> mLastTouchX);
+            <span class="pl-k">float</span> touchYDelta <span class="pl-k">=</span> <span class="pl-k">-</span>(touch<span class="pl-k">.</span>getY() <span class="pl-k">-</span> mLastTouchY);
 
-            if (mLastTouchX != -1 &amp;&amp; mLastTouchY != -1) {
-                getGameObject().transform.moveBy(
-                        touchXDelta * time.getTimeDelta() * MOVEMENT_CONSTANT,
-                        touchYDelta * time.getTimeDelta() * MOVEMENT_CONSTANT,
-                        0);
+            <span class="pl-k">if</span> (mLastTouchX <span class="pl-k">!=</span> <span class="pl-k">-</span><span class="pl-c1">1</span> <span class="pl-k">&amp;&amp;</span> mLastTouchY <span class="pl-k">!=</span> <span class="pl-k">-</span><span class="pl-c1">1</span>) {
+                getGameObject()<span class="pl-k">.</span>transform<span class="pl-k">.</span>moveBy(
+                        touchXDelta <span class="pl-k">*</span> time<span class="pl-k">.</span>getTimeDelta() <span class="pl-k">*</span> <span class="pl-c1">MOVEMENT_CONSTANT</span>,
+                        touchYDelta <span class="pl-k">*</span> time<span class="pl-k">.</span>getTimeDelta() <span class="pl-k">*</span> <span class="pl-c1">MOVEMENT_CONSTANT</span>,
+                        <span class="pl-c1">0</span>);
             }
 
-            if (touch.getState() == Touch.STATE_ENDED) {
-                // Reset our positions when touch ends
-                mLastTouchX = -1;
-                mLastTouchY = -1;
-            } else {
-                // Save our new positions
-                mLastTouchX = touch.getX();
-                mLastTouchY = touch.getY();
+            <span class="pl-k">if</span> (touch<span class="pl-k">.</span>getState() <span class="pl-k">==</span> <span class="pl-smi">Touch</span><span class="pl-c1"><span class="pl-k">.</span>STATE_ENDED</span>) {
+                <span class="pl-c">// Reset our positions when touch ends</span>
+                mLastTouchX <span class="pl-k">=</span> <span class="pl-k">-</span><span class="pl-c1">1</span>;
+                mLastTouchY <span class="pl-k">=</span> <span class="pl-k">-</span><span class="pl-c1">1</span>;
+            } <span class="pl-k">else</span> {
+                <span class="pl-c">// Save our new positions</span>
+                mLastTouchX <span class="pl-k">=</span> touch<span class="pl-k">.</span>getX();
+                mLastTouchY <span class="pl-k">=</span> touch<span class="pl-k">.</span>getY();
             }
         }
     }
-}
-</code></pre>
+}</pre></div>
 
 <p>Every <em>Component</em> has a set of life cycle methods that can be overridden to provide component's functionality. In our <em>CubeController</em> we override the <em>update()</em> method. This method is called during every frame of the application's life. Please refer to engine's API documentation for complete list of all methods in <em>Component</em> class.</p>
 
@@ -171,19 +173,18 @@ public class CubeController extends Component {
 
 <p>In our <em>main_scene.xml</em> add new <em></em> tag into our <em></em> tag of our first cube. Now add the following object into the <em></em> tag:</p>
 
-<pre><code>&lt;gameObject&gt;
-    &lt;transform&gt;
-        &lt;position x="1" y="1" z="1" /&gt;
-    &lt;/transform&gt;
-    &lt;components&gt;
-        &lt;component type="mesh"&gt;
-            &lt;params&gt;
-                &lt;param name="meshPath"&gt;cube&lt;/param&gt;
-            &lt;/params&gt;
-        &lt;/component&gt;
-    &lt;/components&gt;
-&lt;/gameObject&gt;
-</code></pre>
+<div class="highlight highlight-text-xml"><pre>&lt;<span class="pl-ent">gameObject</span>&gt;
+    &lt;<span class="pl-ent">transform</span>&gt;
+        &lt;<span class="pl-ent">position</span> <span class="pl-e">x</span>=<span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span> <span class="pl-e">y</span>=<span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span> <span class="pl-e">z</span>=<span class="pl-s"><span class="pl-pds">"</span>1<span class="pl-pds">"</span></span> /&gt;
+    &lt;/<span class="pl-ent">transform</span>&gt;
+    &lt;<span class="pl-ent">components</span>&gt;
+        &lt;<span class="pl-ent">component</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>mesh<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">params</span>&gt;
+                &lt;<span class="pl-ent">param</span> <span class="pl-e">name</span>=<span class="pl-s"><span class="pl-pds">"</span>meshPath<span class="pl-pds">"</span></span>&gt;cube&lt;/<span class="pl-ent">param</span>&gt;
+            &lt;/<span class="pl-ent">params</span>&gt;
+        &lt;/<span class="pl-ent">component</span>&gt;
+    &lt;/<span class="pl-ent">components</span>&gt;
+&lt;/<span class="pl-ent">gameObject</span>&gt;</pre></div>
 
 <p>We do not need to add another instance of the <em>CubeController</em> component to this object because it is automatically moved by it's parent. It's transformation is only relative to it's parent's transformation.</p>
 
