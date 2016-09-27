@@ -1,6 +1,6 @@
 # Game Engine
 Simple game engine for Android written in Java.
-Engine currently supports Android 2.3 (API level 9) and up.
+Supports Android 2.3 (API level 9) and up.
 
 ![](https://jakubpetriska.github.io/GameEngine/images/showcase.png)
 
