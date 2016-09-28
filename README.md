@@ -10,7 +10,7 @@ Created as a bachelor's thesis at CTU in Prague.
 
 For more information visit project's [website][1].
 
-# License
+## License
 
     Copyright 2016 Jakub Petriska
 
