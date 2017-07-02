@@ -1,0 +1,8 @@
+title: GameEngine
+description: Simple game engine for Android written in Java
+google_analytics: 
+show_downloads: true
+theme: jekyll-theme-cayman
+
+gems:
+  - jekyll-mentions
